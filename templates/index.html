@@ -1,0 +1,298 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Video Search Page</title>
+    <base href="{{ base_url }}">
+    <link rel="stylesheet" href="static/css/styles.css">
+    <link rel="icon" href="static/icon/halloween-23439_960_720.webp">
+    <link rel="stylesheet" href="static/css/chatStyle.css">
+</head>
+<body>
+
+    <!-- The form now wraps the entire main content area -->
+    <form id="form" method="POST">
+        <div class="main-content">
+            <!-- Filters Section -->
+            <div class="filters">
+
+                <!-- 1. Tab Navigation is now inside the filters panel -->
+                <nav class="tab-navigation">
+                    <button class="tab-button active" data-tab="tab-search-content">SEARCH</button>
+                    <button class="tab-button" data-tab="tab-submission-content">SUBMIT</button>
+                    <!-- <button class="tab-button" data-tab="tab-chatbot-content">CHAT</button> -->
+                </nav>
+
+                <!-- 2. This container holds the switchable content for the tabs -->
+                <div class="tab-content-container-inner">
+                    <!-- Search Tab Content -->
+                    <div id="tab-search-content" class="tab-content active">
+
+                        <div class="query-type-toggle" style="font-size: 1rem;">
+                            <label><input type="radio" name="query-type" value="text" checked> Text Search</label>
+                            <label><input type="radio" name="query-type" value="image"> Image Search</label>
+                        </div>
+
+                        <!-- Text Search Inputs -->
+                        <div class="search-inputs" id="text-query-section" style="display: flex; align-items: flex-start; gap: 0.6rem;">
+                            <div style="position: relative; width: 15rem;">
+                                <textarea name="query" id="query" class="autogrow" placeholder="Text Query Here..."
+                                    style="width: 100%; height: 5.6rem;" autofocus></textarea>
+                                <div id="charCount" class="char-count"
+                                    style="position: absolute; bottom: 1.5rem; right: 1rem; font-size: 1rem; color: #666;"></div>
+                            </div>
+                            <div style="display: flex; flex-direction: column; align-items: left; gap: 0px;">
+                                <button id="translateBtn" type="button"
+                                    style="width: 2.5rem; height: 2.5rem; border-radius: 0.3rem; background-color: white; color: #003b6d; border: 0.2rem solid #003b6d; font-size: 1.5rem; font-weight: bold; cursor: pointer; display: flex; align-items: center; justify-content: center; padding: 0;"
+                                    title="Translate text">T</button>
+                                <button id="voiceBtn" type="button"
+                                    style="width: 2.5rem; height: 2.5rem; padding: 0; margin: 0; border: none; border-radius: 50%; background: #003b6d; cursor: pointer;">
+                                    <img src="static/icon/free-microphone-icon-342-thumb.png"
+                                        alt="Microphone"
+                                        style="width: 2.3rem; height: 2.3rem; border-radius: 50%; background-color: white;">
+                                </button>
+                            </div>
+                        </div>
+
+                        <!-- Image Query Section -->
+                        <div id="image-query-section" style="display:none; height: auto;">
+                                <div class="image-upload">
+                                    <div id="image-upload-container">
+                                        <div class="drop-area" id="drop-area">
+                                            <p>Drag & drop image here</p>
+                                            <p>or</p>
+                                            <input type="file" id="image-file" accept="image/*" />
+                                            <p>or enter URL:</p>
+                                            <input type="text" id="image-url" placeholder="https://example.com/image.jpg" />
+                                        </div>
+                                    </div>
+                                    <div id="image-preview-container" style="display: none;">
+                                        <div class="image-preview-container">
+                                            <button class="close-preview">×</button>
+                                            <img id="image-preview" style="max-width: 18.75rem; max-height: 12.5rem; display: block; margin: 0 auto;" />
+                                        </div>
+                                    </div>
+                                </div>
+                        </div>
+
+                        <button id="search-button" type="submit" style="background-color: #40E0D0;">Search</button>
+
+                        <div class="query-history" style="font-size: 1.2rem;">
+                            <h3>Previous Query: <a href="#" id="previous-query" style="text-decoration: none;"></a></h3>
+                            <h3>Query History:
+                                <select id="query-dropdown" style="width: 100%; height:1.5rem; font-size: 1rem;"></select>
+                                <button id="clear-history" style="margin-top: 5px; font-size: 0.9rem;">Clear History</button>
+                            </h3>
+                        </div>
+
+                        <!-- <div class="input-container">
+                            <input id="video_filter" type="text" placeholder="Video name..." name="video_filter"
+                                oninput="this.value = this.value.toUpperCase()">
+                            <input id="time_in" type="text" placeholder="Start..." name="time_in">
+                            <input id="time_out" type="text" placeholder="End..." name="time_out">
+                        </div>
+
+                        <div class="input-container">
+                            <input type="text" placeholder="S2T filter..." name="s2t_filter" id="s2t_filter">
+                        </div> -->
+
+                        <fieldset class="model-options" style="font-size: 1.2rem;">
+                            <legend>Models</legend>
+
+                            <label><input type="radio" name="model" value="SIGLIP_V2" checked> SIGLIP_V2</label>
+                            <label><input type="radio" name="model" value="TEMPORAL_SIGLIP_V2"> TEMPORAL_SIGLIP_V2</label>
+                            <label><input type="radio" name="model" value="META"> META</label>
+                            <label><input type="radio" name="model" value="TEMPORAL_META"> TEMPORAL_META</label>
+                            <label><input type="radio" name="model" value="META_V2"> META_V2</label>
+                            <label><input type="radio" name="model" value="TEMPORAL_META_V2"> TEMPORAL_META_V2</label>
+                        </fieldset>
+
+                        <!-- <button id="rerank-color-btn" type="button" style="font-size: 1.2rem; background-color: #FFD700;">Rerank by Color</button> -->
+
+                        <div class="pagination-controls" style="display: flex; align-items: center; justify-content: center; margin:0px; padding:0px;">
+                            <button id="prev-page" type="button" title="Previous Page" style="margin-right: 5px; font-size: 1.3rem; background: #40E0D0;">←</button>
+                            <span id="page-info" style="margin: 0 0.3rem; font-size: 1.4rem;">1/1</span>
+                            <button id="next-page" type="button" title="Next Page" style="margin-left: 0.3rem; font-size: 1.3rem; background: #40E0D0;">→</button>
+                        </div>
+                    </div>
+
+                    <!-- Submission Tab Content -->
+                    <div id="tab-submission-content" class="tab-content">
+                        <div class="submission-form">
+                            <div class="input-container">
+                                <label>Session ID:</label>
+                                <input type="text" id="session-id" readonly>
+                            </div>
+                            <div class="input-container">
+                                <label>Eval ID:</label>
+                                <input type="text" id="eval-id" readonly>
+                            </div>
+                            <button id="get-session-btn" type="button">Get IDs</button>
+                            <div class="input-container">
+                                <label>Media Item:</label>
+                                <input type="text" id="media-item" name="mediaItemName">
+                            </div>
+                            <div class="input-container">
+                                <label>Start (ms):</label>
+                                <input type="text" id="start-time" name="start">
+                            </div>
+                            <div class="input-container">
+                                <label>End (ms):</label>
+                                <input type="text" id="end-time" name="end">
+                            </div>
+                            <button id="submit-dres-btn" type="button">Submit to DRES</button>
+                            <div id="submission-status"></div>
+                        </div>
+                    </div>
+
+                    <!-- Chatbot Tab Content -->
+                    <!-- <div id="tab-chatbot-content" class="tab-content">
+                        <div id="n8n-chat"></div>
+                    </div> -->
+                </div>
+            </div>
+
+
+            <!-- Settings Panel -->
+            <div class="settings-panel-container">
+                <div class="settings-trigger">⚙️ Settings</div>
+                <div class="settings-panel">
+                    <!-- START: New Settings -->
+                    <div class="setting-item">
+                        <label for="return-s2t-checkbox">
+                            <input type="checkbox" id="return-s2t-checkbox" name="return_s2t">
+                            S2T Info
+                        </label>
+                    </div>
+                    <div class="setting-item">
+                        <label for="return-object-checkbox">
+                            <input type="checkbox" id="return-object-checkbox" name="return_object">
+                            Objects Info
+                        </label>
+                    </div>
+                    <div class="setting-item">
+                        <label for="frame-class-filter-checkbox">
+                            <input type="checkbox" id="frame-class-filter-checkbox" name="frame_class_filter">
+                            Filter MC
+                        </label>
+                    </div>
+                    <!-- END: New Settings -->
+
+                    <!-- Auto Translate -->
+                    <div class="setting-item">
+                        <label for="auto-translate-checkbox">
+                            <input type="checkbox" id="auto-translate-checkbox" name="auto-translate">
+                            Auto Translate
+                        </label>
+                    </div>
+
+                    <!-- Number of Results -->
+                    <div class="setting-item">
+                        <h3>Number of Results</h3>
+                        <input type="range" id="slider_k" min="10" max="1000" value="100" step="10" name="slider_k"
+                            oninput="document.getElementById('k').value = this.value">
+                        <input class="textbox" id="k" value="100" type="text" name="k">
+                    </div>
+
+                    <!-- Results per Page -->
+                    <div class="setting-item">
+                        <h3>Results per Page</h3>
+                        <input type="range" id="results-per-page-slider" min="10" max="200" value="50" step="10">
+                        <input class="textbox" id="results-per-page-value" value="50" type="text">
+                    </div>
+
+                    <!-- Number of neighbor frames -->
+                    <div class="setting-item">
+                        <h3>Neighbor Frames Count</h3>
+                        <input type="range" id="neighbor-frames-count-slider" min="1" max="50" value="10" step="1">
+                        <input class="textbox" id="neighbor-frames-count-value" value="10" type="text" style="width: 50px;">
+                    </div>
+
+                    <!-- Thumbnail Size -->
+                    <div class="setting-item">
+                        <h3>Thumbnail Size</h3>
+                        <input type="range" id="size-slider" min="100" max="400" value="300">
+                    </div>
+
+
+                </div>
+            </div>
+
+            <!-- Filters Panel -->
+            <div class="filters-panel-container" style="margin-top: 50px;">
+                <div class="filters-trigger">🔍 Filters</div>
+                <div class="filters-panel">
+                    <!-- Included Videos -->
+                    <div class="filter-section">
+                        <h3>Included Videos</h3>
+                        <input type="text" id="video-search" placeholder="Search videos..." style="width: 100%;">
+                        <select id="video-names-dropdown" multiple style="width: 100%; height: 150px;"></select>
+                        <div class="batch-selection" style="margin-top: 10px;">
+                            <label><input type="checkbox" name="batch" value="0" checked> Batch 0</label>
+                            <label><input type="checkbox" name="batch" value="1" checked> Batch 1</label>
+                            <label><input type="checkbox" name="batch" value="2" checked> Batch 2</label>
+                        </div>
+                        <button id="fetch-video-names" style="margin-top: 10px;" type="button">Fetch Videos</button>
+                    </div>
+
+                    <!-- Excluded Frames -->
+                    <div class="filter-section">
+                        <h3>Excluded Frames</h3>
+                        <ul id="excluded-frames-list" style="max-height: 150px; overflow-y: auto; background: #333; padding: 5px; border-radius: 5px;"></ul>
+                    </div>
+
+                    <!-- Other Filters -->
+                    <div class="filter-section">
+                        <h3>Other Filters</h3>
+                        <input type="text" placeholder="S2T filter..." name="s2t_filter" id="s2t_filter" style="width: 100%;">
+                        <div class="input-container" style="margin-top: 10px;">
+                            <input type="text" placeholder="Start..." name="time_in" id="time_in" style="flex: 1;">
+                            <input type="text" placeholder="End..." name="time_out" id="time_out" style="flex: 1;">
+                        </div>
+                    </div>
+
+                    <button id="reset-filters" style="margin-top: 15px;" type="button">Reset All Filters</button>
+                </div>
+            </div>
+
+            <!-- Videos Container (now a sibling, always visible) -->
+            <div class="videos" id="videos">
+                {% for index, key, batch, video_name, frame_name, fps, score, s2t, object, video_path, frame_path in files %}
+                    <div class="thumbnail">
+                        <div style="position: relative;">
+                            <a class="fps" style="display: none;">{{ fps }}</a>
+                            <div class="half previous" id="previous-{{ index }}"></div>
+                            <div class="half after" id="after-{{ index }}"></div>
+                            <a class="video_id text-overlay-top" data-imageid="{{ video_name }}" target="{{ index }}">
+                                {{ video_name }}
+                            </a>
+                            <img data-src="{{ url_for('send_file', path=frame_path) }}"
+                                id="{{ index }}"
+                                class="lazy-image"
+                                loading="lazy"
+                                style="width: var(--thumbnail-width); height: var(--thumbnail-height);">
+                            <a class="image_id text-overlay-bottom"
+                            style="left: 0; bottom: 1.5rem;"
+                            id="frame_name-{{ index }}"
+                            target="{{ index }}">
+                                {{ frame_name }}
+                            </a>
+                        </div>
+                        <div style="align-items: center; display: flex; justify-content: center;">
+                            <div style="position: absolute; bottom: 0; width: 2.5rem; height: 1.5rem; z-index: 100; justify-self: center;"
+                                class="description-hover"></div>
+                            <p class="description">{{s2t}}</p>
+                        </div>
+                    </div>
+                {% endfor %}
+            </div>
+        </div>
+    </form>
+
+    <!-- Scripts -->
+    <script src="static/js/jquery-3.6.0.min.js"></script>
+    <script src="static/js/jszip.min.js"></script>
+    <script type="module" src="static/js/main.js"></script>
+</body>
+</html>

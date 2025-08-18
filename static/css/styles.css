@@ -1,0 +1,1128 @@
+.enlarge {
+  width: 20%;
+  float: left;
+  -webkit-transition: all 0.5s ease-in-out;
+  -moz-transition: all 0.5s ease-in-out;
+  transition: all 0.5s ease-in-out;
+}
+.enlarge:hover {
+  width: 50%;
+  -webkit-transition: all 0.5s ease-in-out;
+  -moz-transition: all 0.5s ease-in-out;
+  transition: all 0.5s ease-in-out;
+  cursor: pointer;
+}
+
+
+body {
+    margin: 0;
+    font-family: Arial, sans-serif;
+    display: flex;
+    height: 100vh;
+    flex-direction: column;
+    background-color: #333;
+}
+
+.header {
+    background-color: #000;
+    text-align: center;
+    position: sticky;
+    top: 0;
+    z-index: 1000;
+}
+
+.main-content input[type="text"] {
+    width: 100%;
+    max-width: 18.75rem;
+    padding: 0.6rem;
+    font-size: 1.2rem;
+    border: none;
+    border-radius: 0.3rem;
+    box-sizing: border-box;
+}
+
+.main-content button:not(.exclude-btn):not(.select-btn):not(.remove-btn):not(.get-news-btn):not(.tab-button),
+audio,
+#choosingFrameBtn {
+    padding: 0.6rem 1rem;
+    font-size: 1.2rem;
+    border: none;
+    border-radius: 0.3rem;
+    background-color: #003b6d;
+    color: white;
+    cursor: pointer;
+    margin: 0.6rem 0;
+    width: 100%;
+    box-sizing: border-box;
+}
+
+.main-content {
+    display: flex;
+    flex: 1;
+    padding: 1.2rem;
+    box-sizing: border-box;
+    flex-direction: column;
+    height: calc(100vh - 3.125rem);
+    overflow: hidden;
+}
+
+#voiceBtn {
+    margin-left: 0.3rem;
+    font-size: 1.2rem;
+    border: none;
+    cursor: pointer;
+    transition: transform 0.3s ease-in-out;
+    width: 2.5rem;
+    height: 2.5rem;
+    border-radius: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: #003b6d;
+    color: white;
+}
+
+#voiceBtn.active {
+    transform: rotate(360deg);
+}
+
+.filters {
+    width: 100%;
+    max-width: 18.75rem;
+    padding: 0.6rem;
+    background-color: #111;
+    border-right: 0.06rem solid #ddd;
+    box-sizing: border-box;
+    color: white;
+    max-height: 100vh;
+    overflow-y: auto;
+}
+
+.filters input[type="range"] {
+    width: 100%;
+    margin-top: 0.6rem;
+}
+
+input[type="text"],
+textarea {
+    padding: 0.6rem 1rem 0.3rem;
+    font-size: 1.2rem;
+    border: none;
+    border-radius: 0.3rem;
+    color: #000;
+    margin: 0.6rem 0rem;
+    width: 100%;
+    box-sizing: border-box;
+}
+
+textarea.autogrow {
+  /* allow only vertical manual resizing */
+  resize: vertical;
+
+  /* hide the scrollbar until it’s needed */
+  overflow-y: hidden;
+
+  /* optional—set a reasonable minimum height */
+  min-height: 5.6rem;
+
+  /* optional—set a reasonable maximum height */
+  max-height: 50vh;
+}
+
+#query-dropdown {
+    width: 100%;
+    max-width: 18.75rem;
+}
+
+#query-dropdown option {
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    overflow: hidden;
+    display: inline-block;
+    width: 100%;
+}
+
+
+.filters .model-options {
+    margin-top: 1.2rem;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.6rem;
+}
+
+.videos {
+    flex: 1;
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(var(--thumbnail-width, 12.5rem), 1fr));
+    grid-auto-rows: var(--thumbnail-height, 9.3rem);
+    grid-column-gap: 0.3rem;
+    grid-row-gap: 0.6rem;
+    padding: 1.2rem;
+    background-color: #111;
+    box-sizing: border-box;
+    overflow: auto;
+    color: white;
+}
+
+.thumbnail {
+    width: var(--thumbnail-width, 100%);
+    height: fit-content;
+    object-fit: cover;
+    position: relative;
+    background-color: #282424;
+    border-radius: 0.6rem;
+    overflow: hidden;
+    transition: transform 0.3s ease;
+    padding: 0.06rem;
+    display: flex;
+    flex-direction: column;
+    z-index: 1;
+}
+
+.thumbnail img {
+    width: 100%;
+    height: calc(var(--thumbnail-height, 9.3rem) - 1.2rem);
+    object-fit: cover;
+}
+
+.thumbnail:hover {
+    transform: scale(1.05);
+}
+
+.text-overlay-top,
+.text-overlay-bottom {
+    position: absolute;
+    width: 100%;
+    padding: 0.3rem;
+    text-align: center;
+    color: white;
+    font-size: 1.2rem;
+    z-index: 1;
+    color: #003b6d;
+}
+
+.text-overlay-top {
+    cursor: pointer;
+    top: 0;
+}
+
+.text-overlay-bottom {
+    cursor: pointer;
+    left: 0;
+    text-align: left;
+}
+
+.half {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    width: 50%;
+    background-color: transparent;
+}
+
+.previous {
+    left: 0;
+}
+
+.after {
+    right: 0;
+}
+
+
+
+.description {
+    font-size: 1.2rem;
+    background-color: rgba(0, 0, 0, 0.7);
+    color: rgb(255, 255, 255);
+    font-weight: normal;
+    text-align: justify;
+    text-justify: inter-word;
+    margin: 0;
+    word-wrap: break-word;
+    overflow: hidden;
+    transition: max-height 0.3s ease, opacity 0.3s ease, bottom 0.3s ease;
+    cursor: pointer;
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    z-index: 10;
+    display: -webkit-inline-box;
+    -webkit-line-clamp: 1;
+    -webkit-box-orient: vertical;
+    text-overflow: ellipsis;
+    overflow: hidden;
+}
+
+.description.expanded {
+    -webkit-line-clamp: unset;
+    overflow-y: auto;
+    top: 0;
+}
+
+.keycap {
+    display: inline-block;
+    padding: 0.2em 0.5em;
+    margin: 0 0.1em;
+    border: 0.125rem solid #40E0D0;
+    border-radius: 0.25rem;
+    background-color: #f9f9f9;
+    font-weight: bold;
+    font-family: monospace;
+    color: #333;
+}
+
+#team {
+    font-family: 'Creepster', cursive;
+    font-size: 3rem;
+    font-weight: bold;
+    color: #FF4500;
+    text-shadow:
+        0 0 0.3rem rgba(0, 0, 0, 0.7),
+        0 0 0.6rem rgba(0, 0, 0, 0.7),
+        0 0 10.3rem rgba(255, 69, 0, 0.7);
+    background: linear-gradient(135deg, #FF4500, #FF6347);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    animation: flicker 3s infinite;
+    cursor: pointer;
+}
+
+.modal {
+    display: none;
+    position: fixed;
+    z-index: 1000;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.9);
+}
+
+.modal-content {
+    margin: auto;
+    padding: auto;
+    background-color: #000;
+    width: 60%;
+    position: relative;
+    transform: translate(0, 10%);
+}
+
+.close {
+    color: #aaa;
+    float: right;
+    font-size: 2rem;
+    font-weight: bold;
+}
+
+.close:hover,
+.close:focus {
+    color: white;
+    text-decoration: none;
+    cursor: pointer;
+}
+
+#fileName {
+    margin-right: 0.6rem;
+    width: 120.3rem;
+}
+
+.input-container {
+    display: flex;
+    width: 100%;
+}
+
+#video_filter {
+    flex: 2;
+    margin-right: 0.6rem;
+}
+
+#time_in {
+    flex: 1;
+    margin-right: 0.6rem;
+}
+
+#time_out {
+    flex: 1;
+    margin-right: 0;
+}
+
+.video_id,
+.image_id {
+    background-color: rgba(255, 255, 143, 0.5);
+    /* Light yellow background */
+    padding: 0.3rem;
+    border-radius: 0.3rem;
+    /* Adjust width to fit content */
+    width: auto;
+    /* Ensure width adjusts to content */
+    white-space: nowrap;
+    /* Prevent text from wrapping */
+}
+
+.char-count {
+    font-size: 1.2rem;
+    color: #fff;
+}
+
+.char-count.warning {
+    color: red;
+}
+
+
+
+@media (min-width: 48rem) {
+    .main-content {
+        flex-direction: row;
+    }
+
+    .filters {
+        width: 20%;
+    }
+
+    .videos {
+        width: 80%;
+    }
+}
+
+/* 1) The hidden tooltip popup */
+.s2t-tooltip {
+  position: absolute;
+  bottom: 100%; /* sit just above the bar */
+  left: 0;
+  right: 0;
+  max-height: 0;
+  overflow: hidden;
+  background: rgba(0,0,0,0.9);
+  color: #fff;
+  padding: 0.5rem;
+  font-size: 1.2rem;
+  line-height: 1.4;
+  border-radius: 0.25rem;
+  transition: max-height 0.2s ease;
+  z-index: 10;
+}
+
+/* 2) The narrow bar underneath */
+.s2t-bar {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  height: 0.5rem;
+  background: #000;
+  cursor: pointer;
+}
+
+/* on hover, expand the tooltip */
+.s2t-bar:hover ~ .s2t-tooltip {
+  max-height: 12.5rem; /* enough to reveal the full text */
+}
+
+/* 3) Styling for bounding boxes */
+.boxes-overlay {
+  position: absolute;
+  top: 0; left: 0;
+  width: 100%; height: 100%;
+  pointer-events: none;
+}
+.boxes-overlay .box {
+  position: absolute;
+  border: 0.125rem solid;
+  font-size: 1.2rem;
+  font-weight: bold;
+  padding: 0.125rem 0.25rem;
+  background: rgba(255,255,255,0.8);
+  white-space: nowrap;
+}
+
+/* Add to your existing CSS */
+.pagination-controls {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-top: 1rem;
+  gap: 0.5rem;
+}
+
+.pagination-controls button {
+  background: #40E0D0;
+  border: none;
+  border-radius: 0.375rem;  /* slightly rounded rather than a circle */
+  width: 2.5rem;
+  height: 2.5rem;
+  cursor: pointer;
+  font-size: 1.2rem;
+  color: white;
+  transition: background 0.2s, transform 0.1s;
+}
+
+.pagination-controls button:hover:not(:disabled) {
+  background: #34b8ad;
+  transform: translateY(-0.06rem);
+}
+
+.pagination-controls button:disabled {
+  background: #cccccc;
+  cursor: not-allowed;
+}
+
+#page-info {
+  font-size: 1rem;
+  min-width: 3rem;
+  text-align: center;
+}
+
+.query-type-toggle {
+    margin-bottom: 0.06rem 0.3rem;
+    padding: 0.6rem;
+    background: #333;
+    border-radius: 0.3rem;
+}
+
+.drop-area {
+    border: 0.125rem dashed #ccc;
+    padding: 1.2rem;
+    text-align: center;
+    margin-bottom: 0.06rem 0.3rem;
+}
+
+.drop-area.active {
+    border-color: #40E0D0;
+}
+
+#image-preview-container {
+    display: flex;
+    justify-content: center;
+    margin-top: 0.06rem 0.3rem;
+}
+
+.image-preview-container {
+    position: relative;
+    display: inline-block;
+    margin: 0 auto;
+    text-align: center;
+}
+
+.close-preview {
+    position: relative;
+    top: 0rem;
+    left: 50%;
+    transform: translateX(-50%);
+    background: rgba(255, 0, 0, 0.7); /* Red with 70% opacity */
+    color: white;
+    border: none;
+    border-radius: 50%;
+    width: 1.875rem;
+    height: 1.875rem;
+    font-weight: bold;
+    cursor: pointer;
+    z-index: 10;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.5rem;
+    line-height: 1;
+    padding: 0;
+    box-shadow: 0 0.125rem 0.3rem rgba(0,0,0,0.3);
+}
+
+.close-preview:hover {
+    background: rgba(255, 51, 51, 0.7); /* Lighter red with 70% opacity */
+}
+
+.image-upload {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+#image-upload-container {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+}
+
+#image-query-section {
+    transition: height 0.3s ease;
+    overflow: hidden;
+}
+
+/* --- Temporal Results Table Styling --- */
+
+/* Center the table within the #videos container */
+.temporal-results {
+    margin-left: auto;
+    margin-right: auto;
+    border-collapse: collapse;
+    border-spacing: 0;      /* Remove space between cells */
+    margin-top: -0.7rem;
+    margin-bottom: 0rem;
+    border-style: hidden;   /* Hide the outer table border */
+}
+
+/* Add horizontal lines between rows */
+.temporal-results tr {
+    border-bottom: 1px solid #ccc; /* Light gray horizontal line */
+}
+
+/* Style for all cells (headers and data) */
+.temporal-results th,
+.temporal-results td {
+    padding: 0.7rem 1rem 0.7rem 0.7rem;      /* Increased horizontal padding for more space */
+    vertical-align: center;
+    text-align: center;
+    border: none;            /* --- CHANGE: Remove all cell borders --- */
+}
+
+.temporal-results th {
+    padding-bottom: 20px;
+    text-align: center;           /* Center horizontally */
+    vertical-align: middle;      /* Center vertically (default in most cases) */
+}
+
+/* New span to wrap text */
+.temporal-results th span {
+    display: inline-block;             /* Let the background size match the text */
+    background-color: #fff;
+    color: #000;
+    border-radius: 5px;
+    font-size: 1.5rem;
+    font-weight: bold;
+    padding: 8px 20px;
+    transition: transform 0.2s ease;
+}
+
+/* Style for the first column (Video Names) */
+.temporal-results td:first-child {
+    text-align: left;
+    font-weight: bold;
+    font-size: 1.3rem;       /* --- CHANGE: Make video name text larger --- */
+    vertical-align: middle;
+    padding-right: 30px;     /* Increase space between video name and first scene */
+    white-space: nowrap;
+    color: #e0e0e0;
+}
+
+/* Style for the cells containing thumbnails */
+.temporal-results .temporal-thumbnail {
+    min-width: 160px;
+}
+
+/* Hide first column */
+
+.temporal-results td:first-child,
+.temporal-results th:first-child {
+    display: none;
+}
+
+.videos.table-view {
+    display: block;
+}
+
+/* ======== NEW/UPDATED TAB STYLES ======== */
+.tab-navigation {
+    display: flex;
+    background: #111; /* Match filters background */
+    /* border-bottom: 1px solid #40E0D0; */
+    width: 100%; /* Take full width of parent */
+    margin-top: 0rem;
+    margin-bottom: 0.5rem; /* Space between nav and content */
+}
+
+.tab-button {
+    padding: 3px 4px; /* Smaller padding for sidebar */
+    background: transparent;
+    border: none;
+    cursor: pointer;
+    font-size: 1.2rem; /* Smaller font size */
+    font-weight: bold;
+    color: #ddd;
+    transition: all 0.3s ease;
+    position: relative;
+    overflow: hidden;
+    flex: 0.5;
+    text-align: center;
+    min-width: 0;
+}
+
+.tab-button::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 50%;
+    width: 0;
+    height: 3px;
+    background: #40E0D0;
+    transform: translateX(-50%);
+    transition: width 0.3s ease;
+}
+
+.tab-button:hover {
+    color: #40E0D0;
+    background: rgba(64, 224, 208, 0.1);
+}
+
+.tab-button:hover::after {
+    width: 100%;
+}
+
+.tab-button.active {
+    color: #40E0D0;
+    background: rgba(64, 224, 208, 0.15);
+}
+
+.tab-button.active::after {
+    width: 100%;
+    background: #40E0D0;
+}
+
+/* Container for the content inside the filters panel */
+.tab-content-container-inner {
+    flex: 1;
+    overflow-y: auto; /* Allow content to scroll if it's too long */
+    overflow-x: hidden;
+}
+
+/* Generic tab content styling */
+.tab-content {
+    display: none; /* Hide by default */
+    width: 100%;
+    height: 100%;
+}
+
+.tab-content.active {
+    display: block; /* Show active tab */
+    animation: fadeIn 0.4s ease forwards;
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+}
+
+
+/* ======== UPDATED SUBMISSION FORM STYLES ======== */
+
+#tab-submission-content.active {
+    display: flex; /* use flex to center the form */
+    justify-content: center;
+}
+
+.submission-form {
+    width: 100%; /* Take full width of its container */
+    max-width: none; /* Remove max-width to fit sidebar */
+    background: #333;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 5px 20px rgba(0, 0, 0, 0.5);
+    border: 1px solid #444;
+}
+
+.submission-form .input-container {
+    /* Stack label and input vertically */
+    flex-direction: column;
+    align-items: flex-start;
+    margin-bottom: 15px;
+}
+
+.submission-form label {
+    flex: none; /* Remove flex property */
+    font-weight: bold;
+    color: #40E0D0;
+    font-size: 1rem;
+    margin-bottom: 5px;
+}
+
+.submission-form input[type="text"] {
+    width: 100%; /* Make input take full width */
+    padding: 10px;
+    background: #444;
+    border: 1px solid #555;
+    border-radius: 5px;
+    color: white;
+    font-size: 1rem;
+    transition: all 0.3s ease;
+}
+
+#get-session-btn {
+    width: 100%;
+    padding: 12px;
+    font-size: 1.1rem;
+    margin-top: -0.5rem;
+    margin-bottom: 0.5rem;
+}
+
+#submit-dres-btn {
+    width: 100%;
+    padding: 12px;
+    font-size: 1.1rem;
+}
+
+#submission-status {
+    margin-top: 20px;
+    padding: 10px;
+    font-size: 1rem;
+}
+
+/* ... (rest of CSS, including .select-btn, can remain as is) ... */
+.submission-success {
+	background: rgba(40, 167, 69, 0.2);
+	color: #28a745;
+	border: 1px solid #28a745;
+}
+
+.submission-error {
+	background: rgba(220, 53, 69, 0.2);
+	color: #dc3545;
+	border: 1px solid #dc3545;
+}
+
+.select-btn, .thumbnail .select-btn {
+    position: absolute;
+    top: 40%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 40px;
+    height: 40px;
+    border-radius: 5%;
+    background: rgba(255, 255, 255, 0.5);
+    color: white;
+    border: none;
+    font-size: 1.5rem;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    opacity: 0;
+    transition: opacity 0.3s;
+    z-index: 20;
+}
+
+.thumbnail:hover .select-btn {
+	opacity: 0.9;
+	transform: translate(-50%, -50%) scale(1.1);
+}
+
+.select-btn.selected {
+	opacity: 1;
+	background: rgba(40, 167, 69, 0.9);
+	transform: translate(-50%, -50%) scale(1.1);
+}
+
+@media (max-width: 768px) {
+	#get-session-btn {
+		width: 100%;
+	}
+}
+
+.submission-form input:focus {
+	transform: translateY(-2px);
+	box-shadow: 0 5px 15px rgba(64, 224, 208, 0.2);
+}
+
+.select-btn::before {
+	content: "✓";
+	position: absolute;
+	top: 50%;
+	left: 50%;
+	transform: translate(-50%, -50%);
+}
+
+.button-loading::after {
+	content: "";
+	display: inline-block;
+	width: 1rem;
+	height: 1rem;
+	border: 3px solid rgba(255, 255, 255, 0.3);
+	border-radius: 50%;
+	border-top-color: white;
+	animation: spin 1s linear infinite;
+	margin-left: 10px;
+	vertical-align: middle;
+}
+
+@keyframes spin {
+	to {
+		transform: rotate(360deg);
+	}
+}
+
+.submission-form input::placeholder {
+	color: #888;
+	font-style: italic;
+}
+
+.submission-form input[readonly] {
+	background: #555;
+	color: #ccc;
+	cursor: not-allowed;
+}
+
+.focus-visible {
+  outline: 3px solid #00C851;
+  outline-offset: 2px;
+  box-shadow: 0 0 4px #00C851;
+}
+
+#submit-dres-btn:focus {
+  /* fallback if JS isn’t available */
+  outline: 3px solid #00C851;
+  outline-offset: 2px;
+  box-shadow: 0 0 4px #00C851;
+}
+
+
+/* Settings Panel */
+.settings-panel-container {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    z-index: 1000;
+}
+
+.settings-trigger {
+    background: rgba(0, 59, 109, 0.8); /* Dark blue background */
+    border-radius: 4px;
+    padding: 8px 12px;
+    cursor: pointer;
+    font-size: 1rem;
+    text-align: center;
+    transition: all 0.3s ease;
+    color: white;
+    border: 1px solid #40E0D0;
+    font-weight: bold;
+    width: 100px;
+}
+
+.settings-trigger:hover {
+    background: rgba(0, 59, 109, 0.95);
+    border-color: #FFD700;
+}
+
+.settings-panel {
+    display: none;
+    background: rgba(17, 17, 17, 0.95); /* Dark background */
+    border: 1px solid #40E0D0;
+    border-radius: 5px;
+    padding: 15px;
+    width: 250px;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.5);
+    position: absolute;
+    top: 100%; /* Position below trigger */
+    right: 0;
+    margin-top: 0px;
+    color: white;
+    z-index: 1001;
+    transition: opacity 0.3s ease, transform 0.3s ease;
+    opacity: 0;
+    transform: translateY(-10px);
+}
+
+/* Show panel when container is hovered */
+.settings-panel-container:hover .settings-panel {
+    display: block;
+}
+
+.setting-item {
+    margin-bottom: 15px;
+    font-size: 1rem;
+}
+
+.setting-item h3 {
+    margin: 0 0 5px 0;
+    font-size: 1rem;
+    font-weight: bold;
+    color: #40E0D0;
+}
+
+.setting-item input[type="range"] {
+    width: 100%;
+    margin: 5px 0;
+}
+
+.setting-item .textbox {
+    width: 50px;
+    background: #333;
+    color: white;
+    border: 1px solid #555;
+    padding: 5px;
+    border-radius: 3px;
+    font-size: 1rem;
+}
+
+/* Add this to make sure panel stays visible when hovering over it */
+.settings-panel-container:hover .settings-panel,
+.settings-panel:hover {
+    display: block;
+    opacity: 1;
+    transform: translateY(0);
+}
+
+/* Neighbor view */
+.nav-arrow:hover {
+    background: rgba(64, 224, 208, 0.7) !important;
+}
+
+.neighbor-preview {
+    transition: all 0.2s ease;
+}
+
+.neighbor-preview:hover {
+    transform: scale(1.05);
+    border-color: #40E0D0 !important;
+}
+
+.neighbor-preview.current {
+    border-color: #FFD700 !important;
+}
+
+#current-frame-indicator {
+    text-align: center;
+    margin-top: 10px;
+    color: #40E0D0;
+    font-weight: bold;
+}
+
+.modal-content {
+    animation: modalFadeIn 0.3s ease-out;
+}
+
+@keyframes modalFadeIn {
+    from { opacity: 0; transform: translateY(-20px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+
+/* Filters Panel */
+.filters-panel-container {
+    position: absolute;
+    top: 60px; /* Position below settings */
+    right: 10px;
+    z-index: 1000;
+}
+
+.filters-trigger {
+    background: rgba(0, 59, 109, 0.8);
+    border-radius: 4px;
+    padding: 8px 12px;
+    cursor: pointer;
+    font-size: 1rem;
+    text-align: center;
+    transition: all 0.3s ease;
+    color: white;
+    border: 1px solid #40E0D0;
+    font-weight: bold;
+    width: 100px;
+    z-index: 999;
+}
+
+.filters-trigger:hover {
+    background: rgba(0, 59, 109, 0.95);
+    border-color: #FFD700;
+}
+
+.filters-panel {
+    display: none;
+    background: rgba(17, 17, 17, 0.95);
+    border: 1px solid #40E0D0;
+    border-radius: 5px;
+    padding: 15px;
+    width: 250px;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.5);
+    position: absolute;
+    top: 100%; /* Position below trigger */
+    right: 0;
+    margin-top: 0px;
+    color: white;
+    z-index: 1001;
+}
+
+/* Show panel when container is hovered */
+.filters-panel-container:hover .filters-panel {
+    display: block;
+    opacity: 1;
+    transform: translateY(0);
+}
+
+.filter-section {
+    margin-bottom: 15px;
+    font-size: 1rem;
+}
+
+.filter-section h3 {
+    margin: 0 0 5px 0;
+    font-size: 1rem;
+    font-weight: bold;
+    color: #40E0D0;
+}
+
+/* Exclude button on thumbnails */
+.exclude-btn {
+    position: absolute;
+    top: 5px;
+    right: 5px;
+    background: rgba(255, 0, 0, 0.1); /* very transparent red */
+    color: white;
+    border: none;
+    border-radius: 4px; /* slight rounding */
+    width: 24px;
+    height: 24px;
+    cursor: pointer;
+    z-index: 20;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: bold;
+    font-size: 1.2rem;
+    line-height: 1;
+    transition: background 0.3s, transform 0.2s;
+}
+
+.exclude-btn:hover {
+    background: rgba(255, 0, 0, 0.7); /* slightly more visible red */
+    transform: scale(1.05);
+}
+
+/* Ensure button is visible on all thumbnail states */
+.thumbnail:hover .exclude-btn,
+.thumbnail .exclude-btn {
+    opacity: 1;
+}
+
+.remove-btn {
+  margin-left: 10px;
+  margin-right: 10px;
+  padding: 4px 10px;
+  background-color: #dc3545;
+  color: #fff;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 16px;
+  transition: background-color 0.3s ease;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+}
+
+.remove-btn:hover {
+  background-color: #c82333;
+}
+
+.get-news-btn {
+    position: absolute;
+    top: 35px; /* Below the exclude button */
+    right: 5px;
+    background: rgba(64, 224, 208, 0.1);
+    color: #003b6d;
+    border: none;
+    border-radius: 4px;
+    padding: 2px 5px;
+    font-size: 0.8rem;
+    cursor: pointer;
+    z-index: 100;
+    transition: background 0.2s;
+}
+
+.get-news-btn:hover {
+    background: rgba(64, 224, 208, 0.7);
+}

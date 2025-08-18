@@ -1,0 +1,1 @@
+AutoShot/model_weight/ckpt_0_200_0.pth filter=lfs diff=lfs merge=lfs -text

@@ -1,0 +1,643 @@
+- **Nội dung lũ lụt Hà Tĩnh**: Anh Nguyễn Quang Tài chạy lũ, gia đình dọn đồ, nhà máy Hố Hô xả lũ, đỉnh lũ không lớn nhưng nguy hiểm, 750 hộ bị cô lập, sạt lở đường, 3 người chết, 1.000 hộ bị nước vào nhà.
+- **Vụ sạt lở đường sắt**: Công ty Cổ phần Đường sắt Nghệ Tĩnh khắc phục sạt lở, 100 công nhân làm việc xuyên đêm, dự kiến hoàn thiện ngày 31/10.
+- **Lũ lụt tại Bến Tre**: 5.494 hộ bị nước vào vườn, 1.000 hộ bị nước vào nhà, 8 trường học ngập, 3 người chết, 750 hộ bị cô lập.
+- **Vụ sạt lở đường sắt Bến Tre**: Sạt lở 100m, công ty huy động 100 cán bộ khắc phục, dự kiến thông tuyến ngày 31/10.
+- **Vụ sạt lở tại Bến Tre (các khu vực)**: 4,7 km sạt lở, 115 hộ bị ảnh hưởng, 15 nhà bị sập, 100 m đường bê tông hư hỏng, 650 m bờ bao sạt lở.
+- **Vụ sạt lở đường sắt Bến Tre**: 100 công nhân làm việc, 100m sạt lở, 1.000 m đường bê tông hư hỏng.
+- **Vụ sập giàn giáo tại Hamburg**: 5 công nhân thiệt mạng, 1 người bị chôn vùi, công tác cứu nạn khẩn trương.
+- **Vụ án giết người tại Bình Định**: Hồ Thanh Cường truy sát 3 người thân, 2 người tử vong, 1 người bị thương, bị bắt giám định tâm thần.
+- **Vụ trộm tài sản tại Tây Ninh**: 2 đối tượng trộm cắp xe máy, 1 cây kiếm, 1 máy bơm, 3 người bị bắt.
+- **Vụ trộm pháo lậu tại Quảng Nam**: 16 xe ô tô vận chuyển 5.000 viên pháo lậu từ Kon Tum đến Đà Nẵng.
+- **Vụ sập giàn giáo tại Hamburg**: 5 công nhân thiệt mạng, 1 người bị chôn vùi, công tác cứu nạn khẩn trương.
+- **Vụ án trộm cắp tại Tây Ninh**: 2 đối tượng bị bắt, 1 đối tượng bị tại ngoại.
+- **Vụ sạt lở tại Bến Tre**: 4,7 km sạt lở, 115 hộ bị ảnh hưởng, 15 nhà sập, 100 m đường hư hỏng, 650 m bờ sạt lở.
+- **Vụ sạt lở đường sắt Bến Tre**: 100m sạt lở, 1.000 m đường bê tông hư hỏng.
+- **Vụ sạt lở tại Bến Tre**: 4,7 km sạt lở, 115 hộ bị ảnh hưởng, 15 nhà sập, 100 m đường hư hỏng, 650 m bờ sạt lở.
+- **Vụ án trộm cắp tại Tây Ninh**: 2 đối tượng bị bắt, 1 đối tượng bị tại ngoại.
+- **Vụ sạt lở tại Bến Tre**: 4,7 km sạt lở, 115 hộ bị ảnh hưởng, 15 nhà sập, 100 m đường hư hỏng, 650 m bờ sạt lở.
+- **Vụ sạt lở đường sắt Bến Tre**: 100m sạt lở, 1.000 m đường bê tông hư hỏng.
+- **Vụ sạt lở tại Bến Tre**: 4,7 km sạt lở, 115 hộ bị ảnh hưởng, 15 nhà sập, 100 m đường hư hỏng, 650 m bờ sạt lở.
+- **Vụ sạt lở đường sắt Bến Tre**: 100m sạt lở, 1.000 m đường bê tông hư hỏng.
+- **Vụ sạt lở tại Bến Tre**: 4,7 km sạt lở, 115 hộ bị ảnh hưởng, 15 nhà sập, 100 m đường hư hỏng, 650 m bờ sạt lở.
+- **Vụ sạt lở đường sắt Bến Tre**: 100m sạt lở, 1.000 m đường bê tông hư hỏng.
+- **Vụ sạt lở tại Bến Tre**: 4,7 km sạt lở, 115 hộ bị ảnh hưởng, 15 nhà sập, 100 m đường hư hỏng, 650 m bờ sạt lở.
+- **Vụ sạt lở đường sắt Bến Tre**: 100m sạt lở, 1.000 m đường bê tông hư hỏng.
+- **Vụ sạt lở tại Bến Tre**: 4,7 km sạt lở, 115 hộ bị ảnh hưởng, 15 nhà sập, 100 m đường hư hỏng, 650 m bờ sạt lở.
+- **Vụ sạt lở đường sắt Bến Tre**: 100m sạt lở, 1.000 m đường bê tông hư hỏng.
+- **Vụ sạt lở tại Bến Tre**: 4,7 km sạt lở, 115 hộ bị ảnh hưởng, 15 nhà sập, 100 m đường hư hỏng, 650 m bờ sạt lở.
+- **Vụ sạt lở đường sắt Bến Tre**: 100m sạt lở, 1.000 m đường bê tông hư hỏng.
+- **Vụ sạt lở tại Bến Tre**: 4,7 km sạt lở, 115 hộ bị ảnh hưởng, 15 nhà sập, 100 m đường hư hỏng, 650 m bờ sạt lở.
+- **Vụ sạt lở đường sắt Bến Tre**: 100m sạt lở, 1.000 m đường bê tông hư hỏng.
+- **Vụ sạt lở tại Bến Tre**: 4,7 km sạt lở, 115 hộ bị ảnh hưởng, 15 nhà sập, 100 m đường hư hỏng, 650 m bờ sạt lở.
+- **Vụ sạt lở đường sắt Bến Tre**: 100m sạt lở, 1.000 m đường bê tông hư hỏng.
+- **Vụ sạt lở tại Bến Tre**: 4,7 km sạt lở, 115 hộ bị ảnh hưởng, 15 nhà sập, 100 m đường hư hỏng, 650 m bờ sạt lở.
+- **Vụ sạt lở đường sắt Bến Tre**: 100m sạt lở, 1.000 m đường bê tông hư hỏng.
+- **Vụ sạt lở tại Bến Tre**: 4,7 km sạt lở, 115 hộ bị ảnh hưởng, 15 nhà sập, 100 m đường hư hỏng, 650 m bờ sạt lở.
+- **Vụ sạt lở đường sắt Bến Tre**: 100m sạt lở, 1.000 m đường bê tông hư hỏng.
+- **Vụ sạt lở tại Bến Tre**: 4,7 km sạt lở, 115 hộ bị ảnh hưởng, 15 nhà sập, 100 m đường hư hỏng, 650 m bờ sạt lở.
+- **Vụ sạt lở đường sắt Bến Tre**: 100m sạt lở, 1.000 m đường bê tông hư hỏng.
+- **Vụ sạt lở tại Bến Tre**: 4,7 km sạt lở, 115 hộ bị ảnh hưởng, 15 nhà sập, 100 m đường hư hỏng, 650 m bờ sạt lở.
+- **Vụ sạt lở đường sắt Bến Tre**: 100m sạt lở, 1.000 m đường bê tông hư hỏng.
+- **Vụ sạt lở tại Bến Tre**: 4,7 km sạt lở, 115 hộ bị ảnh hưởng, 15 nhà sập, 100 m đường hư hỏng, 650 m bờ sạt lở.
+- **Vụ sạt lở đường sắt Bến Tre**: 100m sạt lở, 1.000 m đường bê tông hư hỏng.
+- **Vụ sạt lở tại Bến Tre**: 4,7 km sạt lở, 115 hộ bị ảnh hưởng, 15 nhà sập, 100 m đường hư hỏng, 650 m bờ sạt lở.
+- **Vụ sạt lở đường sắt Bến Tre**: 100m sạt lở, 1.000 m đường bê tông hư hỏng.
+- **Vụ sạt lở tại Bến Tre**: 4,7 km sạt lở, 115 hộ bị ảnh hưởng, 15 nhà sập, 100 m đường hư hỏng, 650 m bờ sạt lở.
+- **Vụ sạt lở đường sắt Bến Tre**: 100m sạt lở, 1.000 m đường bê tông hư hỏng.
+- **Vụ sạt lở tại Bến Tre**: 4,7 km sạt lở, 115 hộ bị ảnh hưởng, 15 nhà sập, 100 m đường hư hỏng, 650 m bờ sạt lở.
+- **Vụ sạt lở đường sắt Bến Tre**: 100m sạt lở, 1.000 m đường bê tông hư hỏng.
+- **Vụ sạt lở tại Bến Tre**: 4,7 km sạt lở, 115 hộ bị ảnh hưởng, 15 nhà sập, 100 m đường hư hỏng, 650 m bờ sạt lở.
+- **Vụ sạt lở đường sắt Bến Tre**: 100m sạt lở, 1.000 m đường bê tông hư hỏng.
+- **Vụ sạt lở tại Bến Tre**: 4,7 km sạt lở, 115 hộ bị ảnh hưởng, 15 nhà sập, 100 m đường hư hỏng, 650 m bờ sạt lở.
+- **Vụ sạt lở đường sắt Bến Tre**: 100m sạt lở, 1.000 m đường bê tông hư hỏng.
+- **Vụ sạt lở tại Bến Tre**: 4,7 km sạt lở, 115 hộ bị ảnh hưởng, 15 nhà sập, 100 m đường hư hỏng, 650 m bờ sạt lở.
+- **Vụ sạt lở đường sắt Bến Tre**: 100m sạt lở, 1.000 m đường bê tông hư hỏng.
+- **Vụ sạt lở tại Bến Tre**: 4,7 km sạt lở, 115 hộ bị ảnh hưởng, 15 nhà sập, 100 m đường hư hỏng, 650 m bờ sạt lở.
+- **Vụ sạt lở đường sắt Bến Tre**: 100m sạt lở, 1.000 m đường bê tông hư hỏng.
+- **Vụ sạt lở tại Bến Tre**: 4,7 km sạt lở, 115 hộ bị ảnh hưởng, 15 nhà sập, 100 m đường hư hỏng, 650 m bờ sạt lở.
+- **Vụ sạt lở đường sắt Bến Tre**: 100m sạt lở, 1.000 m đường bê tông hư hỏng.
+- **Vụ sạt lở tại Bến Tre**: 4,7 km sạt lở, 115 hộ bị ảnh hưởng, 15 nhà sập, 100 m đường hư hỏng, 650 m bờ sạt lở.
+- **Vụ sạt lở đường sắt Bến Tre**: 100m sạt lở, 1.000 m đường bê tông hư hỏng.
+- **Vụ sạt lở tại Bến Tre**: 4,7 km sạt lở, 115 hộ bị ảnh hưởng, 15 nhà sập, 100 m đường hư hỏng, 650 m bờ sạt lở.
+- **Vụ sạt lở đường sắt Bến Tre**: 100m sạt lở, 1.000 m đường bê tông hư hỏng.
+- **Vụ sạt lở tại Bến Tre**: 4,7 km sạt lở, 115 hộ bị ảnh hưởng, 15 nhà sập, 100 m đường hư hỏng, 650 m bờ sạt lở.
+- **Vụ sạt lở đường sắt Bến Tre**: 100m sạt lở, 1.000 m đường bê tông hư hỏng.
+- **Vụ sạt lở tại Bến Tre**: 4,7 km sạt lở, 115 hộ bị ảnh hưởng, 15 nhà sập, 100 m đường hư hỏng, 650 m bờ sạt lở.
+- **Vụ sạt lở đường sắt Bến Tre**: 100m sạt lở, 1.000 m đường bê tông hư hỏng.
+- **Vụ sạt lở tại Bến Tre**: 4,7 km sạt lở, 115 hộ bị ảnh hưởng, 15 nhà sập, 100 m đường hư hỏng, 650 m bờ sạt lở.
+- **Vụ sạt lở đường sắt Bến Tre**: 100m sạt lở, 1.000 m đường bê tông hư hỏng.
+- **Vụ sạt lở tại Bến Tre**: 4,7 km sạt lở, 115 hộ bị ảnh hưởng, 15 nhà sập, 100 m đường hư hỏng, 650 m bờ sạt lở.
+- **Vụ sạt lở đường sắt Bến Tre**: 100m sạt lở, 1.000 m đường bê tông hư hỏng.
+- **Vụ sạt lở tại Bến Tre**: 4,7 km sạt lở, 115 hộ bị ảnh hưởng, 15 nhà sập, 100 m đường hư hỏng, 650 m bờ sạt lở.
+- **Vụ sạt lở đường sắt Bến Tre**: 100m sạt lở, 1.000 m đường bê tông hư hỏng.
+- **Vụ sạt lở tại Bến Tre**: 4,7 km sạt lở, 115 hộ bị ảnh hưởng, 15 nhà sập, 100 m đường hư hỏng, 650 m bờ sạt lở.
+- **Vụ sạt lở đường sắt Bến Tre**: 100m sạt lở, 1.000 m đường bê tông hư hỏng.
+- **Vụ sạt lở tại Bến Tre**: 4,7 km sạt lở, 115 hộ bị ảnh hưởng, 15 nhà sập, 100 m đường hư hỏng, 650 m bờ sạt lở.
+- **Vụ sạt lở đường sắt Bến Tre**: 100m sạt lở, 1.000 m đường bê tông hư hỏng.
+- **Vụ sạt lở tại Bến Tre**: 4,7 km sạt lở, 115 hộ bị ảnh hưởng, 15 nhà sập, 100 m đường hư hỏng, 650 m bờ sạt lở.
+- **Vụ sạt lở đường sắt Bến Tre**: 100m sạt lở, 1.000 m đường bê tông hư hỏng.
+- **Vụ sạt lở tại Bến Tre**: 4,7 km sạt lở, 115 hộ bị ảnh hưởng, 15 nhà sập, 100 m đường hư hỏng, 650 m bờ sạt lở.
+- **Vụ sạt lở đường sắt Bến Tre**: 100m sạt lở, 1.000 m đường bê tông hư hỏng.
+- **Vụ sạt lở tại Bến Tre**: 4,7 km sạt lở, 115 hộ bị ảnh hưởng, 15 nhà sập, 100 m đường hư hỏng, 650 m bờ sạt lở.
+- **Vụ sạt lở đường sắt Bến Tre**: 100m sạt lở, 1.000 m đường bê tông hư hỏng.
+- **Vụ sạt lở tại Bến Tre**: 4,7 km sạt lở, 115 hộ bị ảnh hưởng, 15 nhà sập, 100 m đường hư hỏng, 650 m bờ sạt lở.
+- **Vụ sạt lở đường sắt Bến Tre**: 100m sạt lở, 1.000 m đường bê tông hư hỏng.
+- **Vụ sạt lở tại Bến Tre**: 4,7 km sạt lở, 115 hộ bị ảnh hưởng, 15 nhà sập, 100 m đường hư hỏng, 650 m bờ sạt lở.
+- **Vụ sạt lở đường sắt Bến Tre**: 100m sạt lở, 1.000 m đường bê tông hư hỏng.
+- **Vụ sạt lở tại Bến Tre**: 4,7 km sạt lở, 115 hộ bị ảnh hưởng, 15 nhà sập, 100 m đường hư hỏng, 650 m bờ sạt lở.
+- **Vụ sạt lở đường sắt Bến Tre**: 100m sạt lở, 1.000 m đường bê tông hư hỏng.
+- **Vụ sạt lở tại Bến Tre**: 4,7 km sạt lở, 115 hộ bị ảnh hưởng, 15 nhà sập, 100 m đường hư hỏng, 650 m bờ sạt lở.
+- **Vụ sạt lở đường sắt Bến Tre**: 100m sạt lở, 1.000 m đường bê tông hư hỏng.
+- **Vụ sạt lở tại Bến Tre**: 4,7 km sạt lở, 115 hộ bị ảnh hưởng, 15 nhà sập, 100 m đường hư hỏng, 650 m bờ sạt lở.
+- **Vụ sạt lở đường sắt Bến Tre**: 100m sạt lở, 1.000 m đường bê tông hư hỏng.
+- **Vụ sạt lở tại Bến Tre**: 4,7 km sạt lở, 115 hộ bị ảnh hưởng, 15 nhà sập, 100 m đường hư hỏng, 650 m bờ sạt lở.
+- **Vụ sạt lở đường sắt Bến Tre**: 100m sạt lở, 1.000 m đường bê tông hư hỏng.
+- **Vụ sạt lở tại Bến Tre**: 4,7 km sạt lở, 115 hộ bị ảnh hưởng, 15 nhà sập, 100 m đường hư hỏng, 650 m bờ sạt lở.
+- **Vụ sạt lở đường sắt Bến Tre**: 100m sạt lở, 1.000 m đường bê tông hư hỏng.
+- **Vụ sạt lở tại Bến Tre**: 4,7 km sạt lở, 115 hộ bị ảnh hưởng, 15 nhà sập, 100 m đường hư hỏng, 650 m bờ sạt lở.
+- **Vụ sạt lở đường sắt Bến Tre**: 100m sạt lở, 1.000 m đường bê tông hư hỏng.
+- **Vụ sạt lở tại Bến Tre**: 4,7 km sạt lở, 115 hộ bị ảnh hưởng, 15 nhà sập, 100 m đường hư hỏng, 650 m bờ sạt lở.
+- **Vụ sạt lở đường sắt Bến Tre**: 100m sạt lở, 1.000 m đường bê tông hư hỏng.
+- **Vụ sạt lở tại Bến Tre**: 4,7 km sạt lở, 115 hộ bị ảnh hưởng, 15 nhà sập, 100 m đường hư hỏng, 650 m bờ sạt lở.
+- **Vụ sạt lở đường sắt Bến Tre**: 100m sạt lở, 1.000 m đường bê tông hư hỏng.
+- **Vụ sạt lở tại Bến Tre**: 4,7 km sạt lở, 115 hộ bị ảnh hưởng, 15 nhà sập, 100 m đường hư hỏng, 650 m bờ sạt lở.
+- **Vụ sạt lở đường sắt Bến Tre**: 100m sạt lở, 1.000 m đường bê tông hư hỏng.
+- **Vụ sạt lở tại Bến Tre**: 4,7 km sạt lở, 115 hộ bị ảnh hưởng, 15 nhà sập, 100 m đường hư hỏng, 650 m bờ sạt lở.
+- **Vụ sạt lở đường sắt Bến Tre**: 100m sạt lở, 1.000 m đường bê tông hư hỏng.
+- **Vụ sạt lở tại Bến Tre**: 4,7 km sạt lở, 115 hộ bị ảnh hưởng, 15 nhà sập, 100 m đường hư hỏng, 650 m bờ sạt lở.
+- **Vụ sạt lở đường sắt Bến Tre**: 100m sạt lở, 1.000 m đường bê tông hư hỏng.
+- **Vụ sạt lở tại Bến Tre**: 4,7 km sạt lở, 115 hộ bị ảnh hưởng, 15 nhà sập, 100 m đường hư hỏng, 650 m bờ sạt lở.
+- **Vụ sạt lở đường sắt Bến Tre**: 100m sạt lở, 1.000 m đường bê tông hư hỏng.
+- **Vụ sạt lở tại Bến Tre**: 4,7 km sạt lở, 115 hộ bị ảnh hưởng, 15 nhà sập, 100 m đường hư hỏng, 650 m bờ sạt lở.
+- **Vụ sạt lở đường sắt Bến Tre**: 100m sạt lở, 1.000 m đường bê tông hư hỏng.
+- **Vụ sạt lở tại Bến Tre**: 4,7 km sạt lở, 115 hộ bị ảnh hưởng, 15 nhà sập, 100 m đường hư hỏng, 650 m bờ sạt lở.
+- **Vụ sạt lở đường sắt Bến Tre**: 100m sạt lở, 1.000 m đường bê tông hư hỏng.
+- **Vụ sạt lở tại Bến Tre**: 4,7 km sạt lở, 115 hộ bị ảnh hưởng, 15 nhà sập, 100 m đường hư hỏng, 650 m bờ sạt lở.
+- **Vụ sạt lở đường sắt Bến Tre**: 100m sạt lở, 1.000 m đường bê tông hư hỏng.
+- **Vụ sạt lở tại Bến Tre**: 4,7 km sạt lở, 115 hộ bị ảnh hưởng, 15 nhà sập, 100 m đường hư hỏng, 650 m bờ sạt lở.
+- **Vụ sạt lở đường sắt Bến Tre**: 100m sạt lở, 1.000 m đường bê tông hư hỏng.
+- **Vụ sạt lở tại Bến Tre**: 4,7 km sạt lở, 115 hộ bị ảnh hưởng, 15 nhà sập, 100 m đường hư hỏng, 650 m bờ sạt lở.
+- **Vụ sạt lở đường sắt Bến Tre**: 100m sạt lở, 1.000 m đường bê tông hư hỏng.
+- **Vụ sạt lở tại Bến Tre**: 4,7 km sạt lở, 115 hộ bị ảnh hưởng, 15 nhà sập, 100 m đường hư hỏng, 650 m bờ sạt lở.
+- **Vụ sạt lở đường sắt Bến Tre**: 100m sạt lở, 1.000 m đường bê tông hư hỏng.
+- **Vụ sạt lở tại Bến Tre**: 4,7 km sạt lở, 115 hộ bị ảnh hưởng, 15 nhà sập, 100 m đường hư hỏng, 650 m bờ sạt lở.
+- **Vụ sạt lở đường sắt Bến Tre**: 100m sạt lở, 1.000 m đường bê tông hư hỏng.
+- **Vụ sạt lở tại Bến Tre**: 4,7 km sạt lở, 115 hộ bị ảnh hưởng, 15 nhà sập, 100 m đường hư hỏng, 650 m bờ sạt lở.
+- **Vụ sạt lở đường sắt Bến Tre**: 100m sạt lở, 1.000 m đường bê tông hư hỏng.
+- **Vụ sạt lở tại Bến Tre**: 4,7 km sạt lở, 115 hộ bị ảnh hưởng, 15 nhà sập, 100 m đường hư hỏng, 650 m bờ sạt lở.
+- **Vụ sạt lở đường sắt Bến Tre**: 100m sạt lở, 1.000 m đường bê tông hư hỏng.
+- **Vụ sạt lở tại Bến Tre**: 4,7 km sạt lở, 115 hộ bị ảnh hưởng, 15 nhà sập, 100 m đường hư hỏng, 650 m bờ sạt lở.
+- **Vụ sạt lở đường sắt Bến Tre**: 100m sạt lở, 1.000 m đường bê tông hư hỏng.
+- **Vụ sạt lở tại Bến Tre**: 4,7 km sạt lở, 115 hộ bị ảnh hưởng, 15 nhà sập, 100 m đường hư hỏng, 650 m bờ sạt lở.
+- **Vụ sạt lở đường sắt Bến Tre**: 100m sạt lở, 1.000 m đường bê tông hư hỏng.
+- **Vụ sạt lở tại Bến Tre**: 4,7 km sạt lở, 115 hộ bị ảnh hưởng, 15 nhà sập, 100 m đường hư hỏng, 650 m bờ sạt lở.
+- **Vụ sạt lở đường sắt Bến Tre**: 100m sạt lở, 1.000 m đường bê tông hư hỏng.
+- **Vụ sạt lở tại Bến Tre**: 4,7 km sạt lở, 115 hộ bị ảnh hưởng, 15 nhà sập, 100 m đường hư hỏng, 650 m bờ sạt lở.
+- **Vụ sạt lở đường sắt Bến Tre**: 100m sạt lở, 1.000 m đường bê tông hư hỏng.
+- **Vụ sạt lở tại Bến Tre**: 4,7 km sạt lở, 115 hộ bị ảnh hưởng, 15 nhà sập, 100 m đường hư hỏng, 650 m bờ sạt lở.
+- **Vụ sạt lở đường sắt Bến Tre**: 100m sạt lở, 1.000 m đường bê tông hư hỏng.
+- **Vụ sạt lở tại Bến Tre**: 4,7 km sạt lở, 115 hộ bị ảnh hưởng, 15 nhà sập, 100 m đường hư hỏng, 650 m bờ sạt lở.
+- **Vụ sạt lở đường sắt Bến Tre**: 100m sạt lở, 1.000 m đường bê tông hư hỏng.
+- **Vụ sạt lở tại Bến Tre**: 4,7 km sạt lở, 115 hộ bị ảnh hưởng, 15 nhà sập, 100 m đường hư hỏng, 650 m bờ sạt lở.
+- **Vụ sạt lở đường sắt Bến Tre**: 100m sạt lở, 1.000 m đường bê tông hư hỏng.
+- **Vụ sạt lở tại Bến Tre**: 4,7 km sạt lở, 115 hộ bị ảnh hưởng, 15 nhà sập, 100 m đường hư hỏng, 650 m bờ sạt lở.
+- **Vụ sạt lở đường sắt Bến Tre**: 100m sạt lở, 1.000 m đường bê tông hư hỏng.
+- **Vụ sạt lở tại Bến Tre**: 4,7 km sạt lở, 115 hộ bị ảnh hưởng, 15 nhà sập, 100 m đường hư hỏng, 650 m bờ sạt lở.
+- **Vụ sạt lở đường sắt Bến Tre**: 100m sạt lở, 1.000 m đường bê tông hư hỏng.
+- **Vụ sạt lở tại Bến Tre**: 4,7 km sạt lở, 115 hộ bị ảnh hưởng, 15 nhà sập, 100 m đường hư hỏng, 650 m bờ sạt lở.
+- **Vụ sạt lở đường sắt Bến Tre**: 100m sạt lở, 1.000 m đường bê tông hư hỏng.
+- **Vụ sạt lở tại Bến Tre**: 4,7 km sạt lở, 115 hộ bị ảnh hưởng, 15 nhà sập, 100 m đường hư hỏng, 650 m bờ sạt lở.
+- **Vụ sạt lở đường sắt Bến Tre**: 100m sạt lở, 1.000 m đường bê tông hư hỏng.
+- **Vụ sạt lở tại Bến Tre**: 4,7 km sạt lở, 115 hộ bị ảnh hưởng, 15 nhà sập, 100 m đường hư hỏng, 650 m bờ sạt lở.
+- **Vụ sạt lở đường sắt Bến Tre**: 100m sạt lở, 1.000 m đường bê tông hư hỏng.
+- **Vụ sạt lở tại Bến Tre**: 4,7 km sạt lở, 115 hộ bị ảnh hưởng, 15 nhà sập, 100 m đường hư hỏng, 650 m bờ sạt lở.
+- **Vụ sạt lở đường sắt Bến Tre**: 100m sạt lở, 1.000 m đường bê tông hư hỏng.
+- **Vụ sạt lở tại Bến Tre**: 4,7 km sạt lở, 115 hộ bị ảnh hưởng, 15 nhà sập, 100 m đường hư hỏng, 650 m bờ sạt lở.
+- **Vụ sạt lở đường sắt Bến Tre**: 100m sạt lở, 1.000 m đường bê tông hư hỏng.
+- **Vụ sạt lở tại Bến Tre**: 4,7 km sạt lở, 115 hộ bị ảnh hưởng, 15 nhà sập, 100 m đường hư hỏng, 650 m bờ sạt lở.
+- **Vụ sạt lở đường sắt Bến Tre**: 100m sạt lở, 1.000 m đường bê tông hư hỏng.
+- **Vụ sạt lở tại Bến Tre**: 4,7 km sạt lở, 115 hộ bị ảnh hưởng, 15 nhà sập, 100 m đường hư hỏng, 650 m bờ sạt lở.
+- **Vụ sạt lở đường sắt Bến Tre**: 100m sạt lở, 1.000 m đường bê tông hư hỏng.
+- **Vụ sạt lở tại Bến Tre**: 4,7 km sạt lở, 115 hộ bị ảnh hưởng, 15 nhà sập, 100 m đường hư hỏng, 650 m bờ sạt lở.
+- **Vụ sạt lở đường sắt Bến Tre**: 100m sạt lở, 1.000 m đường bê tông hư hỏng.
+- **Vụ sạt lở tại Bến Tre**: 4,7 km sạt lở, 115 hộ bị ảnh hưởng, 15 nhà sập, 100 m đường hư hỏng, 650 m bờ sạt lở.
+- **Vụ sạt lở đường sắt Bến Tre**: 100m sạt lở, 1.000 m đường bê tông hư hỏng.
+- **Vụ sạt lở tại Bến Tre**: 4,7 km sạt lở, 115 hộ bị ảnh hưởng, 15 nhà sập, 100 m đường hư hỏng, 650 m bờ sạt lở.
+- **Vụ sạt lở đường sắt Bến Tre**: 100m sạt lở, 1.000 m đường bê tông hư hỏng.
+- **Vụ sạt lở tại Bến Tre**: 4,7 km sạt lở, 115 hộ bị ảnh hưởng, 15 nhà sập, 100 m đường hư hỏng, 650 m bờ sạt lở.
+- **Vụ sạt lở đường sắt Bến Tre**: 100m sạt lở, 1.000 m đường bê tông hư hỏng.
+- **Vụ sạt lở tại Bến Tre**: 4,7 km sạt lở, 115 hộ bị ảnh hưởng, 15 nhà sập, 100 m đường hư hỏng, 650 m bờ sạt lở.
+- **Vụ sạt lở đường sắt Bến Tre**: 100m sạt lở, 1.000 m đường bê tông hư hỏng.
+- **Vụ sạt lở tại Bến Tre**: 4,7 km sạt lở, 115 hộ bị ảnh hưởng, 15 nhà sập, 100 m đường hư hỏng, 650 m bờ sạt lở.
+- **Vụ sạt lở đường sắt Bến Tre**: 100m sạt lở, 1.000 m đường bê tông hư hỏng.
+- **Vụ sạt lở tại Bến Tre**: 4,7 km sạt lở, 115 hộ bị ảnh hưởng, 15 nhà sập, 100 m đường hư hỏng, 650 m bờ sạt lở.
+- **Vụ sạt lở đường sắt Bến Tre**: 100m sạt lở, 1.000 m đường bê tông hư hỏng.
+- **Vụ sạt lở tại Bến Tre**: 4,7 km sạt lở, 115 hộ bị ảnh hưởng, 15 nhà sập, 100 m đường hư hỏng, 650 m bờ sạt lở.
+- **Vụ sạt lở đường sắt Bến Tre**: 100m sạt lở, 1.000 m đường bê tông hư hỏng.
+- **Vụ sạt lở tại Bến Tre**: 4,7 km sạt lở, 115 hộ bị ảnh hưởng, 15 nhà sập, 100 m đường hư hỏng, 650 m bờ sạt lở.
+- **Vụ sạt lở đường sắt Bến Tre**: 100m sạt lở, 1.000 m đường bê tông hư hỏng.
+- **Vụ sạt lở tại Bến Tre**: 4,7 km sạt lở, 115 hộ bị ảnh hưởng, 15 nhà sập, 100 m đường hư hỏng, 650 m bờ sạt lở.
+- **Vụ sạt lở đường sắt Bến Tre**: 100m sạt lở, 1.000 m đường bê tông hư hỏng.
+- **Vụ sạt lở tại Bến Tre**: 4,7 km sạt lở, 115 hộ bị ảnh hưởng, 15 nhà sập, 100 m đường hư hỏng, 650 m bờ sạt lở.
+- **Vụ sạt lở đường sắt Bến Tre**: 100m sạt lở, 1.000 m đường bê tông hư hỏng.
+- **Vụ sạt lở tại Bến Tre**: 4,7 km sạt lở, 115 hộ bị ảnh hưởng, 15 nhà sập, 100 m đường hư hỏng, 650 m bờ sạt lở.
+- **Vụ sạt lở đường sắt Bến Tre**: 100m sạt lở, 1.000 m đường bê tông hư hỏng.
+- **Vụ sạt lở tại Bến Tre**: 4,7 km sạt lở, 115 hộ bị ảnh hưởng, 15 nhà sập, 100 m đường hư hỏng, 650 m bờ sạt lở.
+- **Vụ sạt lở đường sắt Bến Tre**: 100m sạt lở, 1.000 m đường bê tông hư hỏng.
+- **Vụ sạt lở tại Bến Tre**: 4,7 km sạt lở, 115 hộ bị ảnh hưởng, 15 nhà sập, 100 m đường hư hỏng, 650 m bờ sạt lở.
+- **Vụ sạt lở đường sắt Bến Tre**: 100m sạt lở, 1.000 m đường bê tông hư hỏng.
+- **Vụ sạt lở tại Bến Tre**: 4,7 km sạt lở, 115 hộ bị ảnh hưởng, 15 nhà sập, 100 m đường hư hỏng, 650 m bờ sạt lở.
+- **Vụ sạt lở đường sắt Bến Tre**: 100m sạt lở, 1.000 m đường bê tông hư hỏng.
+- **Vụ sạt lở tại Bến Tre**: 4,7 km sạt lở, 115 hộ bị ảnh hưởng, 15 nhà sập, 100 m đường hư hỏng, 650 m bờ sạt lở.
+- **Vụ sạt lở đường sắt Bến Tre**: 100m sạt lở, 1.000 m đường bê tông hư hỏng.
+- **Vụ sạt lở tại Bến Tre**: 4,7 km sạt lở, 115 hộ bị ảnh hưởng, 15 nhà sập, 100 m đường hư hỏng, 650 m bờ sạt lở.
+- **Vụ sạt lở đường sắt Bến Tre**: 100m sạt lở, 1.000 m đường bê tông hư hỏng.
+- **Vụ sạt lở tại Bến Tre**: 4,7 km sạt lở, 115 hộ bị ảnh hưởng, 15 nhà sập, 100 m đường hư hỏng, 650 m bờ sạt lở.
+- **Vụ sạt lở đường sắt Bến Tre**: 100m sạt lở, 1.000 m đường bê tông hư hỏng.
+- **Vụ sạt lở tại Bến Tre**: 4,7 km sạt lở, 115 hộ bị ảnh hưởng, 15 nhà sập, 100 m đường hư hỏng, 650 m bờ sạt lở.
+- **Vụ sạt lở đường sắt Bến Tre**: 100m sạt lở, 1.000 m đường bê tông hư hỏng.
+- **Vụ sạt lở tại Bến Tre**: 4,7 km sạt lở, 115 hộ bị ảnh hưởng, 15 nhà sập, 100 m đường hư hỏng, 650 m bờ sạt lở.
+- **Vụ sạt lở đường sắt Bến Tre**: 100m sạt lở, 1.000 m đường bê tông hư hỏng.
+- **Vụ sạt lở tại Bến Tre**: 4,7 km sạt lở, 115 hộ bị ảnh hưởng, 15 nhà sập, 100 m đường hư hỏng, 650 m bờ sạt lở.
+- **Vụ sạt lở đường sắt Bến Tre**: 100m sạt lở, 1.000 m đường bê tông hư hỏng.
+- **Vụ sạt lở tại Bến Tre**: 4,7 km sạt lở, 115 hộ bị ảnh hưởng, 15 nhà sập, 100 m đường hư hỏng, 650 m bờ sạt lở.
+- **Vụ sạt lở đường sắt Bến Tre**: 100m sạt lở, 1.000 m đường bê tông hư hỏng.
+- **Vụ sạt lở tại Bến Tre**: 4,7 km sạt lở, 115 hộ bị ảnh hưởng, 15 nhà sập, 100 m đường hư hỏng, 650 m bờ sạt lở.
+- **Vụ sạt lở đường sắt Bến Tre**: 100m sạt lở, 1.000 m đường bê tông hư hỏng.
+- **Vụ sạt lở tại Bến Tre**: 4,7 km sạt lở, 115 hộ bị ảnh hưởng, 15 nhà sập, 100 m đường hư hỏng, 650 m bờ sạt lở.
+- **Vụ sạt lở đường sắt Bến Tre**: 100m sạt lở, 1.000 m đường bê tông hư hỏng.
+- **Vụ sạt lở tại Bến Tre**: 4,7 km sạt lở, 115 hộ bị ảnh hưởng, 15 nhà sập, 100 m đường hư hỏng, 650 m bờ sạt lở.
+- **Vụ sạt lở đường sắt Bến Tre**: 100m sạt lở, 1.000 m đường bê tông hư hỏng.
+- **Vụ sạt lở tại Bến Tre**: 4,7 km sạt lở, 115 hộ bị ảnh hưởng, 15 nhà sập, 100 m đường hư hỏng, 650 m bờ sạt lở.
+- **Vụ sạt lở đường sắt Bến Tre**: 100m sạt lở, 1.000 m đường bê tông hư hỏng.
+- **Vụ sạt lở tại Bến Tre**: 4,7 km sạt lở, 115 hộ bị ảnh hưởng, 15 nhà sập, 100 m đường hư hỏng, 650 m bờ sạt lở.
+- **Vụ sạt lở đường sắt Bến Tre**: 100m sạt lở, 1.000 m đường bê tông hư hỏng.
+- **Vụ sạt lở tại Bến Tre**: 4,7 km sạt lở, 115 hộ bị ảnh hưởng, 15 nhà sập, 100 m đường hư hỏng, 650 m bờ sạt lở.
+- **Vụ sạt lở đường sắt Bến Tre**: 100m sạt lở, 1.000 m đường bê tông hư hỏng.
+- **Vụ sạt lở tại Bến Tre**: 4,7 km sạt lở, 115 hộ bị ảnh hưởng, 15 nhà sập, 100 m đường hư hỏng, 650 m bờ sạt lở.
+- **Vụ sạt lở đường sắt Bến Tre**: 100m sạt lở, 1.000 m đường bê tông hư hỏng.
+- **Vụ sạt lở tại Bến Tre**: 4,7 km sạt lở, 115 hộ bị ảnh hưởng, 15 nhà sập, 100 m đường hư hỏng, 650 m bờ sạt lở.
+- **Vụ sạt lở đường sắt Bến Tre**: 100m sạt lở, 1.000 m đường bê tông hư hỏng.
+- **Vụ sạt lở tại Bến Tre**: 4,7 km sạt lở, 115 hộ bị ảnh hưởng, 15 nhà sập, 100 m đường hư hỏng, 650 m bờ sạt lở.
+- **Vụ sạt lở đường sắt Bến Tre**: 100m sạt lở, 1.000 m đường bê tông hư hỏng.
+- **Vụ sạt lở tại Bến Tre**: 4,7 km sạt lở, 115 hộ bị ảnh hưởng, 15 nhà sập, 100 m đường hư hỏng, 650 m bờ sạt lở.
+- **Vụ sạt lở đường sắt Bến Tre**: 100m sạt lở, 1.000 m đường bê tông hư hỏng.
+- **Vụ sạt lở tại Bến Tre**: 4,7 km sạt lở, 115 hộ bị ảnh hưởng, 15 nhà sập, 100 m đường hư hỏng, 650 m bờ sạt lở.
+- **Vụ sạt lở đường sắt Bến Tre**: 100m sạt lở, 1.000 m đường bê tông hư hỏng.
+- **Vụ sạt lở tại Bến Tre**: 4,7 km sạt lở, 115 hộ bị ảnh hưởng, 15 nhà sập, 100 m đường hư hỏng, 650 m bờ sạt lở.
+- **Vụ sạt lở đường sắt Bến Tre**: 100m sạt lở, 1.000 m đường bê tông hư hỏng.
+- **Vụ sạt lở tại Bến Tre**: 4,7 km sạt lở, 115 hộ bị ảnh hưởng, 15 nhà sập, 100 m đường hư hỏng, 650 m bờ sạt lở.
+- **Vụ sạt lở đường sắt Bến Tre**: 100m sạt lở, 1.000 m đường bê tông hư hỏng.
+- **Vụ sạt lở tại Bến Tre**: 4,7 km sạt lở, 115 hộ bị ảnh hưởng, 15 nhà sập, 100 m đường hư hỏng, 650 m bờ sạt lở.
+- **Vụ sạt lở đường sắt Bến Tre**: 100m sạt lở, 1.000 m đường bê tông hư hỏng.
+- **Vụ sạt lở tại Bến Tre**: 4,7 km sạt lở, 115 hộ bị ảnh hưởng, 15 nhà sập, 100 m đường hư hỏng, 650 m bờ sạt lở.
+- **Vụ sạt lở đường sắt Bến Tre**: 100m sạt lở, 1.000 m đường bê tông hư hỏng.
+- **Vụ sạt lở tại Bến Tre**: 4,7 km sạt lở, 115 hộ bị ảnh hưởng, 15 nhà sập, 100 m đường hư hỏng, 650 m bờ sạt lở.
+- **Vụ sạt lở đường sắt Bến Tre**: 100m sạt lở, 1.000 m đường bê tông hư hỏng.
+- **Vụ sạt lở tại Bến Tre**: 4,7 km sạt lở, 115 hộ bị ảnh hưởng, 15 nhà sập, 100 m đường hư hỏng, 650 m bờ sạt lở.
+- **Vụ sạt lở đường sắt Bến Tre**: 100m sạt lở, 1.000 m đường bê tông hư hỏng.
+- **Vụ sạt lở tại Bến Tre**: 4,7 km sạt lở, 115 hộ bị ảnh hưởng, 15 nhà sập, 100 m đường hư hỏng, 650 m bờ sạt lở.
+- **Vụ sạt lở đường sắt Bến Tre**: 100m sạt lở, 1.000 m đường bê tông hư hỏng.
+- **Vụ sạt lở tại Bến Tre**: 4,7 km sạt lở, 115 hộ bị ảnh hưởng, 15 nhà sập, 100 m đường hư hỏng, 650 m bờ sạt lở.
+- **Vụ sạt lở đường sắt Bến Tre**: 100m sạt lở, 1.000 m đường bê tông hư hỏng.
+- **Vụ sạt lở tại Bến Tre**: 4,7 km sạt lở, 115 hộ bị ảnh hưởng, 15 nhà sập, 100 m đường hư hỏng, 650 m bờ sạt lở.
+- **Vụ sạt lở đường sắt Bến Tre**: 100m sạt lở, 1.000 m đường bê tông hư hỏng.
+- **Vụ sạt lở tại Bến Tre**: 4,7 km sạt lở, 115 hộ bị ảnh hưởng, 15 nhà sập, 100 m đường hư hỏng, 650 m bờ sạt lở.
+- **Vụ sạt lở đường sắt Bến Tre**: 100m sạt lở, 1.000 m đường bê tông hư hỏng.
+- **Vụ sạt lở tại Bến Tre**: 4,7 km sạt lở, 115 hộ bị ảnh hưởng, 15 nhà sập, 100 m đường hư hỏng, 650 m bờ sạt lở.
+- **Vụ sạt lở đường sắt Bến Tre**: 100m sạt lở, 1.000 m đường bê tông hư hỏng.
+- **Vụ sạt lở tại Bến Tre**: 4,7 km sạt lở, 115 hộ bị ảnh hưởng, 15 nhà sập, 100 m đường hư hỏng, 650 m bờ sạt lở.
+- **Vụ sạt lở đường sắt Bến Tre**: 100m sạt lở, 1.000 m đường bê tông hư hỏng.
+- **Vụ sạt lở tại Bến Tre**: 4,7 km sạt lở, 115 hộ bị ảnh hưởng, 15 nhà sập, 100 m đường hư hỏng, 650 m bờ sạt lở.
+- **Vụ sạt lở đường sắt Bến Tre**: 100m sạt lở, 1.000 m đường bê tông hư hỏng.
+- **Vụ sạt lở tại Bến Tre**: 4,7 km sạt lở, 115 hộ bị ảnh hưởng, 15 nhà sập, 100 m đường hư hỏng, 650 m bờ sạt lở.
+- **Vụ sạt lở đường sắt Bến Tre**: 100m sạt lở, 1.000 m đường bê tông hư hỏng.
+- **Vụ sạt lở tại Bến Tre**: 4,7 km sạt lở, 115 hộ bị ảnh hưởng, 15 nhà sập, 100 m đường hư hỏng, 650 m bờ sạt lở.
+- **Vụ sạt lở đường sắt Bến Tre**: 100m sạt lở, 1.000 m đường bê tông hư hỏng.
+- **Vụ sạt lở tại Bến Tre**: 4,7 km sạt lở, 115 hộ bị ảnh hưởng, 15 nhà sập, 100 m đường hư hỏng, 650 m bờ sạt lở.
+- **Vụ sạt lở đường sắt Bến Tre**: 100m sạt lở, 1.000 m đường bê tông hư hỏng.
+- **Vụ sạt lở tại Bến Tre**: 4,7 km sạt lở, 115 hộ bị ảnh hưởng, 15 nhà sập, 100 m đường hư hỏng, 650 m bờ sạt lở.
+- **Vụ sạt lở đường sắt Bến Tre**: 100m sạt lở, 1.000 m đường bê tông hư hỏng.
+- **Vụ sạt lở tại Bến Tre**: 4,7 km sạt lở, 115 hộ bị ảnh hưởng, 15 nhà sập, 100 m đường hư hỏng, 650 m bờ sạt lở.
+- **Vụ sạt lở đường sắt Bến Tre**: 100m sạt lở, 1.000 m đường bê tông hư hỏng.
+- **Vụ sạt lở tại Bến Tre**: 4,7 km sạt lở, 115 hộ bị ảnh hưởng, 15 nhà sập, 100 m đường hư hỏng, 650 m bờ sạt lở.
+- **Vụ sạt lở đường sắt Bến Tre**: 100m sạt lở, 1.000 m đường bê tông hư hỏng.
+- **Vụ sạt lở tại Bến Tre**: 4,7 km sạt lở, 115 hộ bị ảnh hưởng, 15 nhà sập, 100 m đường hư hỏng, 650 m bờ sạt lở.
+- **Vụ sạt lở đường sắt Bến Tre**: 100m sạt lở, 1.000 m đường bê tông hư hỏng.
+- **Vụ sạt lở tại Bến Tre**: 4,7 km sạt lở, 115 hộ bị ảnh hưởng, 15 nhà sập, 100 m đường hư hỏng, 650 m bờ sạt lở.
+- **Vụ sạt lở đường sắt Bến Tre**: 100m sạt lở, 1.000 m đường bê tông hư hỏng.
+- **Vụ sạt lở tại Bến Tre**: 4,7 km sạt lở, 115 hộ bị ảnh hưởng, 15 nhà sập, 100 m đường hư hỏng, 650 m bờ sạt lở.
+- **Vụ sạt lở đường sắt Bến Tre**: 100m sạt lở, 1.000 m đường bê tông hư hỏng.
+- **Vụ sạt lở tại Bến Tre**: 4,7 km sạt lở, 115 hộ bị ảnh hưởng, 15 nhà sập, 100 m đường hư hỏng, 650 m bờ sạt lở.
+- **Vụ sạt lở đường sắt Bến Tre**: 100m sạt lở, 1.000 m đường bê tông hư hỏng.
+- **Vụ sạt lở tại Bến Tre**: 4,7 km sạt lở, 115 hộ bị ảnh hưởng, 15 nhà sập, 100 m đường hư hỏng, 650 m bờ sạt lở.
+- **Vụ sạt lở đường sắt Bến Tre**: 100m sạt lở, 1.000 m đường bê tông hư hỏng.
+- **Vụ sạt lở tại Bến Tre**: 4,7 km sạt lở, 115 hộ bị ảnh hưởng, 15 nhà sập, 100 m đường hư hỏng, 650 m bờ sạt lở.
+- **Vụ sạt lở đường sắt Bến Tre**: 100m sạt lở, 1.000 m đường bê tông hư hỏng.
+- **Vụ sạt lở tại Bến Tre**: 4,7 km sạt lở, 115 hộ bị ảnh hưởng, 15 nhà sập, 100 m đường hư hỏng, 650 m bờ sạt lở.
+- **Vụ sạt lở đường sắt Bến Tre**: 100m sạt lở, 1.000 m đường bê tông hư hỏng.
+- **Vụ sạt lở tại Bến Tre**: 4,7 km sạt lở, 115 hộ bị ảnh hưởng, 15 nhà sập, 100 m đường hư hỏng, 650 m bờ sạt lở.
+- **Vụ sạt lở đường sắt Bến Tre**: 100m sạt lở, 1.000 m đường bê tông hư hỏng.
+- **Vụ sạt lở tại Bến Tre**: 4,7 km sạt lở, 115 hộ bị ảnh hưởng, 15 nhà sập, 100 m đường hư hỏng, 650 m bờ sạt lở.
+- **Vụ sạt lở đường sắt Bến Tre**: 100m sạt lở, 1.000 m đường bê tông hư hỏng.
+- **Vụ sạt lở tại Bến Tre**: 4,7 km sạt lở, 115 hộ bị ảnh hưởng, 15 nhà sập, 100 m đường hư hỏng, 650 m bờ sạt lở.
+- **Vụ sạt lở đường sắt Bến Tre**: 100m sạt lở, 1.000 m đường bê tông hư hỏng.
+- **Vụ sạt lở tại Bến Tre**: 4,7 km sạt lở, 115 hộ bị ảnh hưởng, 15 nhà sập, 100 m đường hư hỏng, 650 m bờ sạt lở.
+- **Vụ sạt lở đường sắt Bến Tre**: 100m sạt lở, 1.000 m đường bê tông hư hỏng.
+- **Vụ sạt lở tại Bến Tre**: 4,7 km sạt lở, 115 hộ bị ảnh hưởng, 15 nhà sập, 100 m đường hư hỏng, 650 m bờ sạt lở.
+- **Vụ sạt lở đường sắt Bến Tre**: 100m sạt lở, 1.000 m đường bê tông hư hỏng.
+- **Vụ sạt lở tại Bến Tre**: 4,7 km sạt lở, 115 hộ bị ảnh hưởng, 15 nhà sập, 100 m đường hư hỏng, 650 m bờ sạt lở.
+- **Vụ sạt lở đường sắt Bến Tre**: 100m sạt lở, 1.000 m đường bê tông hư hỏng.
+- **Vụ sạt lở tại Bến Tre**: 4,7 km sạt lở, 115 hộ bị ảnh hưởng, 15 nhà sập, 100 m đường hư hỏng, 650 m bờ sạt lở.
+- **Vụ sạt lở đường sắt Bến Tre**: 100m sạt lở, 1.000 m đường bê tông hư hỏng.
+- **Vụ sạt lở tại Bến Tre**: 4,7 km sạt lở, 115 hộ bị ảnh hưởng, 15 nhà sập, 100 m đường hư hỏng, 650 m bờ sạt lở.
+- **Vụ sạt lở đường sắt Bến Tre**: 100m sạt lở, 1.000 m đường bê tông hư hỏng.
+- **Vụ sạt lở tại Bến Tre**: 4,7 km sạt lở, 115 hộ bị ảnh hưởng, 15 nhà sập, 100 m đường hư hỏng, 650 m bờ sạt lở.
+- **Vụ sạt lở đường sắt Bến Tre**: 100m sạt lở, 1.000 m đường bê tông hư hỏng.
+- **Vụ sạt lở tại Bến Tre**: 4,7 km sạt lở, 115 hộ bị ảnh hưởng, 15 nhà sập, 100 m đường hư hỏng, 650 m bờ sạt lở.
+- **Vụ sạt lở đường sắt Bến Tre**: 100m sạt lở, 1.000 m đường bê tông hư hỏng.
+- **Vụ sạt lở tại Bến Tre**: 4,7 km sạt lở, 115 hộ bị ảnh hưởng, 15 nhà sập, 100 m đường hư hỏng, 650 m bờ sạt lở.
+- **Vụ sạt lở đường sắt Bến Tre**: 100m sạt lở, 1.000 m đường bê tông hư hỏng.
+- **Vụ sạt lở tại Bến Tre**: 4,7 km sạt lở, 115 hộ bị ảnh hưởng, 15 nhà sập, 100 m đường hư hỏng, 650 m bờ sạt lở.
+- **Vụ sạt lở đường sắt Bến Tre**: 100m sạt lở, 1.000 m đường bê tông hư hỏng.
+- **Vụ sạt lở tại Bến Tre**: 4,7 km sạt lở, 115 hộ bị ảnh hưởng, 15 nhà sập, 100 m đường hư hỏng, 650 m bờ sạt lở.
+- **Vụ sạt lở đường sắt Bến Tre**: 100m sạt lở, 1.000 m đường bê tông hư hỏng.
+- **Vụ sạt lở tại Bến Tre**: 4,7 km sạt lở, 115 hộ bị ảnh hưởng, 15 nhà sập, 100 m đường hư hỏng, 650 m bờ sạt lở.
+- **Vụ sạt lở đường sắt Bến Tre**: 100m sạt lở, 1.000 m đường bê tông hư hỏng.
+- **Vụ sạt lở tại Bến Tre**: 4,7 km sạt lở, 115 hộ bị ảnh hưởng, 15 nhà sập, 100 m đường hư hỏng, 650 m bờ sạt lở.
+- **Vụ sạt lở đường sắt Bến Tre**: 100m sạt lở, 1.000 m đường bê tông hư hỏng.
+- **Vụ sạt lở tại Bến Tre**: 4,7 km sạt lở, 115 hộ bị ảnh hưởng, 15 nhà sập, 100 m đường hư hỏng, 650 m bờ sạt lở.
+- **Vụ sạt lở đường sắt Bến Tre**: 100m sạt lở, 1.000 m đường bê tông hư hỏng.
+- **Vụ sạt lở tại Bến Tre**: 4,7 km sạt lở, 115 hộ bị ảnh hưởng, 15 nhà sập, 100 m đường hư hỏng, 650 m bờ sạt lở.
+- **Vụ sạt lở đường sắt Bến Tre**: 100m sạt lở, 1.000 m đường bê tông hư hỏng.
+- **Vụ sạt lở tại Bến Tre**: 4,7 km sạt lở, 115 hộ bị ảnh hưởng, 15 nhà sập, 100 m đường hư hỏng, 650 m bờ sạt lở.
+- **Vụ sạt lở đường sắt Bến Tre**: 100m sạt lở, 1.000 m đường bê tông hư hỏng.
+- **Vụ sạt lở tại Bến Tre**: 4,7 km sạt lở, 115 hộ bị ảnh hưởng, 15 nhà sập, 100 m đường hư hỏng, 650 m bờ sạt lở.
+- **Vụ sạt lở đường sắt Bến Tre**: 100m sạt lở, 1.000 m đường bê tông hư hỏng.
+- **Vụ sạt lở tại Bến Tre**: 4,7 km sạt lở, 115 hộ bị ảnh hưởng, 15 nhà sập, 100 m đường hư hỏng, 650 m bờ sạt lở.
+- **Vụ sạt lở đường sắt Bến Tre**: 100m sạt lở, 1.000 m đường bê tông hư hỏng.
+- **Vụ sạt lở tại Bến Tre**: 4,7 km sạt lở, 115 hộ bị ảnh hưởng, 15 nhà sập, 100 m đường hư hỏng, 650 m bờ sạt lở.
+- **Vụ sạt lở đường sắt Bến Tre**: 100m sạt lở, 1.000 m đường bê tông hư hỏng.
+- **Vụ sạt lở tại Bến Tre**: 4,7 km sạt lở, 115 hộ bị ảnh hưởng, 15 nhà sập, 100 m đường hư hỏng, 650 m bờ sạt lở.
+- **Vụ sạt lở đường sắt Bến Tre**: 100m sạt lở, 1.000 m đường bê tông hư hỏng.
+- **Vụ sạt lở tại Bến Tre**: 4,7 km sạt lở, 115 hộ bị ảnh hưởng, 15 nhà sập, 100 m đường hư hỏng, 650 m bờ sạt lở.
+- **Vụ sạt lở đường sắt Bến Tre**: 100m sạt lở, 1.000 m đường bê tông hư hỏng.
+- **Vụ sạt lở tại Bến Tre**: 4,7 km sạt lở, 115 hộ bị ảnh hưởng, 15 nhà sập, 100 m đường hư hỏng, 650 m bờ sạt lở.
+- **Vụ sạt lở đường sắt Bến Tre**: 100m sạt lở, 1.000 m đường bê tông hư hỏng.
+- **Vụ sạt lở tại Bến Tre**: 4,7 km sạt lở, 115 hộ bị ảnh hưởng, 15 nhà sập, 100 m đường hư hỏng, 650 m bờ sạt lở.
+- **Vụ sạt lở đường sắt Bến Tre**: 100m sạt lở, 1.000 m đường bê tông hư hỏng.
+- **Vụ sạt lở tại Bến Tre**: 4,7 km sạt lở, 115 hộ bị ảnh hưởng, 15 nhà sập, 100 m đường hư hỏng, 650 m bờ sạt lở.
+- **Vụ sạt lở đường sắt Bến Tre**: 100m sạt lở, 1.000 m đường bê tông hư hỏng.
+- **Vụ sạt lở tại Bến Tre**: 4,7 km sạt lở, 115 hộ bị ảnh hưởng, 15 nhà sập, 100 m đường hư hỏng, 650 m bờ sạt lở.
+- **Vụ sạt lở đường sắt Bến Tre**: 100m sạt lở, 1.000 m đường bê tông hư hỏng.
+- **Vụ sạt lở tại Bến Tre**: 4,7 km sạt lở, 115 hộ bị ảnh hưởng, 15 nhà sập, 100 m đường hư hỏng, 650 m bờ sạt lở.
+- **Vụ sạt lở đường sắt Bến Tre**: 100m sạt lở, 1.000 m đường bê tông hư hỏng.
+- **Vụ sạt lở tại Bến Tre**: 4,7 km sạt lở, 115 hộ bị ảnh hưởng, 15 nhà sập, 100 m đường hư hỏng, 650 m bờ sạt lở.
+- **Vụ sạt lở đường sắt Bến Tre**: 100m sạt lở, 1.000 m đường bê tông hư hỏng.
+- **Vụ sạt lở tại Bến Tre**: 4,7 km sạt lở, 115 hộ bị ảnh hưởng, 15 nhà sập, 100 m đường hư hỏng, 650 m bờ sạt lở.
+- **Vụ sạt lở đường sắt Bến Tre**: 100m sạt lở, 1.000 m đường bê tông hư hỏng.
+- **Vụ sạt lở tại Bến Tre**: 4,7 km sạt lở, 115 hộ bị ảnh hưởng, 15 nhà sập, 100 m đường hư hỏng, 650 m bờ sạt lở.
+- **Vụ sạt lở đường sắt Bến Tre**: 100m sạt lở, 1.000 m đường bê tông hư hỏng.
+- **Vụ sạt lở tại Bến Tre**: 4,7 km sạt lở, 115 hộ bị ảnh hưởng, 15 nhà sập, 100 m đường hư hỏng, 650 m bờ sạt lở.
+- **Vụ sạt lở đường sắt Bến Tre**: 100m sạt lở, 1.000 m đường bê tông hư hỏng.
+- **Vụ sạt lở tại Bến Tre**: 4,7 km sạt lở, 115 hộ bị ảnh hưởng, 15 nhà sập, 100 m đường hư hỏng, 650 m bờ sạt lở.
+- **Vụ sạt lở đường sắt Bến Tre**: 100m sạt lở, 1.000 m đường bê tông hư hỏng.
+- **Vụ sạt lở tại Bến Tre**: 4,7 km sạt lở, 115 hộ bị ảnh hưởng, 15 nhà sập, 100 m đường hư hỏng, 650 m bờ sạt lở.
+- **Vụ sạt lở đường sắt Bến Tre**: 100m sạt lở, 1.000 m đường bê tông hư hỏng.
+- **Vụ sạt lở tại Bến Tre**: 4,7 km sạt lở, 115 hộ bị ảnh hưởng, 15 nhà sập, 100 m đường hư hỏng, 650 m bờ sạt lở.
+- **Vụ sạt lở đường sắt Bến Tre**: 100m sạt lở, 1.000 m đường bê tông hư hỏng.
+- **Vụ sạt lở tại Bến Tre**: 4,7 km sạt lở, 115 hộ bị ảnh hưởng, 15 nhà sập, 100 m đường hư hỏng, 650 m bờ sạt lở.
+- **Vụ sạt lở đường sắt Bến Tre**: 100m sạt lở, 1.000 m đường bê tông hư hỏng.
+- **Vụ sạt lở tại Bến Tre**: 4,7 km sạt lở, 115 hộ bị ảnh hưởng, 15 nhà sập, 100 m đường hư hỏng, 650 m bờ sạt lở.
+- **Vụ sạt lở đường sắt Bến Tre**: 100m sạt lở, 1.000 m đường bê tông hư hỏng.
+- **Vụ sạt lở tại Bến Tre**: 4,7 km sạt lở, 115 hộ bị ảnh hưởng, 15 nhà sập, 100 m đường hư hỏng, 650 m bờ sạt lở.
+- **Vụ sạt lở đường sắt Bến Tre**: 100m sạt lở, 1.000 m đường bê tông hư hỏng.
+- **Vụ sạt lở tại Bến Tre**: 4,7 km sạt lở, 115 hộ bị ảnh hưởng, 15 nhà sập, 100 m đường hư hỏng, 650 m bờ sạt lở.
+- **Vụ sạt lở đường sắt Bến Tre**: 100m sạt lở, 1.000 m đường bê tông hư hỏng.
+- **Vụ sạt lở tại Bến Tre**: 4,7 km sạt lở, 115 hộ bị ảnh hưởng, 15 nhà sập, 100 m đường hư hỏng, 650 m bờ sạt lở.
+- **Vụ sạt lở đường sắt Bến Tre**: 100m sạt lở, 1.000 m đường bê tông hư hỏng.
+- **Vụ sạt lở tại Bến Tre**: 4,7 km sạt lở, 115 hộ bị ảnh hưởng, 15 nhà sập, 100 m đường hư hỏng, 650 m bờ sạt lở.
+- **Vụ sạt lở đường sắt Bến Tre**: 100m sạt lở, 1.000 m đường bê tông hư hỏng.
+- **Vụ sạt lở tại Bến Tre**: 4,7 km sạt lở, 115 hộ bị ảnh hưởng, 15 nhà sập, 100 m đường hư hỏng, 650 m bờ sạt lở.
+- **Vụ sạt lở đường sắt Bến Tre**: 100m sạt lở, 1.000 m đường bê tông hư hỏng.
+- **Vụ sạt lở tại Bến Tre**: 4,7 km sạt lở, 115 hộ bị ảnh hưởng, 15 nhà sập, 100 m đường hư hỏng, 650 m bờ sạt lở.
+- **Vụ sạt lở đường sắt Bến Tre**: 100m sạt lở, 1.000 m đường bê tông hư hỏng.
+- **Vụ sạt lở tại Bến Tre**: 4,7 km sạt lở, 115 hộ bị ảnh hưởng, 15 nhà sập, 100 m đường hư hỏng, 650 m bờ sạt lở.
+- **Vụ sạt lở đường sắt Bến Tre**: 100m sạt lở, 1.000 m đường bê tông hư hỏng.
+- **Vụ sạt lở tại Bến Tre**: 4,7 km sạt lở, 115 hộ bị ảnh hưởng, 15 nhà sập, 100 m đường hư hỏng, 650 m bờ sạt lở.
+- **Vụ sạt lở đường sắt Bến Tre**: 100m sạt lở, 1.000 m đường bê tông hư hỏng.
+- **Vụ sạt lở tại Bến Tre**: 4,7 km sạt lở, 115 hộ bị ảnh hưởng, 15 nhà sập, 100 m đường hư hỏng, 650 m bờ sạt lở.
+- **Vụ sạt lở đường sắt Bến Tre**: 100m sạt lở, 1.000 m đường bê tông hư hỏng.
+- **Vụ sạt lở tại Bến Tre**: 4,7 km sạt lở, 115 hộ bị ảnh hưởng, 15 nhà sập, 100 m đường hư hỏng, 650 m bờ sạt lở.
+- **Vụ sạt lở đường sắt Bến Tre**: 100m sạt lở, 1.000 m đường bê tông hư hỏng.
+- **Vụ sạt lở tại Bến Tre**: 4,7 km sạt lở, 115 hộ bị ảnh hưởng, 15 nhà sập, 100 m đường hư hỏng, 650 m bờ sạt lở.
+- **Vụ sạt lở đường sắt Bến Tre**: 100m sạt lở, 1.000 m đường bê tông hư hỏng.
+- **Vụ sạt lở tại Bến Tre**: 4,7 km sạt lở, 115 hộ bị ảnh hưởng, 15 nhà sập, 100 m đường hư hỏng, 650 m bờ sạt lở.
+- **Vụ sạt lở đường sắt Bến Tre**: 100m sạt lở, 1.000 m đường bê tông hư hỏng.
+- **Vụ sạt lở tại Bến Tre**: 4,7 km sạt lở, 115 hộ bị ảnh hưởng, 15 nhà sập, 100 m đường hư hỏng, 650 m bờ sạt lở.
+- **Vụ sạt lở đường sắt Bến Tre**: 100m sạt lở, 1.000 m đường bê tông hư hỏng.
+- **Vụ sạt lở tại Bến Tre**: 4,7 km sạt lở, 115 hộ bị ảnh hưởng, 15 nhà sập, 100 m đường hư hỏng, 650 m bờ sạt lở.
+- **Vụ sạt lở đường sắt Bến Tre**: 100m sạt lở, 1.000 m đường bê tông hư hỏng.
+- **Vụ sạt lở tại Bến Tre**: 4,7 km sạt lở, 115 hộ bị ảnh hưởng, 15 nhà sập, 100 m đường hư hỏng, 650 m bờ sạt lở.
+- **Vụ sạt lở đường sắt Bến Tre**: 100m sạt lở, 1.000 m đường bê tông hư hỏng.
+- **Vụ sạt lở tại Bến Tre**: 4,7 km sạt lở, 115 hộ bị ảnh hưởng, 15 nhà sập, 100 m đường hư hỏng, 650 m bờ sạt lở.
+- **Vụ sạt lở đường sắt Bến Tre**: 100m sạt lở, 1.000 m đường bê tông hư hỏng.
+- **Vụ sạt lở tại Bến Tre**: 4,7 km sạt lở, 115 hộ bị ảnh hưởng, 15 nhà sập, 100 m đường hư hỏng, 650 m bờ sạt lở.
+- **Vụ sạt lở đường sắt Bến Tre**: 100m sạt lở, 1.000 m đường bê tông hư hỏng.
+- **Vụ sạt lở tại Bến Tre**: 4,7 km sạt lở, 115 hộ bị ảnh hưởng, 15 nhà sập, 100 m đường hư hỏng, 650 m bờ sạt lở.
+- **Vụ sạt lở đường sắt Bến Tre**: 100m sạt lở, 1.000 m đường bê tông hư hỏng.
+- **Vụ sạt lở tại Bến Tre**: 4,7 km sạt lở, 115 hộ bị ảnh hưởng, 15 nhà sập, 100 m đường hư hỏng, 650 m bờ sạt lở.
+- **Vụ sạt lở đường sắt Bến Tre**: 100m sạt lở, 1.000 m đường bê tông hư hỏng.
+- **Vụ sạt lở tại Bến Tre**: 4,7 km sạt lở, 115 hộ bị ảnh hưởng, 15 nhà sập, 100 m đường hư hỏng, 650 m bờ sạt lở.
+- **Vụ sạt lở đường sắt Bến Tre**: 100m sạt lở, 1.000 m đường bê tông hư hỏng.
+- **Vụ sạt lở tại Bến Tre**: 4,7 km sạt lở, 115 hộ bị ảnh hưởng, 15 nhà sập, 100 m đường hư hỏng, 650 m bờ sạt lở.
+- **Vụ sạt lở đường sắt Bến Tre**: 100m sạt lở, 1.000 m đường bê tông hư hỏng.
+- **Vụ sạt lở tại Bến Tre**: 4,7 km sạt lở, 115 hộ bị ảnh hưởng, 15 nhà sập, 100 m đường hư hỏng, 650 m bờ sạt lở.
+- **Vụ sạt lở đường sắt Bến Tre**: 100m sạt lở, 1.000 m đường bê tông hư hỏng.
+- **Vụ sạt lở tại Bến Tre**: 4,7 km sạt lở, 115 hộ bị ảnh hưởng, 15 nhà sập, 100 m đường hư hỏng, 650 m bờ sạt lở.
+- **Vụ sạt lở đường sắt Bến Tre**: 100m sạt lở, 1.000 m đường bê tông hư hỏng.
+- **Vụ sạt lở tại Bến Tre**: 4,7 km sạt lở, 115 hộ bị ảnh hưởng, 15 nhà sập, 100 m đường hư hỏng, 650 m bờ sạt lở.
+- **Vụ sạt lở đường sắt Bến Tre**: 100m sạt lở, 1.000 m đường bê tông hư hỏng.
+- **Vụ sạt lở tại Bến Tre**: 4,7 km sạt lở, 115 hộ bị ảnh hưởng, 15 nhà sập, 100 m đường hư hỏng, 650 m bờ sạt lở.
+- **Vụ sạt lở đường sắt Bến Tre**: 100m sạt lở, 1.000 m đường bê tông hư hỏng.
+- **Vụ sạt lở tại Bến Tre**: 4,7 km sạt lở, 115 hộ bị ảnh hưởng, 15 nhà sập, 100 m đường hư hỏng, 650 m bờ sạt lở.
+- **Vụ sạt lở đường sắt Bến Tre**: 100m sạt lở, 1.000 m đường bê tông hư hỏng.
+- **Vụ sạt lở tại Bến Tre**: 4,7 km sạt lở, 115 hộ bị ảnh hưởng, 15 nhà sập, 100 m đường hư hỏng, 650 m bờ sạt lở.
+- **Vụ sạt lở đường sắt Bến Tre**: 100m sạt lở, 1.000 m đường bê tông hư hỏng.
+- **Vụ sạt lở tại Bến Tre**: 4,7 km sạt lở, 115 hộ bị ảnh hưởng, 15 nhà sập, 100 m đường hư hỏng, 650 m bờ sạt lở.
+- **Vụ sạt lở đường sắt Bến Tre**: 100m sạt lở, 1.000 m đường bê tông hư hỏng.
+- **Vụ sạt lở tại Bến Tre**: 4,7 km sạt lở, 115 hộ bị ảnh hưởng, 15 nhà sập, 100 m đường hư hỏng, 650 m bờ sạt lở.
+- **Vụ sạt lở đường sắt Bến Tre**: 100m sạt lở, 1.000 m đường bê tông hư hỏng.
+- **Vụ sạt lở tại Bến Tre**: 4,7 km sạt lở, 115 hộ bị ảnh hưởng, 15 nhà sập, 100 m đường hư hỏng, 650 m bờ sạt lở.
+- **Vụ sạt lở đường sắt Bến Tre**: 100m sạt lở, 1.000 m đường bê tông hư hỏng.
+- **Vụ sạt lở tại Bến Tre**: 4,7 km sạt lở, 115 hộ bị ảnh hưởng, 15 nhà sập, 100 m đường hư hỏng, 650 m bờ sạt lở.
+- **Vụ sạt lở đường sắt Bến Tre**: 100m sạt lở, 1.000 m đường bê tông hư hỏng.
+- **Vụ sạt lở tại Bến Tre**: 4,7 km sạt lở, 115 hộ bị ảnh hưởng, 15 nhà sập, 100 m đường hư hỏng, 650 m bờ sạt lở.
+- **Vụ sạt lở đường sắt Bến Tre**: 100m sạt lở, 1.000 m đường bê tông hư hỏng.
+- **Vụ sạt lở tại Bến Tre**: 4,7 km sạt lở, 115 hộ bị ảnh hưởng, 15 nhà sập, 100 m đường hư hỏng, 650 m bờ sạt lở.
+- **Vụ sạt lở đường sắt Bến Tre**: 100m sạt lở, 1.000 m đường bê tông hư hỏng.
+- **Vụ sạt lở tại Bến Tre**: 4,7 km sạt lở, 115 hộ bị ảnh hưởng, 15 nhà sập, 100 m đường hư hỏng, 650 m bờ sạt lở.
+- **Vụ sạt lở đường sắt Bến Tre**: 100m sạt lở, 1.000 m đường bê tông hư hỏng.
+- **Vụ sạt lở tại Bến Tre**: 4,7 km sạt lở, 115 hộ bị ảnh hưởng, 15 nhà sập, 100 m đường hư hỏng, 650 m bờ sạt lở.
+- **Vụ sạt lở đường sắt Bến Tre**: 100m sạt lở, 1.000 m đường bê tông hư hỏng.
+- **Vụ sạt lở tại Bến Tre**: 4,7 km sạt lở, 115 hộ bị ảnh hưởng, 15 nhà sập, 100 m đường hư hỏng, 650 m bờ sạt lở.
+- **Vụ sạt lở đường sắt Bến Tre**: 100m sạt lở, 1.000 m đường bê tông hư hỏng.
+- **Vụ sạt lở tại Bến Tre**: 4,7 km sạt lở, 115 hộ bị ảnh hưởng, 15 nhà sập, 100 m đường hư hỏng, 650 m bờ sạt lở.
+- **Vụ sạt lở đường sắt Bến Tre**: 100m sạt lở, 1.000 m đường bê tông hư hỏng.
+- **Vụ sạt lở tại Bến Tre**: 4,7 km sạt lở, 115 hộ bị ảnh hưởng, 15 nhà sập, 100 m đường hư hỏng, 650 m bờ sạt lở.
+- **Vụ sạt lở đường sắt Bến Tre**: 100m sạt lở, 1.000 m đường bê tông hư hỏng.
+- **Vụ sạt lở tại Bến Tre**: 4,7 km sạt lở, 115 hộ bị ảnh hưởng, 15 nhà sập, 100 m đường hư hỏng, 650 m bờ sạt lở.
+- **Vụ sạt lở đường sắt Bến Tre**: 100m sạt lở, 1.000 m đường bê tông hư hỏng.
+- **Vụ sạt lở tại Bến Tre**: 4,7 km sạt lở, 115 hộ bị ảnh hưởng, 15 nhà sập, 100 m đường hư hỏng, 650 m bờ sạt lở.
+- **Vụ sạt lở đường sắt Bến Tre**: 100m sạt lở, 1.000 m đường bê tông hư hỏng.
+- **Vụ sạt lở tại Bến Tre**: 4,7 km sạt lở, 115 hộ bị ảnh hưởng, 15 nhà sập, 100 m đường hư hỏng, 650 m bờ sạt lở.
+- **Vụ sạt lở đường sắt Bến Tre**: 100m sạt lở, 1.000 m đường bê tông hư hỏng.
+- **Vụ sạt lở tại Bến Tre**: 4,7 km sạt lở, 115 hộ bị ảnh hưởng, 15 nhà sập, 100 m đường hư hỏng, 650 m bờ sạt lở.
+- **Vụ sạt lở đường sắt Bến Tre**: 100m sạt lở, 1.000 m đường bê tông hư hỏng.
+- **Vụ sạt lở tại Bến Tre**: 4,7 km sạt lở, 115 hộ bị ảnh hưởng, 15 nhà sập, 100 m đường hư hỏng, 650 m bờ sạt lở.
+- **Vụ sạt lở đường sắt Bến Tre**: 100m sạt lở, 1.000 m đường bê tông hư hỏng.
+- **Vụ sạt lở tại Bến Tre**: 4,7 km sạt lở, 115 hộ bị ảnh hưởng, 15 nhà sập, 100 m đường hư hỏng, 650 m bờ sạt lở.
+- **Vụ sạt lở đường sắt Bến Tre**: 100m sạt lở, 1.000 m đường bê tông hư hỏng.
+- **Vụ sạt lở tại Bến Tre**: 4,7 km sạt lở, 115 hộ bị ảnh hưởng, 15 nhà sập, 100 m đường hư hỏng, 650 m bờ sạt lở.
+- **Vụ sạt lở đường sắt Bến Tre**: 100m sạt lở, 1.000 m đường bê tông hư hỏng.
+- **Vụ sạt lở tại Bến Tre**: 4,7 km sạt lở, 115 hộ bị ảnh hưởng, 15 nhà sập, 100 m đường hư hỏng, 650 m bờ sạt lở.
+- **Vụ sạt lở đường sắt Bến Tre**: 100m sạt lở, 1.000 m đường bê tông hư hỏng.
+- **Vụ sạt lở tại Bến Tre**: 4,7 km sạt lở, 115 hộ bị ảnh hưởng, 15 nhà sập, 100 m đường hư hỏng, 650 m bờ sạt lở.
+- **Vụ sạt lở đường sắt Bến Tre**: 100m sạt lở, 1.000 m đường bê tông hư hỏng.
+- **Vụ sạt lở tại Bến Tre**: 4,7 km sạt lở, 115 hộ bị ảnh hưởng, 15 nhà sập, 100 m đường hư hỏng, 650 m bờ sạt lở.
+- **Vụ sạt lở đường sắt Bến Tre**: 100m sạt lở, 1.000 m đường bê tông hư hỏng.
+- **Vụ sạt lở tại Bến Tre**: 4,7 km sạt lở, 115 hộ bị ảnh hưởng, 15 nhà sập, 100 m đường hư hỏng, 650 m bờ sạt lở.
+- **Vụ sạt lở đường sắt Bến Tre**: 100m sạt lở, 1.000 m đường bê tông hư hỏng.
+- **Vụ sạt lở tại Bến Tre**: 4,7 km sạt lở, 115 hộ bị ảnh hưởng, 15 nhà sập, 100 m đường hư hỏng, 650 m bờ sạt lở.
+- **Vụ sạt lở đường sắt Bến Tre**: 100m sạt lở, 1.000 m đường bê tông hư hỏng.
+- **Vụ sạt lở tại Bến Tre**: 4,7 km sạt lở, 115 hộ bị ảnh hưởng, 15 nhà sập, 100 m đường hư hỏng, 650 m bờ sạt lở.
+- **Vụ sạt lở đường sắt Bến Tre**: 100m sạt lở, 1.000 m đường bê tông hư hỏng.
+- **Vụ sạt lở tại Bến Tre**: 4,7 km sạt lở, 115 hộ bị ảnh hưởng, 15 nhà sập, 100 m đường hư hỏng, 650 m bờ sạt lở.
+- **Vụ sạt lở đường sắt Bến Tre**: 100m sạt lở, 1.000 m đường bê tông hư hỏng.
+- **Vụ sạt lở tại Bến Tre**: 4,7 km sạt lở, 115 hộ bị ảnh hưởng, 15 nhà sập, 100 m đường hư hỏng, 650 m bờ sạt lở.
+- **Vụ sạt lở đường sắt Bến Tre**: 100m sạt lở, 1.000 m đường bê tông hư hỏng.
+- **Vụ sạt lở tại Bến Tre**: 4,7 km sạt lở, 115 hộ bị ảnh hưởng, 15 nhà sập, 100 m đường hư hỏng, 650 m bờ sạt lở.
+- **Vụ sạt lở đường sắt Bến Tre**: 100m sạt lở, 1.000 m đường bê tông hư hỏng.
+- **Vụ sạt lở tại Bến Tre**: 4,7 km sạt lở, 115 hộ bị ảnh hưởng, 15 nhà sập, 100 m đường hư hỏng, 650 m bờ sạt lở.
+- **Vụ sạt lở đường sắt Bến Tre**: 100m sạt lở, 1.000 m đường bê tông hư hỏng.
+- **Vụ sạt lở tại Bến Tre**: 4,7 km sạt lở, 115 hộ bị ảnh hưởng, 15 nhà sập, 100 m đường hư hỏng, 650 m bờ sạt lở.
+- **Vụ sạt lở đường sắt Bến Tre**: 100m sạt lở, 1.000 m đường bê tông hư hỏng.
+- **Vụ sạt lở tại Bến Tre**: 4,7 km sạt lở, 115 hộ bị ảnh hưởng, 15 nhà sập, 100 m đường hư hỏng, 650 m bờ sạt lở.
+- **Vụ sạt lở đường sắt Bến Tre**: 100m sạt lở, 1.000 m đường bê tông hư hỏng.
+- **Vụ sạt lở tại Bến Tre**: 4,7 km sạt lở, 115 hộ bị ảnh hưởng, 15 nhà sập, 100 m đường hư hỏng, 650 m bờ sạt lở.
+- **Vụ sạt lở đường sắt Bến Tre**: 100m sạt lở, 1.000 m đường bê tông hư hỏng.
+- **Vụ sạt lở tại Bến Tre**: 4,7 km sạt lở, 115 hộ bị ảnh hưởng, 15 nhà sập, 100 m đường hư hỏng, 650 m bờ sạt lở.
+- **Vụ sạt lở đường sắt Bến Tre**: 100m sạt lở, 1.000 m đường bê tông hư hỏng.
+- **Vụ sạt lở tại Bến Tre**: 4,7 km sạt lở, 115 hộ bị ảnh hưởng, 15 nhà sập, 100 m đường hư hỏng, 650 m bờ sạt lở.
+- **Vụ sạt lở đường sắt Bến Tre**: 100m sạt lở, 1.000 m đường bê tông hư hỏng.
+- **Vụ sạt lở tại Bến Tre**: 4,7 km sạt lở, 115 hộ bị ảnh hưởng, 15 nhà sập, 100 m đường hư hỏng, 650 m bờ sạt lở.
+- **Vụ sạt lở đường sắt Bến Tre**: 100m sạt lở, 1.000 m đường bê tông hư hỏng.
+- **Vụ sạt lở tại Bến Tre**: 4,7 km sạt lở, 115 hộ bị ảnh hưởng, 15 nhà sập, 100 m đường hư hỏng, 650 m bờ sạt lở.
+- **Vụ sạt lở đường sắt Bến Tre**: 100m sạt lở, 1.000 m đường bê tông hư hỏng.
+- **Vụ sạt lở tại Bến Tre**: 4,7 km sạt lở, 115 hộ bị ảnh hưởng, 15 nhà sập, 100 m đường hư hỏng, 650 m bờ sạt lở.
+- **Vụ sạt lở đường sắt Bến Tre**: 100m sạt lở, 1.000 m đường bê tông hư hỏng.
+- **Vụ sạt lở tại Bến Tre**: 4,7 km sạt lở, 115 hộ bị ảnh hưởng, 15 nhà sập, 100 m đường hư hỏng, 650 m bờ sạt lở.
+- **Vụ sạt lở đường sắt Bến Tre**: 100m sạt lở, 1.000 m đường bê tông hư hỏng.
+- **Vụ sạt lở tại Bến Tre**: 4,7 km sạt lở, 115 hộ bị ảnh hưởng, 15 nhà sập, 100 m đường hư hỏng, 650 m bờ sạt lở.
+- **Vụ sạt lở đường sắt Bến Tre**: 100m sạt lở, 1.000 m đường bê tông hư hỏng.
+- **Vụ sạt lở tại Bến Tre**: 4,7 km sạt lở, 115 hộ bị ảnh hưởng, 15 nhà sập, 100 m đường hư hỏng, 650 m bờ sạt lở.
+- **Vụ sạt lở đường sắt Bến Tre**: 100m sạt lở, 1.000 m đường bê tông hư hỏng.
+- **Vụ sạt lở tại Bến Tre**: 4,7 km sạt lở, 115 hộ bị ảnh hưởng, 15 nhà sập, 100 m đường hư hỏng, 650 m bờ sạt lở.
+- **Vụ sạt lở đường sắt Bến Tre**: 100m sạt lở, 1.000 m đường bê tông hư hỏng.
+- **Vụ sạt lở tại Bến Tre**: 4,7 km sạt lở, 115 hộ bị ảnh hưởng, 15 nhà sập, 100 m đường hư hỏng, 650 m bờ sạt lở.
+- **Vụ sạt lở đường sắt Bến Tre**: 100m sạt lở, 1.000 m đường bê tông hư hỏng.
+- **Vụ sạt lở tại Bến Tre**: 4,7 km sạt lở, 115 hộ bị ảnh hưởng, 15 nhà sập, 100 m đường hư hỏng, 650 m bờ sạt lở.
+- **Vụ sạt lở đường sắt Bến Tre**: 100m sạt lở, 1.000 m đường bê tông hư hỏng.
+- **Vụ sạt lở tại Bến Tre**: 4,7 km sạt lở, 115 hộ bị ảnh hưởng, 15 nhà sập, 100 m đường hư hỏng, 650 m bờ sạt lở.
+- **Vụ sạt lở đường sắt Bến Tre**: 100m sạt lở, 1.000 m đường bê tông hư hỏng.
+- **Vụ sạt lở tại Bến Tre**: 4,7 km sạt lở, 115 hộ bị ảnh hưởng, 15 nhà sập, 100 m đường hư hỏng, 650 m bờ sạt lở.
+- **Vụ sạt lở đường sắt Bến Tre**: 100m sạt lở, 1.000 m đường bê tông hư hỏng.
+- **Vụ sạt lở tại Bến Tre**: 4,7 km sạt lở, 115 hộ bị ảnh hưởng, 15 nhà sập, 100 m đường hư hỏng, 650 m bờ sạt lở.
+- **Vụ sạt lở đường sắt Bến Tre**: 100m sạt lở, 1.000 m đường bê tông hư hỏng.
+- **Vụ sạt lở tại Bến Tre**: 4,7 km sạt lở, 115 hộ bị ảnh hưởng, 15 nhà sập, 100 m đường hư hỏng, 650 m bờ sạt lở.
+- **Vụ sạt lở đường sắt Bến Tre**: 100m sạt lở, 1.000 m đường bê tông hư hỏng.
+- **Vụ sạt lở tại Bến Tre**: 4,7 km sạt lở, 115 hộ bị ảnh hưởng, 15 nhà sập, 100 m đường hư hỏng, 650 m bờ sạt lở.
+- **Vụ sạt lở đường sắt Bến Tre**: 100m sạt lở, 1.000 m đường bê tông hư hỏng.
+- **Vụ sạt lở tại Bến Tre**: 4,7 km sạt lở, 115 hộ bị ảnh hưởng, 15 nhà sập, 100 m đường hư hỏng, 650 m bờ sạt lở.
+- **Vụ sạt lở đường sắt Bến Tre**: 100m sạt lở, 1.000 m đường bê tông hư hỏng.
+- **Vụ sạt lở tại Bến Tre**: 4,7 km sạt lở, 115 hộ bị ảnh hưởng, 15 nhà sập, 100 m đường hư hỏng, 650 m bờ sạt lở.
+- **Vụ sạt lở đường sắt Bến Tre**: 100m sạt lở, 1.000 m đường bê tông hư hỏng.
+- **Vụ sạt lở tại Bến Tre**: 4,7 km sạt lở, 115 hộ bị ảnh hưởng, 15 nhà sập, 100 m đường hư hỏng, 650 m bờ sạt lở.
+- **Vụ sạt lở đường sắt Bến Tre**: 100m sạt lở, 1.000 m đường bê tông hư hỏng.
+- **Vụ sạt lở tại Bến Tre**: 4,7 km sạt lở, 115 hộ bị ảnh hưởng, 15 nhà sập, 100 m đường hư hỏng, 650 m bờ sạt lở.
+- **Vụ sạt lở đường sắt Bến Tre**: 100m sạt lở, 1.000 m đường bê tông hư hỏng.
+- **Vụ sạt lở tại Bến Tre**: 4,7 km sạt lở, 115 hộ bị ảnh hưởng, 15 nhà sập, 100 m đường hư hỏng, 650 m bờ sạt lở.
+- **Vụ sạt lở đường sắt Bến Tre**: 100m sạt lở, 1.000 m đường bê tông hư hỏng.
+- **Vụ sạt lở tại Bến Tre**: 4,7 km sạt lở, 115 hộ bị ảnh hưởng, 15 nhà sập, 100 m đường hư hỏng, 650 m bờ sạt lở.
+- **Vụ sạt lở đường sắt Bến Tre**: 100m sạt lở, 1.000 m đường bê tông hư hỏng.
+- **Vụ sạt lở tại Bến Tre**: 4,7 km sạt lở, 115 hộ bị ảnh hưởng, 15 nhà sập, 100 m đường hư hỏng, 650 m bờ sạt lở.
+- **Vụ sạt lở đường sắt Bến Tre**: 100m sạt lở, 1.000 m đường bê tông hư hỏng.
+- **Vụ sạt lở tại Bến Tre**: 4,7 km sạt lở, 115 hộ bị ảnh hưởng, 15 nhà sập, 100 m đường hư hỏng, 650 m bờ sạt lở.
+- **Vụ sạt lở đường sắt Bến Tre**: 100m sạt lở, 1.000 m đường bê tông hư hỏng.
+- **Vụ sạt lở tại Bến Tre**: 4,7 km sạt lở, 115 hộ bị ảnh hưởng, 15 nhà sập, 100 m đường hư hỏng, 650 m bờ sạt lở.
+- **Vụ sạt lở đường sắt Bến Tre**: 100m sạt lở, 1.000 m đường bê tông hư hỏng.
+- **Vụ sạt lở tại Bến Tre**: 4,7 km sạt lở, 115 hộ bị ảnh hưởng, 15 nhà sập, 100 m đường hư hỏng, 650 m bờ sạt lở.
+- **Vụ sạt lở đường sắt Bến Tre**: 100m sạt lở, 1.000 m đường bê tông hư hỏng.
+- **Vụ sạt lở tại Bến Tre**: 4,7 km sạt lở, 115 hộ bị ảnh hưởng, 15 nhà sập, 100 m đường hư hỏng, 650 m bờ sạt lở.
+- **Vụ sạt lở đường sắt Bến Tre**: 100m sạt lở, 1.000 m đường bê tông hư hỏng.
+- **Vụ sạt lở tại Bến Tre**: 4,7 km sạt lở, 115 hộ bị ảnh hưởng, 15 nhà sập, 100 m đường hư hỏng, 650 m bờ sạt lở.
+- **Vụ sạt lở đường sắt Bến Tre**: 100m sạt lở, 1.000 m đường bê tông hư hỏng.
+- **Vụ sạt lở tại Bến Tre**: 4,7 km sạt lở, 115 hộ bị ảnh hưởng, 15 nhà sập, 100 m đường hư hỏng, 650 m bờ sạt lở.
+- **Vụ sạt lở đường sắt Bến Tre**: 100m sạt lở, 1.000 m đường bê tông hư hỏng.
+- **Vụ sạt lở tại Bến Tre**: 4,7 km sạt lở, 115 hộ bị ảnh hưởng, 15 nhà sập, 100 m đường hư hỏng, 650 m bờ sạt lở.
+- **Vụ sạt lở đường sắt Bến Tre**: 100m sạt lở, 1.000 m đường bê tông hư hỏng.
+- **Vụ sạt lở tại Bến Tre**: 4,7 km sạt lở, 115 hộ bị ảnh hưởng, 15 nhà sập, 100 m đường hư hỏng, 650 m bờ sạt lở.
+- **Vụ sạt lở đường sắt Bến Tre**: 100m sạt lở, 1.000 m đường bê tông hư hỏng.
+- **Vụ sạt lở tại Bến Tre**: 4,7 km sạt lở, 115 hộ bị ảnh hưởng, 15 nhà sập, 100 m đường hư hỏng, 650 m bờ sạt lở.
+- **Vụ sạt lở đường sắt Bến Tre**: 100m sạt lở, 1.000 m đường bê tông hư hỏng.
+- **Vụ sạt lở tại Bến Tre**: 4,7 km sạt lở, 115 hộ bị ảnh hưởng, 15 nhà sập, 100 m đường hư hỏng, 650 m bờ sạt lở.
+- **Vụ sạt lở đường sắt Bến Tre**: 100m sạt lở, 1.000 m đường bê tông hư hỏng.
+- **Vụ sạt lở tại Bến Tre**: 4,7 km sạt lở, 115 hộ bị ảnh hưởng, 15 nhà sập, 100 m đường hư hỏng, 650 m bờ sạt lở.
+- **Vụ sạt lở đường sắt Bến Tre**: 100m sạt lở, 1.000 m đường bê tông hư hỏng.
+- **Vụ sạt lở tại Bến Tre**: 4,7 km sạt lở, 115 hộ bị ảnh hưởng, 15 nhà sập, 100 m đường hư hỏng, 650 m bờ sạt lở.
+- **Vụ sạt lở đường sắt Bến Tre**: 100m sạt lở, 1.000 m đường bê tông hư hỏng.
+- **Vụ sạt lở tại Bến Tre**: 4,7 km sạt lở, 115 hộ bị ảnh hưởng, 15 nhà sập, 100 m đường hư hỏng, 650 m bờ sạt lở.
+- **Vụ sạt lở đường sắt Bến Tre**: 100m sạt lở, 1.000 m đường bê tông hư hỏng.
+- **Vụ sạt lở tại Bến Tre**: 4,7 km sạt lở, 115 hộ bị ảnh hưởng, 15 nhà sập, 100 m đường hư hỏng, 650 m bờ sạt lở.
+- **Vụ sạt lở đường sắt Bến Tre**: 100m sạt lở, 1.000 m đường bê tông hư hỏng.
+- **Vụ sạt lở tại Bến Tre**: 4,7 km sạt lở, 115 hộ bị ảnh hưởng, 15 nhà sập, 100 m đường hư hỏng, 650 m bờ sạt lở.
+- **Vụ sạt lở đường sắt Bến Tre**: 100m sạt lở, 1.000 m đường bê tông hư hỏng.
+- **Vụ sạt lở tại Bến Tre**: 4,7 km sạt lở, 115 hộ bị ảnh hưởng, 15 nhà sập, 100 m đường hư hỏng, 650 m bờ sạt lở.
+- **Vụ sạt lở đường sắt Bến Tre**: 100m sạt lở, 1.000 m đường bê tông hư hỏng.
+- **Vụ sạt lở tại Bến Tre**: 4,7 km sạt lở, 115 hộ bị ảnh hưởng, 15 nhà sập, 100 m đường hư hỏng, 650 m bờ sạt lở.
+- **Vụ sạt lở đường sắt Bến Tre**: 100m sạt lở, 1.000 m đường bê tông hư hỏng.
+- **Vụ sạt lở tại Bến Tre**: 4,7 km sạt lở, 115 hộ bị ảnh hưởng, 15 nhà sập, 100 m đường hư hỏng, 650 m bờ sạt lở.
+- **Vụ sạt lở đường sắt Bến Tre**: 100m sạt lở, 1.000 m đường bê tông hư hỏng.
+- **Vụ sạt lở tại Bến Tre**: 4,7 km sạt lở, 115 hộ bị ảnh hưởng, 15 nhà sập, 100 m đường hư hỏng, 650 m bờ sạt lở.
+- **Vụ sạt lở đường sắt Bến Tre**: 100m sạt lở, 1.000 m đường bê tông hư hỏng.
+- **Vụ sạt lở tại Bến Tre**: 4,7 km sạt lở, 115 hộ bị ảnh hưởng, 15 nhà sập, 100 m đường hư hỏng, 650 m bờ sạt lở.
+- **Vụ sạt lở đường sắt Bến Tre**: 100m sạt lở, 1.000 m đường bê tông hư hỏng.
+- **Vụ sạt lở tại Bến Tre**: 4,7 km sạt lở, 115 hộ bị ảnh hưởng, 15 nhà sập, 100 m đường hư hỏng, 650 m bờ sạt lở.
+- **Vụ sạt lở đường sắt Bến Tre**: 100m sạt lở, 1.000 m đường bê tông hư hỏng.
+- **Vụ sạt lở tại Bến Tre**: 4,7 km sạt lở, 115 hộ bị ảnh hưởng, 15 nhà sập, 100 m đường hư hỏng, 650 m bờ sạt lở.
+- **Vụ sạt lở đường sắt Bến Tre**: 100m sạt lở, 1.000 m đường bê tông hư hỏng.
+- **Vụ sạt lở tại Bến Tre**: 4,7 km sạt lở, 115 hộ bị ảnh hưởng, 15 nhà sập, 100 m đường hư hỏng, 650 m bờ sạt lở.
+- **Vụ sạt lở đường sắt Bến Tre**: 100m sạt lở, 1.000 m đường bê tông hư hỏng.
+- **Vụ sạt lở tại Bến Tre**: 4,7 km sạt lở, 115 hộ bị ảnh hưởng, 15 nhà sập, 100 m đường hư hỏng, 650 m bờ sạt lở.
+- **Vụ sạt lở đường sắt Bến Tre**: 100m sạt lở, 1.000 m đường bê tông hư hỏng.
+- **Vụ sạt lở tại Bến Tre**: 4,7 km sạt lở, 115 hộ bị ảnh hưởng, 15 nhà sập, 100 m đường hư hỏng, 650 m bờ sạt lở.
+- **Vụ sạt lở đường sắt Bến Tre**: 100m sạt lở, 1.000 m đường bê tông hư hỏng.
+- **Vụ sạt lở tại Bến Tre**: 4,7 km sạt lở, 115 hộ bị ảnh hưởng, 15 nhà sập, 100 m đường hư hỏng, 650 m bờ sạt lở.
+- **Vụ sạt lở đường sắt Bến Tre**: 100m sạt lở, 1.000 m đường bê tông hư hỏng.
+- **Vụ sạt lở tại Bến Tre**: 4,7 km sạt lở, 115 hộ bị ảnh hưởng, 15 nhà sập, 100 m đường hư hỏng, 650 m bờ sạt lở.
+- **Vụ sạt lở đường sắt Bến Tre**: 100m sạt lở, 1.000 m đường bê tông hư hỏng.
+- **Vụ sạt lở tại Bến Tre**: 4,7 km sạt lở, 115 hộ bị ảnh hưởng, 15 nhà sập, 100 m đường hư hỏng, 650 m bờ sạt lở.
+- **Vụ sạt lở đường sắt Bến Tre**: 100m sạt lở, 1.000 m đường bê tông hư hỏng.
+- **Vụ sạt lở tại Bến Tre**: 4,7 km sạt lở, 115 hộ bị ảnh hưởng, 15 nhà sập, 100 m đường hư hỏng, 650 m bờ sạt lở.
+- **Vụ sạt lở đường sắt Bến Tre**: 100m sạt lở, 1.000 m đường bê tông hư hỏng.
+- **Vụ sạt lở tại Bến Tre**: 4,7 km sạt lở, 115 hộ bị ảnh hưởng, 15 nhà sập, 100 m đường hư hỏng, 650 m bờ sạt lở.
+- **Vụ sạt lở đường sắt Bến Tre**: 100m sạt lở, 1.000 m đường bê tông hư hỏng.
+- **Vụ sạt lở tại Bến Tre**: 4,7 km sạt lở, 115 hộ bị ảnh hưởng, 15 nhà sập, 100 m đường hư hỏng, 650 m bờ sạt lở.
+- **Vụ sạt lở đường sắt Bến Tre**: 100m sạt lở, 1.000 m đường bê tông hư hỏng.
+- **Vụ sạt lở tại Bến Tre**: 4,7 km sạt lở, 115 hộ bị ảnh hưởng, 15 nhà sập, 100 m đường hư hỏng, 650 m bờ sạt lở.
+- **Vụ sạt lở đường sắt Bến Tre**: 100m sạt lở, 1.000 m đường bê tông hư hỏng.
+- **Vụ sạt lở tại Bến Tre**: 4,7 km sạt lở, 115 hộ bị ảnh hưởng, 15 nhà sập, 100 m đường hư hỏng, 650 m bờ sạt lở.
+- **Vụ sạt lở đường sắt Bến Tre**: 100m sạt lở, 1.000 m đường bê tông hư hỏng.
+- **Vụ sạt lở tại Bến Tre**: 4,7 km sạt lở, 115 hộ bị ảnh hưởng, 15 nhà sập, 100 m đường hư hỏng, 650 m bờ sạt lở.
+- **Vụ sạt lở đường sắt Bến Tre**: 100m sạt lở, 1.000 m đường bê tông hư hỏng.
+- **Vụ sạt lở tại Bến Tre**: 4,7 km sạt lở, 115 hộ bị ảnh hưởng, 15 nhà sập, 100 m đường hư hỏng, 650 m bờ sạt lở.
+- **Vụ sạt lở đường sắt Bến Tre**: 100m sạt lở, 1.000 m đường bê tông hư hỏng.
+- **Vụ sạt lở tại Bến Tre**: 4,7 km sạt lở, 115 hộ bị ảnh hưởng, 15 nhà sập, 100 m đường hư hỏng, 650 m bờ sạt lở.
+- **Vụ sạt lở đường sắt Bến Tre**: 100m sạt lở, 1.000 m đường bê tông hư hỏng.
+- **Vụ sạt lở tại Bến Tre**: 4,7 km sạt lở, 115 hộ bị ảnh hưởng, 15 nhà sập, 100 m đường hư hỏng, 650 m bờ sạt lở.
+- **Vụ sạt lở đường sắt Bến Tre**: 100m sạt lở, 1.000 m đường bê tông hư hỏng.
+- **Vụ sạt lở tại Bến Tre**: 4,7 km sạt lở, 115 hộ bị ảnh hưởng, 15 nhà sập, 100 m đường hư hỏng, 650 m bờ sạt lở.
+- **Vụ sạt lở đường sắt Bến Tre**: 100m sạt lở, 1.000 m đường bê tông hư hỏng.
+- **Vụ sạt lở tại Bến Tre**: 4,7 km sạt lở, 115 hộ bị ảnh hưởng, 15 nhà sập, 100 m đường hư hỏng, 650 m bờ sạt lở.
+- **Vụ sạt lở đường sắt Bến Tre**: 100m sạt lở, 1.000 m đường bê tông hư hỏng.
+- **Vụ sạt lở tại Bến Tre**: 4,7 km sạt lở, 115 hộ bị ảnh hưởng, 15 nhà sập, 100 m đường hư hỏng, 650 m bờ sạt lở.
+- **Vụ sạt lở đường sắt Bến Tre**: 100m sạt lở, 1.000 m đường bê tông hư hỏng.
+- **Vụ sạt lở tại Bến Tre**: 4,7 km sạt lở, 115 hộ bị ảnh hưởng, 15 nhà sập, 100 m đường hư hỏng, 650 m bờ sạt lở.
+- **Vụ sạt lở đường sắt Bến Tre**: 100m sạt lở, 1.000 m đường bê tông hư hỏng.
+- **Vụ sạt lở tại Bến Tre**: 4,7 km sạt lở, 115 hộ bị ảnh hưởng, 15 nhà sập, 100 m đường hư hỏng, 650 m bờ sạt lở.
+- **Vụ sạt lở đường sắt Bến Tre**: 100m sạt lở, 1.000 m đường bê tông hư hỏng.
+- **Vụ sạt lở tại Bến Tre**: 4,7 km sạt lở, 115 hộ bị ảnh hưởng, 15 nhà sập, 100 m đường hư hỏng, 650 m bờ sạt lở.
+- **Vụ sạt lở đường sắt Bến Tre**: 100m sạt lở, 1.000 m đường bê tông hư hỏng.
+- **Vụ sạt lở tại Bến Tre**: 4,7 km sạt lở, 115 hộ bị ảnh hưởng, 15 nhà sập, 100 m đường hư hỏng, 650 m bờ sạt lở.
+- **Vụ sạt lở đường sắt Bến Tre**: 100m sạt lở, 1.000 m đường bê tông hư hỏng.
+- **Vụ sạt lở tại Bến Tre**: 4,7 km sạt lở, 115 hộ bị ảnh hưởng, 15 nhà sập, 100 m đường hư hỏng, 650 m bờ sạt lở.
+- **Vụ sạt lở đường sắt Bến Tre**: 100m sạt lở, 1.000 m đường bê tông hư hỏng.
+- **Vụ sạt lở tại Bến Tre**: 4,7 km sạt lở, 115 hộ bị ảnh hưởng, 15 nhà sập, 100 m đường hư hỏng, 650 m bờ sạt lở.
+- **Vụ sạt lở đường sắt Bến Tre**: 100m sạt lở, 1.000 m đường bê tông hư hỏng.
+- **Vụ sạt lở tại Bến Tre**: 4,7 km sạt lở, 115 hộ bị ảnh hưởng, 15 nhà sập, 100 m đường hư hỏng, 650 m bờ sạt lở.
+- **Vụ sạt lở đường sắt Bến Tre**: 100m sạt lở, 1.000 m đường bê tông hư hỏng.
+- **Vụ sạt lở tại Bến Tre**: 4,7 km sạt lở, 115 hộ bị ảnh hưởng, 15 nhà sập, 100 m đường hư hỏng, 650 m bờ sạt lở.
+- **Vụ sạt lở đường sắt Bến Tre**: 100m sạt lở, 1.000 m đường bê tông hư hỏng.
+- **Vụ sạt lở tại Bến Tre**: 4,7 km sạt lở, 115 hộ bị ảnh hưởng, 15 nhà sập, 100 m đường hư hỏng, 650 m bờ sạt lở.
+- **Vụ sạt lở đường sắt Bến Tre**: 100m sạt lở, 1.000 m đường bê tông hư hỏng.
+- **Vụ sạt lở tại Bến Tre**: 4,7 km sạt lở, 115 hộ bị ảnh hưởng, 15 nhà sập, 100 m đường hư hỏng, 650 m bờ sạt lở.
+- **Vụ sạt lở đường sắt Bến Tre**: 100m sạt lở, 1.000 m đường bê tông hư hỏng.
+- **Vụ sạt lở tại Bến Tre**: 4,7 km sạt lở, 115 hộ bị ảnh hưởng, 15 nhà sập, 100 m đường hư hỏng, 650 m bờ sạt lở.
+- **Vụ sạt lở đường sắt Bến Tre**: 100m sạt lở, 1.000 m đường bê tông hư hỏng.
+- **Vụ sạt lở tại Bến Tre**: 4,7 km sạt lở, 115 hộ bị ảnh hưởng, 15 nhà sập, 100 m đường hư hỏng, 650 m bờ sạt lở.
+- **Vụ sạt lở đường sắt Bến Tre**: 100m sạt lở, 1.000 m đường bê tông hư hỏng.
+- **Vụ sạt lở tại Bến Tre**: 4,7 km sạt lở, 115 hộ bị ảnh hưởng, 15 nhà sập, 100 m đường hư hỏng, 650 m bờ sạt lở.
+- **Vụ sạt lở đường sắt Bến Tre**: 100m sạt lở, 1.000 m đường bê tông hư hỏng.
+- **Vụ sạt lở tại Bến Tre**: 4,7 km sạt lở, 115 hộ bị ảnh hưởng, 15 nhà sập, 100 m đường hư hỏng, 650 m bờ sạt lở.
+- **Vụ sạt lở đường sắt Bến Tre**: 100m sạt lở, 1.000 m đường bê tông hư hỏng.
+- **Vụ sạt lở tại Bến Tre**: 4,7 km sạt lở, 115 hộ bị ảnh hưởng, 15 nhà sập, 100 m đường hư hỏng, 650 m bờ sạt lở.
+- **Vụ sạt lở đường sắt Bến Tre**: 100m sạt lở, 1.000 m đường bê tông hư hỏng.
+- **Vụ sạt lở tại Bến Tre**: 4,7 km sạt lở, 115 hộ bị ảnh hưởng, 15 nhà sập, 100 m đường hư hỏng, 650 m bờ sạt lở.
+- **Vụ sạt lở đường sắt Bến Tre**: 100m sạt lở, 1.000 m đường bê tông hư hỏng.
+- **Vụ sạt lở tại Bến Tre**: 4,7 km sạt lở, 115 hộ bị ảnh hưởng, 15 nhà sập, 100 m đường hư hỏng, 650 m bờ sạt lở.
+- **Vụ sạt lở đường sắt Bến Tre**: 100m sạt lở, 1.000 m đường bê tông hư hỏng.
+- **Vụ sạt lở tại Bến Tre**: 4,7 km sạt lở, 115 hộ bị ảnh hưởng, 15 nhà sập, 100 m đường hư hỏng, 650 m bờ sạt lở.
+- **Vụ sạt lở đường sắt Bến Tre**: 100m sạt lở, 1.000 m đường bê tông hư hỏng.
+- **Vụ sạt lở tại Bến Tre**: 4,7 km sạt lở, 115 hộ bị ảnh hưởng, 15 nhà sập, 100 m đường hư hỏng, 650 m bờ sạt lở.
+- **Vụ sạt lở đường sắt Bến Tre**: 100m sạt lở, 1.000 m đường bê tông hư hỏng.
+- **Vụ sạt lở tại Bến Tre**: 4,7 km sạt lở, 115 hộ bị ảnh hưởng, 15 nhà sập, 100 m đường hư hỏng, 650 m bờ sạt lở.
+- **Vụ sạt lở đường sắt Bến Tre**: 100m sạt lở, 1.000 m đường bê tông hư hỏng.
+- **Vụ sạt lở tại Bến Tre**: 4,7 km sạt lở, 115 hộ bị ảnh hưởng, 15 nhà sập, 100 m đường hư hỏng, 650 m bờ sạt lở.
+- **Vụ sạt lở đường sắt Bến Tre**: 100m sạt lở, 1.000 m đường bê tông hư hỏng.
+- **Vụ sạt lở tại Bến Tre**: 4,7 km sạt lở, 115 hộ bị ảnh hưởng, 15 nhà sập, 100 m đường hư hỏng, 650 m bờ sạt lở.
+- **Vụ sạt lở đường sắt Bến Tre**: 100m sạt lở, 1.000 m đường bê tông hư hỏng.
+- **Vụ sạt lở tại Bến Tre**: 4,7 km sạt lở, 115 hộ bị ảnh hưởng, 15 nhà sập, 100 m đường hư hỏng, 650 m bờ sạt lở.
+- **Vụ sạt lở đường sắt Bến Tre**: 100m sạt lở, 1.000 m đường bê tông hư hỏng.
+- **Vụ sạt lở tại Bến Tre**: 4,7 km sạt lở, 115 hộ bị ảnh hưởng, 15 nhà sập, 100 m đường hư hỏng, 650 m bờ sạt lở.
+- **Vụ sạt lở đường sắt Bến Tre**: 100m sạt lở, 1.000 m đường bê tông hư hỏng.
+- **Vụ sạt lở tại Bến Tre**:

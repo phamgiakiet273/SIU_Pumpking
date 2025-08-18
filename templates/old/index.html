@@ -1,0 +1,541 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Video Search Page</title>
+    <link rel="stylesheet" href="{{ url_for('static', path='css/styles.css') }}">
+    <link rel="icon" href="data:,">
+
+</head>
+
+<body>
+    <form id="form" method="POST">
+
+        <div class="main-content">
+            <div class="filters">
+                <div style="display: flex; align-items: center;">
+                    <textarea name="query" id="query" placeholder="Search for videos..."
+                        style="width: 300px; height: 90px;" autofocus></textarea>
+                    <button id="voiceBtn"><img
+                            style='width: 40px; height: 40px; border-radius: 50%; background-color: white;'
+                            src="{{ url_for('static', path='icon/free-microphone-icon-342-thumb.png') }}"></button>
+                </div>
+                <div id="charCount" class="char-count" style="position: relative; text-align: right; width: 100%;">
+                </div>
+                <div>
+                    <h3>Previous Query: <a href="#" id="previous-query" style="text-decoration: none;"></a></h3>
+                    <h3>Query History: <select id="query-dropdown" style="width: 100%;"></select></h3>
+                </div>
+                <div class="input-container">
+                    <input id="video_filter" type="text" placeholder="Video name for filtering...." name="video_filter"
+                        oninput="this.value = this.value.toUpperCase();">
+                    <input id="time_in" type="text" placeholder="Start..." name="time_in">
+                    <input id="time_out" type="text" placeholder="End..." name="time_out">
+                </div>
+                <button id="search-button" style="background-color: #40E0D0;">Search</button>
+                <fieldset class="model-options">
+                    <legend>Models</legend>
+                    <label>
+                        <input type="radio" name="model" value="SIGLIP" id="" checked>
+                        SIGLIP
+                    </label>
+                    <label>
+                        <input type="radio" name="model" value="TEMPORAL_SIGLIP" id="">
+                        TEMPORAL_SIGLIP
+                    </label>
+                </fieldset>
+                <!-- <button id="shot_sort" type="button">Shot Sort</button> -->
+                <!-- Hidden elements -->
+                <input onkeyup='saveValue(this);' style="display: none;" name="fname" id="fname" type="text"
+                    placeholder="Paste image URL..."></input>
+                <h3>Result</h3>
+                <input type="range" min="10" max="1000" value="100" step="10" name="slider_k" id="slider_k">
+                <input class="textbox" value="100" type="text" name="k" id="k">
+                <h3>Thumbnail Size</h3>
+                <input type="range" id="size-slider" min="100" max="400" value="300" oninput="adjustThumbnailSize()"
+                    onchange="size_update(this)">
+            </div>
+            <div class="videos" id="videos">
+                {% for index, key, batch, video_name, frame_name, fps, score, s2t, object, video_path, frame_path in files %}
+                    <div class="thumbnail">
+                        <div style="position: relative;">
+                            <a class="fps" style="display: none;">{{ fps }}</a>
+                            <div class="half previous" id="previous-{{ index }}"></div>
+                            <div class="half after" id="after-{{ index }}"></div>
+                            <a class="video_id text-overlay-top" data-imageid="{{ video_name }}" target="{{ index }}">
+                                {{ video_name }}
+                            </a>
+                            <img data-src="{{ url_for('send_file', path='{{frame_path}}') }}" id="{{ index }}" class="lazy-image" loading="lazy">
+                            <a class="image_id text-overlay-bottom" style="left: 0; bottom: 10px;" id="frame_name-{{ index }}" target="{{ index }}">
+                                {{ frame_name }}
+                            </a>
+                        </div>
+                    </div>
+                {% endfor %}
+            </div>
+        </div>
+    </form>
+
+    <script src="{{ url_for('static', path='js/jquery-3.6.0.min.js') }}"></script>
+    <script src="{{ url_for('static', path='js/jszip.min.js') }}"></script>
+
+    <script>
+
+        document.getElementById('video_filter').addEventListener('input', function (e) {
+            let value = e.target.value;
+
+            // Handle deletion to avoid forcing 'L' and '_V' if the user is deleting characters
+            if (e.inputType === 'deleteContentBackward') {
+                // Allow deletion and update the value accordingly
+                if (value.length === 0) {
+                    e.target.value = ''; // Allow clearing the input entirely
+                }
+                return; // Exit early to avoid forcing 'L' and '_V'
+            }
+
+            // Ensure value starts with 'L'
+            if (!value.startsWith('L')) {
+                value = 'L' + value;
+            }
+
+            // Check if two digits are typed after 'L' (e.g., L01)
+            let match = value.match(/^L(\d{2})$/);
+
+            // If two digits are typed, add '_V'
+            if (match) {
+                value += '_V';
+            }
+
+            // Ensure correct format if user continues typing (e.g., L01_V001)
+            if (value.length > 4 && !value.includes('_V')) {
+                value = value.substring(0, 4) + '_V';
+            }
+
+            e.target.value = value;
+        });
+
+        document.addEventListener("DOMContentLoaded", function () {
+            const textarea = document.getElementById("query");
+            const charCountDiv = document.getElementById("charCount");
+            const maxChars = 64;
+
+            function updateCharCount() {
+                const currentLength = textarea.value.length;
+
+                charCountDiv.textContent = `${currentLength}/${maxChars}`;
+
+                // Check if over the limit and update styles accordingly
+                if (currentLength > maxChars) {
+                    charCountDiv.classList.add("warning");
+                } else {
+                    charCountDiv.classList.remove("warning");
+                }
+            }
+
+            textarea.addEventListener("input", updateCharCount);
+
+            document.getElementById('previous-query').addEventListener('click', function (e) {
+                e.preventDefault();
+                var lastQuery = document.getElementById('previous-query').textContent;
+                document.getElementById('query').value = lastQuery;
+                updateCharCount();
+            });
+
+            document.getElementById('query-dropdown').addEventListener('change', function () {
+                var selectedQuery = this.value;
+                document.getElementById('query').value = selectedQuery;
+                updateCharCount();
+            });
+        });
+
+        document.getElementById('search-button').addEventListener('click', function () {
+            document.getElementById('query').focus();
+        });
+
+        function updateDropdown(queries) {
+            var dropdown = document.getElementById('query-dropdown');
+            dropdown.innerHTML = ""; // Clear the existing options
+            queries.forEach(function (query) {
+                var option = document.createElement('option');
+                option.value = query;
+                option.textContent = query;
+                dropdown.appendChild(option);
+            });
+        }
+
+        function truncateOptions() {
+            const select = document.getElementById('query-dropdown');
+            const maxLength = 40;  // Total max length of visible characters
+            const headLength = 10;  // Characters to show at the beginning
+            const tailLength = 20;  // Characters to show at the end
+
+            for (let i = 0; i < select.options.length; i++) {
+                let option = select.options[i];
+                let text = option.text;
+
+                // Only truncate if the text is longer than the maximum allowed length
+                if (text.length > maxLength) {
+                    let truncatedText = text.slice(0, headLength) + '...' + text.slice(-tailLength);
+                    option.text = truncatedText;
+                }
+            }
+        }
+
+        function size_update(e) {
+            adjustThumbnailSize();
+            saveValue(e);
+        }
+
+        var k_value = document.getElementById('k');
+        var slider = document.getElementById('slider_k');
+
+        k_value.value = slider.value;
+        slider.oninput = function () {
+            k_value.value = this.value;
+            saveValue(this);
+        }
+
+        // Update slider when text input value changes
+        k_value.oninput = function () {
+            slider.value = this.value;
+            saveValue(slider);
+        }
+
+        window.onload = function () {
+            // Restore thumbnail size
+            var sizeSaved = localStorage.getItem("size-slider");
+            if (sizeSaved) {
+                document.getElementById("size-slider").value = sizeSaved;
+                adjustThumbnailSize();
+            }
+
+            // Restore k slider/text values
+            var savedSlider = localStorage.getItem('slider_k');
+            var savedText = localStorage.getItem('k');
+            var slider = document.getElementById('slider_k');
+            var kInput = document.getElementById('k');
+
+            if (savedSlider) {
+                slider.value = savedSlider;
+                kInput.value = savedSlider;
+            } else if (savedText) {
+                slider.value = savedText;
+                kInput.value = savedText;
+            }
+
+            // Restore selected model
+            loadRadioValue('model');
+
+            // Update query history in session storage
+            var query = "{{query}}";
+            var queries = sessionStorage.getItem('queries');
+            queries = queries ? JSON.parse(queries) : [];
+            if (query.trim()) {
+                queries.unshift(query);
+                sessionStorage.setItem('queries', JSON.stringify(queries));
+            }
+            document.getElementById('previous-query').textContent = query;
+            updateDropdown(queries);
+            truncateOptions();
+        };
+
+        function saveRadioValue(radioGroupName) {
+            const selectedRadio = document.querySelector(`input[name="${radioGroupName}"]:checked`);
+            if (selectedRadio) {
+                localStorage.setItem(radioGroupName, selectedRadio.value);
+            }
+        }
+
+        function loadRadioValue(radioGroupName) {
+            const savedValue = localStorage.getItem(radioGroupName);
+            if (savedValue) {
+                const radioButton = document.querySelector(`input[name="${radioGroupName}"][value="${savedValue}"]`);
+                if (radioButton) {
+                    radioButton.checked = true;
+                }
+            }
+        }
+
+        document.querySelectorAll('input[type="radio"]').forEach((radio) => {
+            radio.addEventListener('change', function () {
+                saveRadioValue(this.name);
+            });
+        });
+
+        function saveCheckboxValues(checkboxGroupName) {
+            const selectedCheckboxes = Array.from(document.querySelectorAll(`input[name="${checkboxGroupName}"]:checked`));
+            //console.log(selectedCheckboxes);
+            const values = selectedCheckboxes.map(checkbox => checkbox.value);
+            localStorage.setItem(checkboxGroupName, JSON.stringify(values));
+        }
+
+        function loadCheckboxValues(checkboxGroupName) {
+            const checkboxes = document.querySelectorAll(`input[name="${checkboxGroupName}"]`);
+            checkboxes.forEach(checkbox => checkbox.checked = false);
+
+            const savedValues = JSON.parse(localStorage.getItem(checkboxGroupName));
+            if (savedValues) {
+                savedValues.forEach(value => {
+                    const checkbox = document.querySelector(`input[name="${checkboxGroupName}"][value="${value}"]`);
+                    if (checkbox) {
+                        checkbox.checked = true;
+                    }
+                });
+            }
+        }
+
+        document.querySelectorAll('input[type="checkbox"]').forEach((checkbox) => {
+            checkbox.addEventListener('change', function () {
+                saveCheckboxValues(this.name);
+            });
+        });
+
+
+        function adjustThumbnailSize() {
+            const slider = document.getElementById('size-slider');
+            const width = slider.value;
+            const height = (width * 9) / 16;
+
+            document.documentElement.style.setProperty('--thumbnail-width', `${width}px`);
+            document.documentElement.style.setProperty('--thumbnail-height', `${height}px`);
+
+            // Adjust thumbnails width and height
+            const thumbnails = document.querySelectorAll('.thumbnail');
+            thumbnails.forEach(thumbnail => {
+                thumbnail.style.width = `${width}px`;
+                thumbnail.style.height = 'auto';
+            });
+        }
+
+        function resetSlider() {
+            const slider = document.getElementById('slider_k');
+            slider.value = 100; // Reset to initial value
+            adjustThumbnailSize(); // Adjust thumbnail size accordingly
+        }
+
+        //Save the value function - save it to localStorage as (ID, VALUE)
+        function saveValue(e) {
+            var id = e.id;  // get the sender's id to save it .
+            var val = e.value; // get the value.
+            if (e.type === 'checkbox') {
+                val = e.checked; // true or false
+            } else {
+                val = e.value; // for radio buttons, the selected value
+            }
+            localStorage.setItem(id, val);// Every time user writing something, the localStorage's value will override .
+        }
+
+        //get the saved value function - return the value of "v" from localStorage.
+        function getSavedValue(v) {
+            if (!localStorage.getItem(v)) {
+                return "";// You can change this to your defualt value.
+            }
+            return localStorage.getItem(v);
+        }
+
+
+        //get voice btn
+        document.addEventListener("DOMContentLoaded", () => {
+            const voiceBtn = document.getElementById('voiceBtn');
+            const result = document.getElementById('query');
+            const recordedAudio = document.getElementById('recordedAudio');
+
+            const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+            const recognition = new SpeechRecognition();
+
+            let isRecording = false;
+            let mediaRecorder;
+            let audioChunks = [];
+            let noSpeechTimeout;
+
+            // Enable continuous mode and interim results for real-time transcription
+            recognition.continuous = true;
+            recognition.interimResults = true;
+
+            // Store final transcript
+            let finalTranscript = '';
+
+            recognition.onstart = () => {
+                //console.log('Voice recognition started');
+                voiceBtn.classList.add('active');
+            };
+
+            recognition.onresult = (event) => {
+                let interimTranscript = '';
+
+                for (let i = event.resultIndex; i < event.results.length; i++) {
+                    const transcript = event.results[i][0].transcript;
+                    if (event.results[i].isFinal) {
+                        finalTranscript += transcript;  // Append final results to the final transcript
+                    } else {
+                        interimTranscript += transcript;  // Collect interim results
+                    }
+                }
+
+                // Update the textarea with the combined final and interim transcripts
+                result.value = finalTranscript + interimTranscript;
+
+                // Reset the timeout each time new speech is detected
+                clearTimeout(noSpeechTimeout);
+
+                // Start a new timeout for 7 seconds after the last speech detection
+                noSpeechTimeout = setTimeout(() => {
+                    //console.log('No speech for 7 seconds, stopping recognition');
+                    recognition.stop();
+                    if (mediaRecorder && mediaRecorder.state !== "inactive") {
+                        mediaRecorder.stop();
+                    }
+                    voiceBtn.classList.remove('active');
+                    isRecording = false;
+                }, 7000);
+            };
+
+            recognition.onerror = (event) => {
+                console.error('Recognition error:', event.error);
+            };
+
+            voiceBtn.addEventListener('click', async (event) => {
+                event.preventDefault();
+
+                if (isRecording) {
+                    // Stop everything when the button is clicked again
+                    recognition.stop();
+                    if (mediaRecorder && mediaRecorder.state !== "inactive") {
+                        mediaRecorder.stop();
+                    }
+                    clearTimeout(noSpeechTimeout);
+                    isRecording = false;
+                    voiceBtn.classList.remove('active');
+                    return;
+                }
+
+                finalTranscript = ''; // Reset the final transcript when starting a new recording
+                const selectedLanguage = document.querySelector('input[name="language"]:checked')?.value || 'vi-VN';
+                recognition.lang = selectedLanguage;
+                recognition.start();
+
+                // Start recording audio
+                const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
+                mediaRecorder = new MediaRecorder(stream);
+                audioChunks = [];
+
+                mediaRecorder.ondataavailable = (event) => {
+                    audioChunks.push(event.data);
+                };
+
+                mediaRecorder.onstop = () => {
+                    const audioBlob = new Blob(audioChunks, { type: 'audio/wav' });
+                    const audioUrl = URL.createObjectURL(audioBlob);
+                    recordedAudio.src = audioUrl;
+                };
+
+                mediaRecorder.start();
+                isRecording = true;
+            });
+        });
+    </script>
+    <script>
+    (function(){
+        const form = document.getElementById('form');
+        const videos = document.getElementById('videos');
+        const prevQueryLink = document.getElementById('previous-query');
+        const dropdown = document.getElementById('query-dropdown');
+        const textarea = document.getElementById('query');
+        const charCountDiv = document.getElementById('charCount');
+        const slider = document.getElementById('slider_k');
+        const kInput = document.getElementById('k');
+
+        form.addEventListener('submit', async function(e) {
+        e.preventDefault();
+
+        // grab form values
+        const fd = new FormData(form);
+        const queryText = fd.get('query').trim();
+        const kVal = fd.get('k');
+
+        // **THIS LINE** maps your `query` → `text` so FastAPI sees it
+        fd.set('text', queryText);
+
+        // update “Previous Query” and history dropdown
+        if (queryText) {
+            prevQueryLink.textContent = queryText;
+            let queries = JSON.parse(sessionStorage.getItem('queries') || '[]');
+            queries.unshift(queryText);
+            sessionStorage.setItem('queries', JSON.stringify(queries));
+            dropdown.innerHTML = '';
+            queries.forEach(q => {
+            let opt = document.createElement('option');
+            opt.value = q;
+            opt.textContent = q.length > 40
+                ? q.slice(0,10) + '…' + q.slice(-20)
+                : q;
+            dropdown.appendChild(opt);
+            });
+        }
+
+        // sync k slider + textbox
+        slider.value = kVal;
+        kInput.value = kVal;
+
+        // update char counter
+        (function updateCharCount() {
+            const len = textarea.value.length;
+            charCountDiv.textContent = `${len}/64`;
+            charCountDiv.classList.toggle('warning', len > 64);
+        })();
+
+        // pick endpoint
+        const model = form.querySelector('input[name="model"]:checked').value;
+        let url = '/hub/siglip_text_search';
+        if (model === 'TEMPORAL_SIGLIP') {
+            url = '/hub/siglip_temporal_search';
+        } else if (model === 'SIGLIP_IMAGE') {
+            url = '/hub/siglip_image_search';
+        }
+
+        // send to FastAPI
+        const resp = await fetch(url, { method: 'POST', body: fd });
+        if (!resp.ok) {
+            const err = await resp.text();
+            return alert('Search error: ' + err);
+        }
+        const payload = await resp.json();
+
+        // rebuild thumbnails
+        videos.innerHTML = '';
+        (payload.data.data || []).forEach(rec => {
+            const tpl = document.createElement('div');
+            tpl.className = 'thumbnail';
+            tpl.innerHTML = `
+            <div style="position: relative;">
+                <a class="fps" style="display: none;">${rec.fps||''}</a>
+                <div class="half previous" id="previous-${rec.index}"></div>
+                <div class="half after"    id="after-${rec.index}"></div>
+                <a class="video_id text-overlay-top"
+                data-imageid="${rec.video_name}"
+                target="${rec.index}">${rec.video_name.replace(/\.mp4$/, '')}</a>
+                <img src="/hub/send_file/${encodeURIComponent(rec.frame_path)}"
+                    id="${rec.index}"
+                    class="lazy-image"
+                    loading="lazy"
+                    style="width: var(--thumbnail-width);
+                            height: var(--thumbnail-height);" />
+                <a class="image_id text-overlay-bottom"
+                style="left: 0; bottom: 10px;"
+                id="frame_name-${rec.index}"
+                target="${rec.index}">${rec.keyframe_id}</a>
+            </div>`;
+            videos.appendChild(tpl);
+        });
+
+        // re-run your layout helpers
+        adjustThumbnailSize();
+        });
+    })();
+    </script>
+
+</body>
+
+</html>

@@ -1,0 +1,16 @@
+Bạn là hệ thống trích xuất thông tin.
+Dựa trên nội dung dưới đây, hãy liệt kê đầy đủ tất cả các thông tin và chi tiết quan trọng nhất.
+
+Nội dung:
+{context_text}
+
+Yêu cầu:
+- Xác định sự kiện hoặc chủ đề chính.
+- Nêu rõ các nhân vật, tổ chức, đội nhóm, hoặc đối tượng liên quan.
+- Mô tả các đặc điểm nhận dạng quan trọng (ví dụ: màu áo, số áo, phương tiện, vật dụng).
+- Nêu thời gian, địa điểm nếu có.
+- Bao gồm diễn biến, kết quả hoặc thông tin then chốt khác.
+- Trình bày ngắn gọn, rõ ràng, dạng liệt kê hoặc gạch đầu dòng.
+- Không thêm nhận xét hoặc suy luận ngoài nội dung.
+
+Chỉ trả về danh sách thông tin, không giải thích thêm.

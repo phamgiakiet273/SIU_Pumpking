@@ -1,0 +1,58 @@
+import dotenv
+
+dotenv.load_dotenv()
+import uvicorn
+import signal
+import os
+from fastapi.middleware.gzip import GZipMiddleware
+
+import sys
+
+sys.path.append("/workspace/competitions/AIC_2025/SIU_Pumpking")
+
+from configs.METACLIP_v2_configs import METACLIPV2Config
+from handlers.METACLIP_v2_handler import METACLIPV2Handler
+from routes.METACLIP_v2_router import setup_router
+from utils.logger import get_logger
+from apis.api import setup_app, TimeoutMiddleware
+
+from engine.CLIPFeatureModel.metaclip2_model import METACLIP
+from engine.vector_database.qdrant_database import QDRANT
+
+
+logger = get_logger()
+
+# Engine
+model = METACLIP()
+qdrant = QDRANT(METACLIPV2Config().METACLIP_V2_DATABASE_NAME)
+
+app = setup_app()
+
+# Handlers
+vector_retrieval_handler = METACLIPV2Handler(qdrant_database=qdrant, model=model)
+
+# Routes
+router = setup_router(handler=vector_retrieval_handler)
+app.include_router(router)
+
+# app.add_middleware(TimeoutMiddleware, timeout=METACLIPVectorRetrievalConfig().REQUEST_TIMEOUT)
+if os.getenv("ENABLE_GZIP", "True").lower() == "true":
+    app.add_middleware(GZipMiddleware, minimum_size=0)  # compress response > 0 bytes
+
+if __name__ == "__main__":
+    uvicorn.run(
+        app,
+        host=METACLIPV2Config().METACLIP_V2_HOST,
+        port=METACLIPV2Config().METACLIP_V2_PORT,
+        workers=METACLIPV2Config().METACLIP_V2_MAX_WORKERS,
+        timeout_keep_alive=METACLIPV2Config().TIMEOUT_KEEP_ALIVE,
+    )
+
+# Signal handling for graceful shutdown
+def handle_sigterm(*args):
+    print("Received termination signal. Cleaning up...")
+    sys.exit(0)
+
+
+signal.signal(signal.SIGINT, handle_sigterm)
+signal.signal(signal.SIGTERM, handle_sigterm)

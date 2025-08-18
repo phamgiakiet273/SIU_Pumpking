@@ -1,0 +1,6 @@
+Các khung hình này được trích từ phần đầu của một bản tin thời sự. Hãy quét kỹ các khung hình để tìm và trích xuất chính xác văn bản của tiêu đề chính.
+
+QUY TẮC:
+1.  Chỉ trả về nội dung cốt lõi của tin tức.
+2.  Loại bỏ tất cả các thông tin không liên quan như tên chương trình (ví dụ: '60 Giây', 'Chuyển động 24h', 'Thời sự 19h'), tên kênh, hoặc các yếu tố trang trí.
+3.  Không thêm bất kỳ lời giải thích nào, chỉ trả về duy nhất chuỗi văn bản của tiêu đề.

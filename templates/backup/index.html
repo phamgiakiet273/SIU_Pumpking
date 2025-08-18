@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Video Search Page</title>
+  <link rel="stylesheet" href="{{ url_for('static', path='css/styles.css') }}">
+</head>
+<body data-initial-query='{{ query|default("")|tojson }}'>
+  <form id="form" method="POST">
+    <div class="main-content">
+      <div class="filters">
+        <div class="filter-inputs">
+          <textarea name="query" id="query" placeholder="Search for videos..." style="width: 300px; height: 90px;" autofocus></textarea>
+          <button id="voiceBtn">
+            <img src="{{ url_for('static', path='icon/free-microphone-icon-342-thumb.png') }}" alt="Mic" style='width: 40px; height: 40px; border-radius: 50%; background-color: white;'>
+          </button>
+        </div>
+        <div id="charCount" class="char-count"></div>
+
+        <div class="history">
+          <h3>Previous Query: <a href="#" id="previous-query"></a></h3>
+          <h3>Query History: <select id="query-dropdown"></select></h3>
+        </div>
+
+        <div class="input-container">
+          <input id="video_filter" name="video_filter" placeholder="Video name for filtering...">
+          <input id="time_in" name="time_in" placeholder="Start...">
+          <input id="time_out" name="time_out" placeholder="End...">
+        </div>
+
+        <button id="search-button" type="submit">Search</button>
+
+        <fieldset class="model-options">
+          <legend>Models</legend>
+          <label><input type="radio" name="model" value="SIGLIP" checked> SIGLIP</label>
+          <label><input type="radio" name="model" value="TEMPORAL_SIGLIP"> TEMPORAL_SIGLIP</label>
+        </fieldset>
+
+        <h3>Result</h3>
+        <input type="range" id="slider_k" name="slider_k" min="10" max="1000" step="10">
+        <input type="text" id="k" name="k">
+
+        <h3>Thumbnail Size</h3>
+        <input type="range" id="size-slider" name="size-slider" min="100" max="400">
+      </div>
+
+      <div class="videos" id="videos">
+        {% for index, key, batch, video_name, frame_name, fps, score, s2t, object, video_path, frame_path in files %}
+        <div class="thumbnail">
+          <div class="thumb-wrapper">
+            <a class="fps" hidden>{{ fps }}</a>
+            <div class="half previous" id="previous-{{ index }}"></div>
+            <div class="half after" id="after-{{ index }}"></div>
+            <a class="video_id" data-imageid="{{ video_name }}" target="{{ index }}">{{ video_name }}</a>
+            <img data-src="{{ url_for('send_file', path='{{frame_path}}') }}" id="{{ index }}" class="lazy-image" loading="lazy">
+            <a class="image_id" id="frame_name-{{ index }}" target="{{ index }}">{{ frame_name }}</a>
+          </div>
+        </div>
+        {% endfor %}
+      </div>
+    </div>
+  </form>
+
+  <script src="{{ url_for('static', path='js/vendor/jquery-3.6.0.min.js') }}"></script>
+  <script src="{{ url_for('static', path='js/vendor/jszip.min.js') }}"></script>
+  <script type="module" src="{{ url_for('static', path='js/utils.js') }}"></script>
+  <script type="module" src="{{ url_for('static', path='js/filters.js') }}"></script>
+  <script type="module" src="{{ url_for('static', path='js/charcount.js') }}"></script>
+  <script type="module" src="{{ url_for('static', path='js/history.js') }}"></script>
+  <script type="module" src="{{ url_for('static', path='js/voice.js') }}"></script>
+  <script type="module" src="{{ url_for('static', path='js/app.js') }}"></script>
+</body>
+</html>
