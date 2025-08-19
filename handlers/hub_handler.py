@@ -48,7 +48,6 @@ timeout = HubConfig().REQUEST_TIMEOUT
 
 logger = get_logger()
 
-
 class HubHandler:
     def __init__(self) -> None:
         pass
@@ -69,12 +68,18 @@ class HubHandler:
         f"""
         Redirect /send_img/<full_path> → nginx at http://localhost:{NGINXConfig().NGINX_IMAGE_PORT}/img/<full_path>
 
-        curl -X GET  http://127.0.0.1:9187/img/datasets/AIC_2025/image.png
+        sample img input path: 0/frames/autoshot/Keyframes_L26/keyframes/L26_V264/06356.avif
         """
         full_path = full_path.replace(SPLIT_NAME, SPLIT_NAME_LOW_RES)
         target = f"{NGINXConfig().NGINX_IMAGE_HOST}/{full_path}"
         logger.info(f"send_img_handler path: {target}")
         # 307 preserves method, use 302 if you prefer
+        return RedirectResponse(url=target, status_code=307)
+    
+    async def send_img_original_handler(self, full_path: str):
+        full_path = full_path.replace('.avif', '.jpg')
+        target = f"{NGINXConfig().NGINX_IMAGE_HOST}/{full_path}"
+        logger.info(f"send_img_handler path: {target}")
         return RedirectResponse(url=target, status_code=307)
 
     async def send_video_handler(self, full_path: str):
