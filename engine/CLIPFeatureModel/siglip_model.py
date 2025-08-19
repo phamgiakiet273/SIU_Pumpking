@@ -8,8 +8,6 @@ from configs.METACLIP_v2_configs import METACLIPV2Config
 
 HF_token = METACLIPV2Config().HUGGINGFACE_HUB_TOKEN
 
-# import sys
-# sys.path.append("/workspace/competitions/AIC_2025/SIU_Pumpking")
 
 # from configs.app import AppConfig
 # from configs.SIGLIP_vector_retrieval_config import SIGLIPVectorRetrievalConfig
@@ -17,9 +15,6 @@ HF_token = METACLIPV2Config().HUGGINGFACE_HUB_TOKEN
 # os.environ['TRANSFORMERS_CACHE'] = AppConfig().TRANSFORMERS_CACHE
 # os.environ["CUDA_DEVICE_ORDER"] = AppConfig().CUDA_DEVICE_ORDER
 # os.environ['CUDA_VISIBLE_DEVICES'] = SIGLIPVectorRetrievalConfig().SIGLIP_VECTOR_RETRIEVAL_CUDA_VISIBLE_DEVICES
-
-# import sys
-# sys.path.append("/workspace/competitions/AIC_2025/SIU_Pumpking")
 
 
 class SIGLIP:

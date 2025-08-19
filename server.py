@@ -20,7 +20,17 @@ import time
 import io
 import zipfile
 
-sys.path.append("/workspace/competitions/AIC_2025/SIU_Pumpking/")
+from pathlib import Path
+import sys
+
+current_path = Path(__file__).resolve()
+for parent in current_path.parents:
+    if parent.name == "SIU_Pumpking":
+        #print(f"Adding {parent} to sys.path")
+        sys.path.append(str(parent))
+        break
+else:
+    raise RuntimeError("Could not find 'SIU_Pumpking' in the path hierarchy.")
 
 app = Flask(__name__)
 

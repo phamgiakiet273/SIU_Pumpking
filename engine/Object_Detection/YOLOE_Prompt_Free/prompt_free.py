@@ -1,9 +1,17 @@
 from ultralytics import YOLOE
 import cv2
 
+from pathlib import Path
 import sys
 
-sys.path.append("/workspace/competitions/AIC_2025/SIU_Pumpking/engine")
+current_path = Path(__file__).resolve()
+for parent in current_path.parents:
+    if parent.name == "SIU_Pumpking":
+        #print(f"Adding {parent} to sys.path")
+        sys.path.append(str(parent))
+        break
+else:
+    raise RuntimeError("Could not find 'SIU_Pumpking' in the path hierarchy.")
 
 # Initialize a YOLOE model
 model = YOLOE("data/weights/yoloe-11l-seg-pf.pt")

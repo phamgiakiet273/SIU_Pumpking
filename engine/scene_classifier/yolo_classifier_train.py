@@ -1,7 +1,19 @@
 from ultralytics import YOLO
-import sys
 
-sys.path.append("/workspace/competitions/AIC_2025/SIU_Pumpking/engine/scene_classifier")
+#sys.path.append("/workspace/competitions/AIC_2025/SIU_Pumpking/engine/scene_classifier")
+from pathlib import Path
+import sys
+# add child path manually
+current_path = Path(__file__).resolve()
+for parent in current_path.parents:
+    if parent.name == "SIU_Pumpking":
+        base_path = parent
+        new_path = base_path / "engine" / "scene_classifier"
+        sys.path.append(str(new_path))
+        #print(f"Added {new_path} to sys.path")
+        break
+else:
+    raise RuntimeError("Could not find 'SIU_Pumpking' in the path hierarchy.")
 
 
 class NewsIntroductionTrain:

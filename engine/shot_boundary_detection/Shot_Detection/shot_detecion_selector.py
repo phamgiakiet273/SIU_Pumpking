@@ -5,8 +5,21 @@ import tqdm
 from typing import Dict, Union
 from torchinfo import summary
 
+
+#sys.path.append("/workspace/competitions/AIC_2025/SIU_Pumpking/engine/shot_boundary_detection/Shot_Detection")
+from pathlib import Path
 import sys
-sys.path.append("/workspace/competitions/AIC_2025/SIU_Pumpking/engine/shot_boundary_detection/Shot_Detection")
+# add child path manually
+current_path = Path(__file__).resolve()
+for parent in current_path.parents:
+    if parent.name == "SIU_Pumpking":
+        base_path = parent
+        new_path = base_path / "engine" / "shot_boundary_detection" / "Shot_Detection"
+        sys.path.append(str(new_path))
+        #print(f"Added {new_path} to sys.path")
+        break
+else:
+    raise RuntimeError("Could not find 'SIU_Pumpking' in the path hierarchy.")
 
 from AutoShot.utils import get_batches, get_frames
 from AutoShot.model import AutoShot
