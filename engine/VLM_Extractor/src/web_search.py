@@ -1,7 +1,15 @@
 # file: web_search.py
+from pathlib import Path
 import sys
 
-sys.path.append("/workspace/competitions/AIC_2025/SIU_Pumpking")
+current_path = Path(__file__).resolve()
+for parent in current_path.parents:
+    if parent.name == "SIU_Pumpking":
+        #print(f"Adding {parent} to sys.path")
+        sys.path.append(str(parent))
+        break
+else:
+    raise RuntimeError("Could not find 'SIU_Pumpking' in the path hierarchy.")
 
 import re
 import os

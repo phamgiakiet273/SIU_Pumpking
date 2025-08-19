@@ -8,9 +8,21 @@ from pprint import pprint
 import json
 
 # --- SETUP MÔI TRƯỜNG ---
-PROJECT_ROOT = "/workspace/competitions/AIC_2025/SIU_Pumpking"
-sys.path.append(PROJECT_ROOT)
-dotenv.load_dotenv(os.path.join(PROJECT_ROOT, ".env"))
+from pathlib import Path
+import sys
+
+current_path = Path(__file__).resolve()
+for parent in current_path.parents:
+    if parent.name == "SIU_Pumpking":
+        #print(f"Adding {parent} to sys.path")
+        sys.path.append(str(parent))
+        base_path = parent
+        break
+else:
+    raise RuntimeError("Could not find 'SIU_Pumpking' in the path hierarchy.")
+
+env_path = base_path / ".env"
+dotenv.load_dotenv(env_path)
 
 # --- Import các lớp xử lý và tiện ích ---
 from engine.VLM_Extractor.src.title_extractor import TitleExtractor
