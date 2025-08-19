@@ -126,6 +126,12 @@ def setup_router(handler: HubHandler) -> APIRouter:
         endpoint=handler.send_img_handler,
         methods=["GET"],
     )
+    
+    hub_router.add_api_route(
+        "/send_img_original/{full_path:path}", 
+        endpoint=handler.send_img_original_handler,
+        methods=["GET"]
+    )
 
     # Catch-all route for videos:
     hub_router.add_api_route(
