@@ -5,7 +5,7 @@ import { fillSubmissionForm } from './submitHandler.js';
 // Generate unique color for each object type
 function stringToColor(str) {
     if (!str) return '#cccccc'; // Default color for empty objects
-
+    
     let hash = 0;
     for (let i = 0; i < str.length; i++) {
         hash = str.charCodeAt(i) + ((hash << 5) - hash);
@@ -50,7 +50,7 @@ function createModal() {
                 cursor: pointer;
                 transition: color 0.3s;
             ">×</span>
-
+            
             <div class="modal-body" style="display: flex; flex-wrap: wrap; gap: 20px;">
                 <div class="image-container" style="flex: 1; min-width: 900px; position: relative;">
                     <div style="display: flex; justify-content: center; align-items: center; height: 100%;">
@@ -65,28 +65,28 @@ function createModal() {
                                 width: 100%;
                                 height: 100%;
                             "></canvas>
-
+                            
                             <!-- Navigation arrows -->
-                            <button id="prev-frame" class="nav-arrow" style="position: absolute; left: 10px; top: 50%; transform: translateY(-50%);
-                                background: rgba(0,0,0,0.5); border: none; color: white; font-size: 24px;
+                            <button id="prev-frame" class="nav-arrow" style="position: absolute; left: 10px; top: 50%; transform: translateY(-50%); 
+                                background: rgba(0,0,0,0.5); border: none; color: white; font-size: 24px; 
                                 width: 40px; height: 60px; cursor: pointer; border-radius: 4px;"><</button>
-                            <button id="next-frame" class="nav-arrow" style="position: absolute; right: 10px; top: 50%; transform: translateY(-50%);
-                                background: rgba(0,0,0,0.5); border: none; color: white; font-size: 24px;
+                            <button id="next-frame" class="nav-arrow" style="position: absolute; right: 10px; top: 50%; transform: translateY(-50%); 
+                                background: rgba(0,0,0,0.5); border: none; color: white; font-size: 24px; 
                                 width: 40px; height: 60px; cursor: pointer; border-radius: 4px;">></button>
                         </div>
                     </div>
-
+                    
                     <!-- Neighbor frames preview -->
                     <div id="neighbor-frames" style="margin-top: 40px; display: none;">
                         <h3 style="color: #40E0D0; border-bottom: 1px solid #40E0D0; padding-bottom: 8px;">Neighboring Frames</h3>
                         <div id="neighbor-frames-container" style="display: flex; gap: 10px; overflow-x: auto; padding: 10px 0;"></div>
                     </div>
                 </div>
-
+                
                 <div class="info-container" style="flex: 1; min-width: 300px; padding: 15px; background: #222; border-radius: 8px; display: flex; flex-direction: column;">
                     <h2 style="color: #40E0D0; border-bottom: 2px solid #40E0D0; padding-bottom: 10px; flex-shrink: 0;">Thumbnail Details</h2>
                     <div id="modal-info" style="overflow-y: auto; max-height: 500px; color: #eee; flex-grow: 1; margin-top: 15px;"></div>
-
+                    
                     <!-- NEW: Action button container at the bottom of the info panel -->
                     <div class="modal-actions" style="margin-top: 20px; padding-top: 15px; border-top: 1px solid #333; flex-shrink: 0;">
                         <button id="modal-submit-btn" style="
@@ -109,9 +109,9 @@ function createModal() {
         </div>
     </div>
     `;
-
+    
     document.body.insertAdjacentHTML('beforeend', modalHTML);
-
+    
     // Setup close handler
     document.querySelector('#thumbnail-modal .close').addEventListener('click', closeModal);
     document.getElementById('thumbnail-modal').addEventListener('click', (e) => {
@@ -119,7 +119,7 @@ function createModal() {
             closeModal();
         }
     });
-
+    
     // Navigation handlers
     document.getElementById('prev-frame').addEventListener('click', () => navigateFrames(-1));
     document.getElementById('next-frame').addEventListener('click', () => navigateFrames(1));
@@ -155,10 +155,10 @@ function closeModal() {
     if (canvas) {
         canvas.getContext('2d').clearRect(0, 0, canvas.width, canvas.height);
     }
-
+    
     document.removeEventListener('keydown', handleKeyDown);
-
-    window.isModalOpen = false;
+    
+    window.isModalOpen = false; 
 
     // Reset frame state
     window.currentFrameIndex = 0;
@@ -182,16 +182,16 @@ function handleKeyDown(e) {
 // Navigate between frames
 function navigateFrames(direction) {
     if (!window.framesList || window.framesList.length === 0) return;
-
+    
     window.currentFrameIndex += direction;
-
+    
     // Wrap around
     if (window.currentFrameIndex < 0) {
         window.currentFrameIndex = window.framesList.length - 1;
     } else if (window.currentFrameIndex >= window.framesList.length) {
         window.currentFrameIndex = 0;
     }
-
+    
     const frame = window.framesList[window.currentFrameIndex];
     updateModalContent(frame);
     updateNeighborFramesHighlight();
@@ -201,11 +201,11 @@ function navigateFrames(direction) {
 function updateModalContent(frame) {
     const image = document.getElementById('modal-image');
     const infoContainer = document.getElementById('modal-info');
-
+    
     // Set image source
     const encodedPath = encodeURIComponent(frame.frame_path);
-    image.src = `hub/send_img/${encodedPath}`;
-
+    image.src = `hub/send_img_original/${encodedPath}`;
+    
     // Parse object data (if available)
     let objects = [];
     if (frame.object) {
@@ -220,10 +220,10 @@ function updateModalContent(frame) {
             console.error('Error parsing objects:', e);
         }
     }
-
+    
     // Remove previous load handler
     image.onload = null;
-
+    
     // Set new load handler
     image.onload = () => {
         // Wait for image to render in DOM
@@ -231,12 +231,12 @@ function updateModalContent(frame) {
             drawBoundingBoxes(image, objects);
         }, 50);
     };
-
+    
     // If image is already loaded, draw immediately
     if (image.complete) {
         image.onload();
     }
-
+    
     // Create information HTML
     const infoHTML = `
         <table class="info-table" style="width: 100%; border-collapse: collapse; color: #eee;">
@@ -269,7 +269,7 @@ function updateModalContent(frame) {
                     <ul style="padding-left: 20px; margin: 0;">
                         ${objects.map(obj => `
                             <li style="margin-bottom: 8px;">
-                                <span style="display: inline-block; width: 12px; height: 12px;
+                                <span style="display: inline-block; width: 12px; height: 12px; 
                                     background-color: ${stringToColor(obj.object)};
                                     margin-right: 8px; border-radius: 2px;"></span>
                                 ${obj.object} (${obj.conf.toFixed(2)})
@@ -281,7 +281,7 @@ function updateModalContent(frame) {
             ` : ''}
         </table>
     `;
-
+    
     infoContainer.innerHTML = infoHTML;
 }
 
@@ -289,7 +289,7 @@ function updateModalContent(frame) {
 function drawBoundingBoxes(image, objects) {
     const canvas = document.getElementById('modal-canvas');
     if (!canvas) return;
-
+    
     const ctx = canvas.getContext('2d');
     if (!ctx) return;
 
@@ -311,7 +311,7 @@ function drawBoundingBoxes(image, objects) {
 
     // Only draw if we have objects
     if (objects.length === 0) return;
-
+    
     const scaleX = displayedWidth / image.naturalWidth;
     const scaleY = displayedHeight / image.naturalHeight;
 
@@ -353,16 +353,16 @@ async function fetchNeighboringFrames(videoName, frameNum) {
         formData.append('video_name', videoName.replace('.mp4',''));
         formData.append('frame_num', parseInt(frameNum));
         formData.append('k', k);
-
+        
         const response = await fetch('hub/get_neighboring_frames', {
             method: 'POST',
             body: formData
         });
-
+        
         if (!response.ok) {
             throw new Error(`HTTP error! status: ${response.status}`);
         }
-
+        
         const data = await response.json();
         return data.data;
     } catch (error) {
@@ -387,17 +387,17 @@ function createNeighborPreview(framePath, isCurrent = false) {
         position: relative;
         ${isCurrent ? 'box-shadow: 0 0 10px rgba(64, 224, 208, 0.7);' : ''}
     `;
-
+    
     const img = document.createElement('img');
-    img.src = `hub/send_img/${encodeURIComponent(framePath)}`;
+    img.src = `hub/send_img_original/${encodeURIComponent(framePath)}`;
     img.style.cssText = `
         width: 100%;
         height: 100%;
         object-fit: cover;
     `;
-
+    
     preview.appendChild(img);
-
+    
     // Add click handler to switch to this frame
     preview.addEventListener('click', () => {
         const index = window.framesList.findIndex(f => f.frame_path === framePath);
@@ -407,7 +407,7 @@ function createNeighborPreview(framePath, isCurrent = false) {
             updateNeighborFramesHighlight();
         }
     });
-
+    
     return preview;
 }
 
@@ -416,15 +416,15 @@ function createNeighborPreview(framePath, isCurrent = false) {
 function centerCurrentNeighborFrame() {
     const container = document.getElementById('neighbor-frames-container');
     if (!container || container.children.length === 0) return;
-
+    
     const currentFrameElement = container.children[window.currentFrameIndex];
     if (!currentFrameElement) return;
-
+    
     const containerWidth = container.offsetWidth;
     const scrollLeft = container.scrollLeft;
     const elementLeft = currentFrameElement.offsetLeft;
     const elementWidth = currentFrameElement.offsetWidth;
-
+    
     const targetScroll = elementLeft - (containerWidth / 2) + (elementWidth / 2);
     container.scrollTo({
         left: targetScroll,
@@ -436,14 +436,14 @@ function centerCurrentNeighborFrame() {
 function updateNeighborFramesHighlight() {
     const container = document.getElementById('neighbor-frames-container');
     if (!container) return;
-
+    
     const previews = container.querySelectorAll('.neighbor-preview');
     previews.forEach((preview, index) => {
         const isCurrent = index === window.currentFrameIndex;
         preview.style.border = isCurrent ? '2px solid #40E0D0' : '2px solid #555';
         preview.style.boxShadow = isCurrent ? '0 0 10px rgba(64, 224, 208, 0.7)' : 'none';
     });
-
+    
     centerCurrentNeighborFrame();
 }
 
@@ -454,22 +454,22 @@ async function showModal(record) {
     if (!modal) {
         createModal();
     }
-
+    
     window.isModalOpen = true;
 
     // Initialize frame list with current record
     window.framesList = [record];
     window.currentFrameIndex = 0;
-
+    
     // Show modal immediately with current frame
     document.getElementById('thumbnail-modal').style.display = 'block';
     updateModalContent(record);
-
+    
     // Fetch neighboring frames
     try {
         const frameNum = record.keyframe_id.split('.')[0];
         const neighbors = await fetchNeighboringFrames(record.video_name, frameNum, 10);
-
+        
         // Create frame objects for neighbors
         const prevFrames = neighbors.prev_frames.map(path => ({
             frame_path: path,
@@ -480,7 +480,7 @@ async function showModal(record) {
             s2t: null,
             object: null
         }));
-
+        
         const nextFrames = neighbors.next_frames.map(path => ({
             frame_path: path,
             video_name: record.video_name,
@@ -490,34 +490,34 @@ async function showModal(record) {
             s2t: null,
             object: null
         }));
-
+        
         // Combine all frames
-        window.framesList = [...prevFrames.reverse(), record, ...nextFrames];
+        window.framesList = [...prevFrames, record, ...nextFrames];
         window.currentFrameIndex = prevFrames.length;
-
+        
         // Update the main content again to reflect the correct total frame count
         updateModalContent(window.framesList[window.currentFrameIndex]);
-
+        
         // Update UI with neighbors
         const neighborContainer = document.getElementById('neighbor-frames-container');
         neighborContainer.innerHTML = '';
-
+        
         window.framesList.forEach((frame, index) => {
             neighborContainer.appendChild(createNeighborPreview(
-                frame.frame_path,
+                frame.frame_path, 
                 index === window.currentFrameIndex
             ));
         });
-
+        
         // Show neighbor section
         document.getElementById('neighbor-frames').style.display = 'block';
         updateNeighborFramesHighlight();
-
+        
     } catch (error) {
         console.error('Error loading neighbor frames:', error);
         document.getElementById('neighbor-frames').style.display = 'none';
     }
-
+    
     document.addEventListener('keydown', handleKeyDown);
 }
 
@@ -527,13 +527,13 @@ export function initThumbnailView() {
     if (!document.getElementById('thumbnail-modal')) {
         createModal();
     }
-
+    
     // Add click handlers to all image IDs
     document.querySelectorAll('.image_id').forEach(element => {
         element.addEventListener('click', function(e) {
             e.preventDefault();
             const index = this.id.split('-')[1];
-
+            
             if (window.currentVideos && window.currentVideos[index]) {
                 showModal(window.currentVideos[index]);
             }
