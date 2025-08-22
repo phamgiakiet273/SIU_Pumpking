@@ -9,6 +9,7 @@ from flask import json
 import ujson
 import gzip
 import requests
+import pillow_avif
 
 from PIL import Image
 import numpy as np
