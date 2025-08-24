@@ -5,6 +5,8 @@ dotenv.load_dotenv()
 import uvicorn
 import signal
 from fastapi.staticfiles import StaticFiles
+
+# + flask + ujson + requests + pillow-avif-plugin + Pillow + numpy + httpx + loguru + python-multipart
 from fastapi import FastAPI
 from fastapi.middleware.gzip import GZipMiddleware
 
@@ -14,7 +16,7 @@ import sys
 current_path = Path(__file__).resolve()
 for parent in current_path.parents:
     if parent.name == "SIU_Pumpking":
-        #print(f"Adding {parent} to sys.path")
+        # print(f"Adding {parent} to sys.path")
         sys.path.append(str(parent))
         break
 else:
@@ -43,14 +45,22 @@ app.include_router(router)
 if os.getenv("ENABLE_GZIP", "True").lower() == "true":
     app.add_middleware(GZipMiddleware, minimum_size=0)  # compress response > 0 bytes
 
-""" if __name__ == "__main__":
+# serve local images directly when NGINX_IMAGE_HOST points to localhost
+if os.getenv("NGINX_IMAGE_HOST", "").startswith("http://localhost"):
+    local_img_path = os.getenv(
+        "IMAGE_LOCAL_PATH",
+        r"C:/Users/F14_TOMCAT/Downloads/Project/0_low_res_autoshot_only",
+    )
+    # mount at /img so send_img_handler redirects to e.g. http://localhost:9181/img/<path>
+    app.mount("/img", StaticFiles(directory=local_img_path), name="local_img")
 
+if __name__ == "__main__":
     uvicorn.run(
         app,
         host=HubConfig().HUB_HOST,
         port=HubConfig().HUB_PORT,
-        workers=HubConfig().HUB_MAX_WORKERS
-    ) """
+        workers=HubConfig().HUB_MAX_WORKERS,
+    )
 
 # Signal handling for graceful shutdown
 # Fix UserWarning: resource_tracker: There appear to be 320 leaked semaphore objects to clean up at shutdown
