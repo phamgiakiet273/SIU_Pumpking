@@ -31,18 +31,8 @@ Follow the steps below to set up and run the project:
 
     */mnt/c/Users/F14_TOMCAT/Downloads/Project/0_low_res_autoshot_only*
 
----------------------------------------------------------------
-## 4. Edit nginx.conf to set the correct image directory (No folder name)
-
-- Open the file: `nginx/conf/nginx.conf`
-- Go to line 33
-- Replace the path there with the copied path, WITHOUT the folder name.
-
-  Example:
-  > alias /mnt/c/Users/F14_TOMCAT/Downloads/Project/;
-
 ------------------------------------------------------------
-## 5. Set IMAGE_LOCAL_PATH in .env file (WITH folder name included)
+## 4. Set IMAGE_LOCAL_PATH in .env file (WITH folder name included)
 
 - Contact the repository owner to get the `.env` file.
 - Open the `.env` file and set `IMAGE_LOCAL_PATH` to the full path INCLUDING the image folder name.
@@ -51,7 +41,7 @@ Follow the steps below to set up and run the project:
     > IMAGE_LOCAL_PATH="/mnt/c/Users/F14_TOMCAT/Downloads/Project/0_low_res_autoshot_only"
 
 ------------------------
-## 6. Run the Project
+## 5. Run the Project
 
 - Run the following command to start the service:
 ```

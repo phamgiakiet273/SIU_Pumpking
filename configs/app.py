@@ -35,49 +35,49 @@ class AppConfig:
         # --- VALIDATIONS ---
 
         # Mandatory string values
-        for var in [
-            "TRANSFORMERS_CACHE",
-            "CUDA_DEVICE_ORDER",
-            "KEYFRAME_FOLDER_PATH",
-            "SPLIT_NAME_LOW_RES",
-            "SPLIT_NAME",
-            "DATASET_INDEX",
-            "OBJECT_PATH",
-            "LOWRES_FORMAT",
-            "DATASET_PATH_ORIGIN",
-            "DATASET_PATH_TEAM",
-        ]:
-            val = getattr(self, var)
-            assert val, f"{var} must be set"
+        # for var in [
+        #     "TRANSFORMERS_CACHE",
+        #     "CUDA_DEVICE_ORDER",
+        #     "KEYFRAME_FOLDER_PATH",
+        #     "SPLIT_NAME_LOW_RES",
+        #     "SPLIT_NAME",
+        #     "DATASET_INDEX",
+        #     "OBJECT_PATH",
+        #     "LOWRES_FORMAT",
+        #     "DATASET_PATH_ORIGIN",
+        #     "DATASET_PATH_TEAM",
+        # ]:
+        #     val = getattr(self, var)
+        #     assert val, f"{var} must be set"
 
-        # Directory checks
-        for dir_var in [
-            "KEYFRAME_FOLDER_PATH",
-            "DATASET_INDEX",
-            "DATASET_PATH_ORIGIN",
-            "DATASET_PATH_TEAM",
-        ]:
-            dir_val = getattr(self, dir_var)
-            if not os.path.isdir(dir_val):
-                raise NotADirectoryError(
-                    f"{dir_var}='{dir_val}' does not exist or is not a directory"
-                )
+        # # Directory checks
+        # for dir_var in [
+        #     "KEYFRAME_FOLDER_PATH",
+        #     "DATASET_INDEX",
+        #     "DATASET_PATH_ORIGIN",
+        #     "DATASET_PATH_TEAM",
+        # ]:
+        #     dir_val = getattr(self, dir_var)
+        #     if not os.path.isdir(dir_val):
+        #         raise NotADirectoryError(
+        #             f"{dir_var}='{dir_val}' does not exist or is not a directory"
+        #         )
 
-        # File check
-        if not os.path.isfile(self.OBJECT_PATH):
-            raise FileNotFoundError(f"{self.OBJECT_PATH} does not exist")
+        # # File check
+        # if not os.path.isfile(self.OBJECT_PATH):
+        #     raise FileNotFoundError(f"{self.OBJECT_PATH} does not exist")
 
-        for path in self.S2T_PATH:
-            if not os.path.isfile(path):
-                raise FileNotFoundError(f"S2T_PATH entry '{path}' does not exist")
+        # for path in self.S2T_PATH:
+        #     if not os.path.isfile(path):
+        #         raise FileNotFoundError(f"S2T_PATH entry '{path}' does not exist")
 
-        for path in self.FPS_PATH:
-            if not os.path.isfile(path):
-                raise FileNotFoundError(f"FPS_PATH entry '{path}' does not exist")
+        # for path in self.FPS_PATH:
+        #     if not os.path.isfile(path):
+        #         raise FileNotFoundError(f"FPS_PATH entry '{path}' does not exist")
 
-        # LOWRES_FORMAT validation (example: jpg, png)
-        valid_formats = {".avif", ".jpg"}
-        if self.LOWRES_FORMAT.lower() not in valid_formats:
-            raise ValueError(
-                f"LOWRES_FORMAT '{self.LOWRES_FORMAT}' is invalid. Must be one of {valid_formats}"
-            )
+        # # LOWRES_FORMAT validation (example: jpg, png)
+        # valid_formats = {".avif", ".jpg"}
+        # if self.LOWRES_FORMAT.lower() not in valid_formats:
+        #     raise ValueError(
+        #         f"LOWRES_FORMAT '{self.LOWRES_FORMAT}' is invalid. Must be one of {valid_formats}"
+        #     )
