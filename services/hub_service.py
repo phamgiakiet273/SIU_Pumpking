@@ -6,7 +6,7 @@ import uvicorn
 import signal
 from fastapi.staticfiles import StaticFiles
 
-# + flask + ujson + requests + pillow-avif-plugin + Pillow + numpy + httpx + loguru + python-multipart
+# dotenv + uvicorn + fastapi + flask + ujson + requests + pillow-avif-plugin + Pillow + httpx + loguru + python-multipart
 from fastapi import FastAPI
 from fastapi.middleware.gzip import GZipMiddleware
 

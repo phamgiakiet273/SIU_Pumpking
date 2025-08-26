@@ -12,7 +12,6 @@ import requests
 import pillow_avif
 
 from PIL import Image
-import numpy as np
 from fastapi import FastAPI, Depends, HTTPException, Path, Request, Response
 from fastapi import File, Form, UploadFile, Body
 from fastapi.responses import FileResponse, JSONResponse, RedirectResponse

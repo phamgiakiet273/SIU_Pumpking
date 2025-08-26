@@ -1,0 +1,12 @@
+python-dotenv
+uvicorn
+fastapi
+flask
+ujson
+requests
+pillow-avif-plugin
+Pillow
+httpx
+loguru
+python-multipart
+pre-commit
