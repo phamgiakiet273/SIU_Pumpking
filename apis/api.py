@@ -20,7 +20,7 @@ import sys
 current_path = Path(__file__).resolve()
 for parent in current_path.parents:
     if parent.name == "SIU_Pumpking":
-        #print(f"Adding {parent} to sys.path")
+        # print(f"Adding {parent} to sys.path")
         sys.path.append(str(parent))
         break
 else:
@@ -82,8 +82,8 @@ def setup_app() -> FastAPI:
     )
 
     app.add_middleware(
-        LimitUploadSizeMiddleware, max_upload_size=10 * 1024 * 1024
-    )  # 10 MB
+        LimitUploadSizeMiddleware, max_upload_size=50 * 1024 * 1024
+    )  # 50 MB
 
     @app.middleware("http")
     async def add_process_time_header(request: Request, call_next):

@@ -23,7 +23,7 @@ import { initSettingsPanel } from './settingPanel.js'
 import { initFilterPanel, fetchVideoNames, addExcludedFrame } from './filterPanel.js';
 
 // Add at the top
-let API_PREFIX = '/siu_pumpking_1/';
+let API_PREFIX = '';
 
 export function setApiPrefix(prefix) {
     API_PREFIX = prefix;

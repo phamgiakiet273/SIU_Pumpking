@@ -12,7 +12,6 @@ import requests
 import pillow_avif
 
 from PIL import Image
-import numpy as np
 from fastapi import FastAPI, Depends, HTTPException, Path, Request, Response
 from fastapi import File, Form, UploadFile, Body
 from fastapi.responses import FileResponse, JSONResponse, RedirectResponse
@@ -49,6 +48,7 @@ timeout = HubConfig().REQUEST_TIMEOUT
 
 logger = get_logger()
 
+
 class HubHandler:
     def __init__(self) -> None:
         pass
@@ -76,9 +76,9 @@ class HubHandler:
         logger.info(f"send_img_handler path: {target}")
         # 307 preserves method, use 302 if you prefer
         return RedirectResponse(url=target, status_code=307)
-    
+
     async def send_img_original_handler(self, full_path: str):
-        full_path = full_path.replace('.avif', '.jpg')
+        full_path = full_path.replace(".avif", ".jpg")
         target = f"{NGINXConfig().NGINX_IMAGE_HOST}/{full_path}"
         logger.info(f"send_img_handler path: {target}")
         return RedirectResponse(url=target, status_code=307)
@@ -97,7 +97,7 @@ class HubHandler:
         # Convert Pydantic models to dictionaries
         video_metadata_dicts = [item.model_dump() for item in video_metadata_list]
 
-        url = f"http://{RerankConfig().RERANK_HOST}:{RerankConfig().RERANK_PORT}/rerank/rerank_color"
+        url = f"{RerankConfig().RERANK_HOST}/rerank/rerank_color"
 
         # Send the list directly without wrapping in an object
         async with httpx.AsyncClient(timeout=timeout) as client:
@@ -143,7 +143,8 @@ class HubHandler:
         target: Optional[str] = Form("en"),
     ) -> APIResponse:
 
-        url = f"http://{UtilConfig().UTIL_HOST}:{UtilConfig().UTIL_PORT}/util/translate"
+        # url = f"http://{UtilConfig().UTIL_HOST}:{UtilConfig().UTIL_PORT}/util/translate"
+        url = f"{UtilConfig().UTIL_HOST}/util/translate"
 
         json = {"text": text, "source": source, "target": target}
 
@@ -164,7 +165,7 @@ class HubHandler:
         )
 
     async def get_sessionID_evalID_DRES_handler(self) -> APIResponse:
-        base_url = f"http://{SubmissionConfig().SUBMISSION_HOST}:{SubmissionConfig().SUBMISSION_PORT}/submission"
+        base_url = f"{SubmissionConfig().SUBMISSION_HOST}/submission"
         async with httpx.AsyncClient(timeout=timeout) as client:
             # Lấy session_id
             resp1 = await client.get(f"{base_url}/get_session_id")
@@ -199,7 +200,7 @@ class HubHandler:
         end: int = Form(359960),
     ) -> APIResponse:
 
-        url = f"http://{SubmissionConfig().SUBMISSION_HOST}:{SubmissionConfig().SUBMISSION_PORT}/submission/submit"
+        url = f"{SubmissionConfig().SUBMISSION_HOST}/submission/submit"
         json_data = {
             "session_id": session_id,
             "eval_id": eval_id,
@@ -232,7 +233,7 @@ class HubHandler:
         """
         Get k frame back & forth.
         """
-        url = f"http://{UtilConfig().UTIL_HOST}:{UtilConfig().UTIL_PORT}/util/get_neighboring_frames"
+        url = f"{UtilConfig().UTIL_HOST}/util/get_neighboring_frames"
         payload = {"frame_num": frame_num, "video_name": video_name, "k": k}
         async with httpx.AsyncClient(timeout=timeout) as client:
             response = await client.post(url, json=payload)
@@ -254,9 +255,7 @@ class HubHandler:
         Nếu đường dẫn frame hoặc collection name bị thay đổi thì sẽ bị ảnh hưởng.
         Điều kiện bắt buộc ở trên là frame truyền vô phải chắc chắn có trong database.
         """
-        url = (
-            f"http://{UtilConfig().UTIL_HOST}:{UtilConfig().UTIL_PORT}/util/get_vector"
-        )
+        url = f"{UtilConfig().UTIL_HOST}/util/get_vector"
         payload = {"video_name": video_name, "frame_name": frame_name}
         async with httpx.AsyncClient(timeout=timeout) as client:
             response = await client.post(url, json=payload)
@@ -292,7 +291,7 @@ class HubHandler:
                 detail=f"batch_id must be a JSON list of integers. Got: {batch_id}",
             )
 
-        url = f"http://{UtilConfig().UTIL_HOST}:{UtilConfig().UTIL_PORT}/util/get_video_names"
+        url = f"{UtilConfig().UTIL_HOST}/util/get_video_names"
         payload = {"batch_id": batch_id_list}
         async with httpx.AsyncClient(timeout=timeout) as client:
             response = await client.post(url, json=payload)
@@ -327,7 +326,7 @@ class HubHandler:
         skip_frames_list = json.loads(skip_frames)
 
         # prepare url + json to send to SIGLIP service
-        url = f"http://{SIGLIPV2Config().SIGLIP_V2_HOST}:{SIGLIPV2Config().SIGLIP_V2_PORT}/siglip_v2/text_search"
+        url = f"{SIGLIPV2Config().SIGLIP_V2_HOST}/siglip_v2/text_search"
 
         payload = {
             "text": str(text),
@@ -380,7 +379,7 @@ class HubHandler:
 
     async def siglip_v2_image_query(self, query: ImageQuery) -> APIResponse:
 
-        url = f"http://{SIGLIPV2Config().SIGLIP_V2_HOST}:{SIGLIPV2Config().SIGLIP_V2_PORT}/siglip_v2/image_search"
+        url = f"{SIGLIPV2Config().SIGLIP_V2_HOST}/siglip_v2/image_search"
 
         json = {
             "image_data": query.image_data,
@@ -499,7 +498,7 @@ class HubHandler:
 
         skip_frames_list = json.loads(skip_frames)
 
-        url = f"http://{SIGLIPV2Config().SIGLIP_V2_HOST}:{SIGLIPV2Config().SIGLIP_V2_PORT}/siglip_v2/temporal_search"
+        url = f"{SIGLIPV2Config().SIGLIP_V2_HOST}/siglip_v2/temporal_search"
 
         payload = {
             "text": str(text),
@@ -570,7 +569,7 @@ class HubHandler:
 
     async def siglip_v2_scroll(self, query: ScrollQuery) -> APIResponse:
 
-        url = f"http://{SIGLIPV2Config().SIGLIP_V2_HOST}:{SIGLIPV2Config().SIGLIP_V2_PORT}/siglip_v2/scroll"
+        url = f"{SIGLIPV2Config().SIGLIP_V2_HOST}/siglip_v2/scroll"
 
         json = {
             "k": int(query.k),
@@ -687,7 +686,7 @@ class HubHandler:
 
         skip_frames_list = json.loads(skip_frames)
 
-        url = f"http://{METACLIPConfig().METACLIP_HOST}:{METACLIPConfig().METACLIP_PORT}/metaclip/text_search"
+        url = f"{METACLIPConfig().METACLIP_HOST}/metaclip/text_search"
 
         payload = {
             "text": str(text),
@@ -740,7 +739,7 @@ class HubHandler:
 
     async def metaclip_image_query(self, query: ImageQuery) -> APIResponse:
 
-        url = f"http://{METACLIPConfig().METACLIP_HOST}:{METACLIPConfig().METACLIP_PORT}/metaclip/image_search"
+        url = f"{METACLIPConfig().METACLIP_HOST}/metaclip/image_search"
 
         json = {
             "image_data": query.image_data,
@@ -860,7 +859,7 @@ class HubHandler:
 
         skip_frames_list = json.loads(skip_frames)
 
-        url = f"http://{METACLIPConfig().METACLIP_HOST}:{METACLIPConfig().METACLIP_PORT}/metaclip/temporal_search"
+        url = f"{METACLIPConfig().METACLIP_HOST}/metaclip/temporal_search"
 
         payload = {
             "text": str(text),
@@ -931,7 +930,7 @@ class HubHandler:
 
     async def metaclip_scroll(self, query: ScrollQuery) -> APIResponse:
 
-        url = f"http://{METACLIPConfig().METACLIP_HOST}:{METACLIPConfig().METACLIP_PORT}/metaclip/scroll"
+        url = f"{METACLIPConfig().METACLIP_HOST}/metaclip/scroll"
 
         json = {
             "k": int(query.k),
@@ -1048,7 +1047,7 @@ class HubHandler:
 
         skip_frames_list = json.loads(skip_frames)
 
-        url = f"http://{METACLIPV2Config().METACLIP_V2_HOST}:{METACLIPV2Config().METACLIP_V2_PORT}/metaclip_v2/text_search"
+        url = f"{METACLIPV2Config().METACLIP_V2_HOST}/metaclip_v2/text_search"
 
         payload = {
             "text": str(text),
@@ -1101,7 +1100,7 @@ class HubHandler:
 
     async def metaclip_v2_image_query(self, query: ImageQuery) -> APIResponse:
 
-        url = f"http://{METACLIPV2Config().METACLIP_V2_HOST}:{METACLIPV2Config().METACLIP_V2_PORT}/metaclip_v2/image_search"
+        url = f"{METACLIPV2Config().METACLIP_V2_HOST}/metaclip_v2/image_search"
 
         json = {
             "image_data": query.image_data,
@@ -1221,7 +1220,7 @@ class HubHandler:
 
         skip_frames_list = json.loads(skip_frames)
 
-        url = f"http://{METACLIPV2Config().METACLIP_V2_HOST}:{METACLIPV2Config().METACLIP_V2_PORT}/metaclip_v2/temporal_search"
+        url = f"{METACLIPV2Config().METACLIP_V2_HOST}/metaclip_v2/temporal_search"
 
         payload = {
             "text": str(text),
@@ -1292,7 +1291,7 @@ class HubHandler:
 
     async def metaclip_v2_scroll(self, query: ScrollQuery) -> APIResponse:
 
-        url = f"http://{METACLIPV2Config().METACLIP_V2_HOST}:{METACLIPV2Config().METACLIP_V2_PORT}/metaclip_v2/scroll"
+        url = f"{METACLIPV2Config().METACLIP_V2_HOST}/metaclip_v2/scroll"
 
         json = {
             "k": int(query.k),
