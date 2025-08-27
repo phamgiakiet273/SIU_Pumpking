@@ -13,7 +13,7 @@ class QdrantRequest(BaseModel):
     return_object: bool = True
     frame_class_filter: bool = True
     skip_frames: List[Dict[str, str]] = Field(default_factory=list)
-
+    sort_to_news: bool = True
 
 class RetrievalRequest(BaseModel):
     image_data: Optional[str] = None  # base64
@@ -25,4 +25,5 @@ class RetrievalRequest(BaseModel):
     return_object: bool = True
     frame_class_filter: bool = True
     skip_frames: List[Dict[str, str]] = Field(default_factory=list)
+    sort_to_news: bool = True
     # model_config = ConfigDict(arbitrary_types_allowed=True)

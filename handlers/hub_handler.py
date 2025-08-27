@@ -321,6 +321,7 @@ class HubHandler:
         return_object: bool = Form(True),
         frame_class_filter: bool = Form(True),
         skip_frames: Optional[str] = Form("[]"),
+        sort_to_news: bool = Form(True)
     ) -> APIResponse:
 
         skip_frames_list = json.loads(skip_frames)
@@ -337,6 +338,7 @@ class HubHandler:
             "return_object": return_object,
             "frame_class_filter": frame_class_filter,
             "skip_frames": skip_frames_list if skip_frames_list else [],
+            "sort_to_news": sort_to_news
         }
 
         async with httpx.AsyncClient(timeout=timeout) as client:
@@ -392,6 +394,7 @@ class HubHandler:
             "return_object": query.return_object,
             "frame_class_filter": query.frame_class_filter,
             "skip_frames": query.skip_frames if query.skip_frames else [],
+            "sort_to_news": query.sort_to_news
         }
 
         async with httpx.AsyncClient(timeout=timeout) as client:
@@ -439,6 +442,7 @@ class HubHandler:
         return_object: bool = Form(True),
         frame_class_filter: bool = Form(True),
         skip_frames: Optional[str] = Form("[]"),
+        sort_to_news: bool = Form(True)
     ) -> APIResponse:
 
         skip_frames_list = json.loads(skip_frames)
@@ -481,6 +485,7 @@ class HubHandler:
                 return_object=return_object,
                 frame_class_filter=frame_class_filter,
                 skip_frames=skip_frames_list,
+                sort_to_news=sort_to_news
             )
         )
 
@@ -494,6 +499,7 @@ class HubHandler:
         return_object: bool = Form(True),
         frame_class_filter: bool = Form(True),
         skip_frames: Optional[str] = Form("[]"),
+        sort_to_news: bool = Form(True)
     ) -> APIResponse:
 
         skip_frames_list = json.loads(skip_frames)
@@ -509,6 +515,7 @@ class HubHandler:
             "return_object": return_object,
             "frame_class_filter": frame_class_filter,
             "skip_frames": skip_frames_list if skip_frames_list else [],
+            "sort_to_news": sort_to_news
         }
 
         async with httpx.AsyncClient(timeout=timeout) as client:
@@ -581,6 +588,7 @@ class HubHandler:
             "return_object": query.return_object,
             "frame_class_filter": query.frame_class_filter,
             "skip_frames": query.skip_frames if query.skip_frames else [],
+            "sort_to_news": query.sort_to_news
         }
 
         async with httpx.AsyncClient(timeout=timeout) as client:
@@ -629,6 +637,7 @@ class HubHandler:
         return_object: bool = Form(True),
         frame_class_filter: bool = Form(True),
         skip_frames: Optional[str] = Form("[]"),
+        sort_to_news: bool = Form(True)
     ) -> APIResponse:
 
         skip_frames_list = json.loads(skip_frames)
@@ -661,6 +670,7 @@ class HubHandler:
                 return_object=return_object,
                 frame_class_filter=frame_class_filter,
                 skip_frames=skip_frames_list,
+                sort_to_news=sort_to_news
             )
         )
 
@@ -682,6 +692,7 @@ class HubHandler:
         skip_frames: Optional[str] = Form(
             '[{"video_name": "L27_V015", "frame_name": "05643", "related_start_frame": "0", "related_end_frame": "50000"}]'
         ),
+        sort_to_news: bool = Form(True)
     ) -> APIResponse:
 
         skip_frames_list = json.loads(skip_frames)
@@ -697,6 +708,7 @@ class HubHandler:
             "return_object": return_object,
             "frame_class_filter": frame_class_filter,
             "skip_frames": skip_frames_list if skip_frames_list else [],
+            "sort_to_news": sort_to_news
         }
 
         async with httpx.AsyncClient(timeout=timeout) as client:
@@ -752,6 +764,7 @@ class HubHandler:
             "return_object": query.return_object,
             "frame_class_filter": query.frame_class_filter,
             "skip_frames": query.skip_frames if query.skip_frames else [],
+            "sort_to_news": query.sort_to_news
         }
 
         async with httpx.AsyncClient(timeout=timeout) as client:
@@ -799,6 +812,7 @@ class HubHandler:
         return_object: bool = Form(True),
         frame_class_filter: bool = Form(True),
         skip_frames: Optional[str] = Form("[]"),
+        sort_to_news: bool = Form(True)
     ) -> APIResponse:
 
         skip_frames_list = json.loads(skip_frames)
@@ -841,6 +855,7 @@ class HubHandler:
                 return_object=return_object,
                 frame_class_filter=frame_class_filter,
                 skip_frames=skip_frames_list,
+                sort_to_news=sort_to_news
             )
         )
 
@@ -855,6 +870,7 @@ class HubHandler:
         return_object: bool = Form(True),
         frame_class_filter: bool = Form(True),
         skip_frames: Optional[str] = Form("[]"),
+        sort_to_news: bool = Form(True)
     ) -> APIResponse:
 
         skip_frames_list = json.loads(skip_frames)
@@ -870,6 +886,7 @@ class HubHandler:
             "return_object": return_object,
             "frame_class_filter": frame_class_filter,
             "skip_frames": skip_frames_list if skip_frames_list else [],
+            "sort_to_news": sort_to_news,
         }
 
         async with httpx.AsyncClient(timeout=timeout) as client:
@@ -942,6 +959,7 @@ class HubHandler:
             "return_object": query.return_object,
             "frame_class_filter": query.frame_class_filter,
             "skip_frames": query.skip_frames if query.skip_frames else [],
+            "sort_to_news": query.sort_to_news,
         }
 
         async with httpx.AsyncClient(timeout=timeout) as client:
@@ -990,6 +1008,7 @@ class HubHandler:
         return_object=Form(True),
         frame_class_filter: bool = Form(True),
         skip_frames: Optional[str] = Form("[]"),
+        sort_to_news: bool = Form(True)
     ) -> APIResponse:
 
         skip_frames_list = json.loads(skip_frames)
@@ -1022,6 +1041,7 @@ class HubHandler:
                 return_object=return_object,
                 frame_class_filter=frame_class_filter,
                 skip_frames=skip_frames_list,
+                sort_to_news=sort_to_news
             )
         )
 
@@ -1043,6 +1063,7 @@ class HubHandler:
         skip_frames: Optional[str] = Form(
             '[{"video_name": "L27_V015", "frame_name": "05643", "related_start_frame": "0", "related_end_frame": "50000"}]'
         ),
+        sort_to_news: bool = Form(True)
     ) -> APIResponse:
 
         skip_frames_list = json.loads(skip_frames)
@@ -1058,6 +1079,7 @@ class HubHandler:
             "return_object": return_object,
             "frame_class_filter": frame_class_filter,
             "skip_frames": skip_frames_list if skip_frames_list else [],
+            "sort_to_news": sort_to_news
         }
 
         async with httpx.AsyncClient(timeout=timeout) as client:
@@ -1113,6 +1135,7 @@ class HubHandler:
             "return_object": query.return_object,
             "frame_class_filter": query.frame_class_filter,
             "skip_frames": query.skip_frames if query.skip_frames else [],
+            "sort_to_news": query.sort_to_news
         }
 
         async with httpx.AsyncClient(timeout=timeout) as client:
@@ -1160,6 +1183,7 @@ class HubHandler:
         return_object: bool = Form(True),
         frame_class_filter: bool = Form(True),
         skip_frames: Optional[str] = Form("[]"),
+        sort_to_news: bool = Form(True)
     ) -> APIResponse:
 
         skip_frames_list = json.loads(skip_frames)
@@ -1202,6 +1226,7 @@ class HubHandler:
                 return_object=return_object,
                 frame_class_filter=frame_class_filter,
                 skip_frames=skip_frames_list,
+                sort_to_news=sort_to_news
             )
         )
 
@@ -1216,6 +1241,7 @@ class HubHandler:
         return_object: bool = Form(True),
         frame_class_filter: bool = Form(True),
         skip_frames: Optional[str] = Form("[]"),
+        sort_to_news: bool = Form(True)
     ) -> APIResponse:
 
         skip_frames_list = json.loads(skip_frames)
@@ -1231,6 +1257,7 @@ class HubHandler:
             "return_object": return_object,
             "frame_class_filter": frame_class_filter,
             "skip_frames": skip_frames_list if skip_frames_list else [],
+            "sort_to_news": sort_to_news
         }
 
         async with httpx.AsyncClient(timeout=timeout) as client:
@@ -1303,6 +1330,7 @@ class HubHandler:
             "return_object": query.return_object,
             "frame_class_filter": query.frame_class_filter,
             "skip_frames": query.skip_frames if query.skip_frames else [],
+            "sort_to_news": query.sort_to_news,
         }
 
         async with httpx.AsyncClient(timeout=timeout) as client:
@@ -1351,6 +1379,7 @@ class HubHandler:
         return_object=Form(True),
         frame_class_filter: bool = Form(True),
         skip_frames: Optional[str] = Form("[]"),
+        sort_to_news: bool = Form(True)
     ) -> APIResponse:
 
         skip_frames_list = json.loads(skip_frames)
@@ -1383,5 +1412,6 @@ class HubHandler:
                 return_object=return_object,
                 frame_class_filter=frame_class_filter,
                 skip_frames=skip_frames_list,
+                sort_to_news=sort_to_news
             )
         )
