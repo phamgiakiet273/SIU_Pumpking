@@ -58,7 +58,7 @@ export function displayTemporalResults(videoRowsList) {
                 thumbnail.className = 'thumbnail';
 
                 const encodedPath = encodeURIComponent(scene.frame_path);
-
+                
                 thumbnail.innerHTML = `
                     <div style="position: relative;">
                         <a class="fps" style="display: none;">${scene.fps||''}</a>
@@ -94,9 +94,9 @@ export function displayTemporalResults(videoRowsList) {
                     e.stopPropagation();
                     window.addExcludedFrame(scene);
                     // Show filter panel
-                    document.querySelector('.filters-panel').style.display = 'block';
+                    document.querySelector('.filters-panel').style.display = 'block';                    
                 });
-
+                
                 const thumbDiv = thumbnail.querySelector('div[style="position: relative;"]');
                 thumbDiv.appendChild(excludeBtn);
 

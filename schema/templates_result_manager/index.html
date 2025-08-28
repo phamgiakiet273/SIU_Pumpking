@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Result Manager</title>
+    <base href="{{ base_url }}">
+    <link rel="stylesheet" href="static/css/styles.css">
+    <link rel="stylesheet" href="static/css/resultManager.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/sortablejs@1.14.0/Sortable.min.js"></script>
+</head>
+<body>
+    <div class="result-manager-container">
+        <div class="header-sections">
+            <div class="section">
+                <h2>Upload CSV</h2>
+                <input type="file" id="upload-csv" accept=".csv">
+                <div class="upload-options">
+                    <label><input type="radio" name="upload-position" value="start" checked> Add to Start</label>
+                    <label><input type="radio" name="upload-position" value="end"> Add to End</label>
+                    <label><input type="radio" name="upload-position" value="custom"> Add at Position</label>
+                    <input type="number" id="upload-position-index" min="1" value="1" disabled>
+                </div>
+            </div>
+
+            <div class="section">
+                <h2>VQA (optional)</h2>
+                <div class="csv-options">
+                    <label><input type="checkbox" id="vqa-advanced"> Advanced VQA</label>
+                    <div id="vqa-basic">
+                        <input type="text" id="third-column-value" placeholder="VQA answer (optional)">
+                    </div>
+                    <div id="vqa-advanced-options" style="display: none;">
+                        <input type="text" id="vqa-row1" placeholder="VQA for row 1">
+                        <input type="text" id="vqa-row2-5" placeholder="VQA for row 2-5">
+                        <input type="text" id="vqa-row6-20" placeholder="VQA for row 6-20">
+                        <input type="text" id="vqa-row21-50" placeholder="VQA for row 21-50">
+                        <input type="text" id="vqa-row51-end" placeholder="VQA for row 51-end">
+                    </div>
+                    <button id="download-adjusted-csv">Download Adjusted CSV</button>
+                </div>
+            </div>
+
+            <div class="section">
+                <h2>Manual Entry</h2>
+                <div class="manual-entry">
+                    <input type="text" id="manual-video-name" placeholder="Video Name">
+                    <input type="text" id="manual-frame-id" placeholder="Frame ID">
+                    <div class="manual-buttons">
+                        <button id="add-to-start-btn" class="position-btn">Add start</button>
+                        <button id="add-to-end-btn" class="position-btn">Add end </button>
+                        <button id="add-at-position-btn" class="position-btn">Add ...</button>
+                        <button id="add-range-btn" class="position-btn">Add range</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="management-section">
+            <div class="section-header">
+                <h2>Manage Results</h2>
+                <div class="management-controls">
+                    <div class="selection-controls">
+                        <button id="select-all-btn" title="Select All">Select All</button>
+                        <button id="deselect-all-btn" title="Deselect All">Deselect All</button>
+                        <button id="delete-selected-btn" title="Delete Selected" disabled>Delete Selected</button>
+                    </div>
+                    <div class="size-control">
+                        <label>Thumbnail Size:</label>
+                        <input type="range" id="thumbnail-size" min="150" max="400" value="200">
+                        <span id="size-value">200px</span>
+                    </div>
+                </div>
+            </div>
+            <div id="results-container" class="results-grid"></div>
+        </div>
+
+        <!-- Video Viewer Modal -->
+        <div id="video-modal" class="modal">
+            <div class="modal-content video-modal-content">
+                <span class="close">&times;</span>
+                <div class="video-modal-header">
+                    <h3>Video Viewer</h3>
+                    <button id="toggle-trake-mode" class="trake-mode-btn">Enable TRAKE Mode</button>
+                </div>
+                <div class="video-modal-body">
+                    <div class="video-container">
+                        <video id="modal-video" controls>
+                            Your browser does not support the video tag.
+                        </video>
+                        <div class="video-controls">
+                            <div class="progress-bar-container">
+                                <div class="progress-bar">
+                                    <div class="progress"></div>
+                                    <div class="hover-time"></div>
+                                </div>
+                            </div>
+                            <div class="time-display">
+                                <span id="current-time">00:00</span> / <span id="duration">00:00</span>
+                            </div>
+                        </div>
+                        <div class="video-info">
+                            <p id="video-title"></p>
+                            <p id="video-timestamp"></p>
+                        </div>
+
+                        <!-- New pause info section -->
+                        <div id="pause-info" class="pause-info" style="display: none;">
+                            <h4>Paused at:</h4>
+                            <p id="paused-time"></p>
+                            <p id="paused-frame"></p>
+                            
+                            <div class="add-paused-frame-controls">
+                                <h4>Add this frame to results:</h4>
+                                <div class="pause-position-buttons">
+                                    <button id="add-paused-start" class="position-btn">Add to Start</button>
+                                    <button id="add-paused-end" class="position-btn">Add to End</button>
+                                    <button id="add-paused-custom" class="position-btn">Add at Position...</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- TRAKE Mode Panel -->
+                    <div id="trake-panel" class="trake-panel" style="display: none;">
+                        <div class="trake-header">
+                            <h3>TRAKE Mode</h3>
+                            <p class="trake-instruction">Pause the video at desired moment and press 'E' to mark timestamps</p>
+                        </div>
+                        
+                        <div class="manual-trake-entry">
+                            <h4>Manual Entry</h4>
+                            <div class="trake-inputs">
+                                <input type="text" id="trake-time-input" placeholder="Time (MM:SS)">
+                                <span>or</span>
+                                <input type="text" id="trake-frame-input" placeholder="Frame ID">
+                                <button id="add-manual-trake">Add Timestamp</button>
+                            </div>
+                        </div>
+                        
+                        <div class="trake-list-container">
+                            <h4>Marked Timestamps <span id="trake-count">(0)</span></h4>
+                            <div id="trake-list" class="trake-list">
+                                <!-- Timestamps will be added here -->
+                            </div>
+                        </div>
+                        
+                        <div class="trake-actions">
+                            <button id="download-trake-csv" class="download-btn">Download Trake Result</button>
+                            <button id="clear-trake-list" class="clear-btn">Clear All</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Range Input Modal -->
+        <div id="range-modal" class="modal">
+            <div class="modal-content">
+                <span class="close-range-modal">&times;</span>
+                <h3>Add Frame Range</h3>
+                <div class="range-inputs">
+                    <input type="text" id="range-video-name" placeholder="Video Name">
+                    <input type="text" id="range-start-frame" placeholder="Start Frame (e.g., 00001)" pattern="[0-9]{5}">
+                    <input type="text" id="range-end-frame" placeholder="End Frame (e.g., 00010)" pattern="[0-9]{5}">
+                    <input type="number" id="range-interval" placeholder="Interval" min="1" value="1">
+                    <div class="range-position-buttons">
+                        <button id="add-range-start" class="position-btn">Add to Start</button>
+                        <button id="add-range-end" class="position-btn">Add to End</button>
+                        <button id="add-range-custom" class="position-btn">Add at Position...</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="static/js/resultManager.js"></script>
+</body>
+</html>

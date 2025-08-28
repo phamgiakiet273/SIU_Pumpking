@@ -18,7 +18,7 @@ export function initSettingsPanel() {
 
     const neighborFramesCountSlider = document.getElementById('neighbor-frames-count-slider');
     const neighborFramesCountValue = document.getElementById('neighbor-frames-count-value');
-
+    
     if (neighborFramesCountSlider && neighborFramesCountValue) {
         // Initial sync
         neighborFramesCountValue.value = neighborFramesCountSlider.value;
@@ -36,12 +36,12 @@ export function initSettingsPanel() {
 
             // Clamp to slider's min/max
             if (isNaN(val)) val = neighborFramesCountSlider.min;
-            val = Math.max(parseInt(neighborFramesCountSlider.min),
+            val = Math.max(parseInt(neighborFramesCountSlider.min), 
                            Math.min(parseInt(neighborFramesCountSlider.max), val));
 
             this.value = val; // Correct invalid input
             neighborFramesCountSlider.value = val;
             window.neighborFramesCount = val;
         });
-    }
+    } 
 }

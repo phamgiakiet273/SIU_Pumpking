@@ -57,7 +57,7 @@ export function initRerankHandler() {
                 }
 
                 const payload = await response.json();
-
+                
                 // Handle the response structure properly
                 if (payload.data && Array.isArray(payload.data)) {
                     window.currentVideos = payload.data;
@@ -67,7 +67,7 @@ export function initRerankHandler() {
                 } else {
                     throw new Error('Invalid rerank response format');
                 }
-
+                
                 renderVideoResults(window.currentVideos);
             } catch (error) {
                 console.error('Rerank error:', error);
@@ -78,7 +78,7 @@ export function initRerankHandler() {
         } finally {
             // Hide loading overlay
             hideLoadingOverlay();
-        }
+        } 
     });
 }
 
@@ -122,7 +122,7 @@ function renderVideoResults(records) {
     records.forEach(rec => {
         const encodedPath = encodeURIComponent(rec.frame_path);
         const s2tText = Array.isArray(rec.s2t) ? rec.s2t.join(' ') : rec.s2t;
-
+        
         // console.log(rec)
 
         const tpl = document.createElement('div');
@@ -163,8 +163,8 @@ function renderVideoResults(records) {
     setResults(records);
     adjustThumbnailSize();
     initS2THover();
-    initThumbnailView();
+    initThumbnailView();     
     initVideoView();
     initThumbnailSelection();
-
+    
 }

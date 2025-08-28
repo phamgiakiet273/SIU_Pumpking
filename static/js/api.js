@@ -3,7 +3,7 @@
 // --- CONFIGURATION ---
 // Set the global API prefix here. Leave as an empty string for no prefix.
 // Example: 'siu_pumpking_2'
-const API_PREFIX = '';
+const API_PREFIX = ''; 
 
 /**
  * A wrapper around the native fetch function that automatically prepends the API_PREFIX.

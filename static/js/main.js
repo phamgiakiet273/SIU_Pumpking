@@ -21,6 +21,7 @@ import { createChatHandler } from './chatbotHandler.js'
 import { initTemporalPagination } from './paginationTemporal.js';
 import { initSettingsPanel } from './settingPanel.js'
 import { initFilterPanel, fetchVideoNames, addExcludedFrame } from './filterPanel.js';
+import { initDownloadResult } from './downloadResult.js'
 
 // Add at the top
 let API_PREFIX = '';
@@ -50,7 +51,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     createLoadingOverlay();
     // showLoadingOverlay();
-
+    
     // try {
     //fetchVideoNames();
     initCharCounter();
@@ -60,24 +61,25 @@ document.addEventListener('DOMContentLoaded', () => {
 
     initVoiceRecognition();
     initTranslate();
-    initPagination();
+    initPagination();      
     initTemporalPagination();
     initSliderControls();
 
-    initS2THover();
-    initThumbnailView();
+    initS2THover(); 
+    initThumbnailView();   
     initVideoView();
     initImageQueryToggle();
     initImageUpload();
-    initPasteHandler();
+    initPasteHandler();    
     initSearchHandler();
-    // initRerankHandler();
+    // initRerankHandler(); 
     initSubmitHandler();
-    initThumbnailSelection();  // Initialize for initial thumbnails
+    initThumbnailSelection();  // Initialize for initial thumbnails        
     // createChatHandler();
     initSettingsPanel();
     initFilterPanel();
-    initQueryHistory();
+    initQueryHistory();    
+    initDownloadResult();    
     // } catch (error) {
     //     alert('Loading UI error: ' + error.message);
     // } finally {

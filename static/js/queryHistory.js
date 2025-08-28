@@ -9,12 +9,12 @@ export function initQueryHistory() {
 
     function updateDropdown(history) {
         dropdown.innerHTML = history.map((item, idx) => {
-            const date = item?.timestamp
-                ? new Date(item.timestamp).toLocaleTimeString()
+            const date = item?.timestamp 
+                ? new Date(item.timestamp).toLocaleTimeString() 
                 : 'Unknown time';
 
-            const model = typeof item?.model === 'string'
-                ? item.model.replace('TEMPORAL_', 'T-')
+            const model = typeof item?.model === 'string' 
+                ? item.model.replace('TEMPORAL_', 'T-') 
                 : 'Unknown model';
 
             // Handle scroll searches differently
@@ -35,7 +35,7 @@ export function initQueryHistory() {
     }
 
     function truncateQuery(query) {
-        return query.length > 40
+        return query.length > 40 
             ? `${query.slice(0,15)}...${query.slice(-20)}`
             : query;
     }

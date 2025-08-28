@@ -62,7 +62,7 @@ export function initSearchHandler() {
         e.preventDefault();
 
         const activeTab = document.querySelector('.tab-button.active');
-        if (activeTab?.dataset.tab !== 'tab-search-content')
+        if (activeTab?.dataset.tab !== 'tab-search-content') 
             return;
 
         showLoadingOverlay();
@@ -81,7 +81,7 @@ export function initSearchHandler() {
             fd.set('return_s2t', returnS2T);
             fd.set('return_object', returnObject);
             fd.set('frame_class_filter', frameClassFilter);
-
+            
             // Get filters from filter panel
             const filters = getFilters();
             fd.set('video_filter', filters.video_filter);
@@ -127,7 +127,7 @@ export function initSearchHandler() {
                     if (countSentences(queryText) <= 1) {
                         console.log('Single-sentence detected, switching to non-temporal');
                         activeModel = model.replace('TEMPORAL_', '');
-                    }
+                    }   
                     else {
                         queryType = 'temporal';
                         activeModel = model.replace('TEMPORAL_', '');
@@ -169,7 +169,7 @@ export function initSearchHandler() {
 
             // Build full URL with prefix
             const fullUrl = buildUrl(url);
-
+            
             // Execute request
             const resp = await fetch(fullUrl, { method: 'POST', body: fd });
             if (!resp.ok) {
@@ -203,7 +203,7 @@ export function initSearchHandler() {
 
             // Update history with full context
             window.updateQueryHistory(searchContext);
-
+            
             // Render results directly without new search
             renderResults(searchContext.results);
 
@@ -237,7 +237,7 @@ function renderThumbnails(results = [], container) {
             <p class="description">${rec.s2t}</p>
             </div>
         `;
-
+        
         // Add exclude button
         const excludeBtn = document.createElement('button');
         excludeBtn.type = 'button';  // <--- Add this line
@@ -249,10 +249,10 @@ function renderThumbnails(results = [], container) {
             // Show filter panel
             document.querySelector('.filters-panel').style.display = 'block';
         });
-
+        
         const thumbDiv = thumb.querySelector('div[style="position: relative;"]');
         thumbDiv.appendChild(excludeBtn);
-
+        
         // Add get news button
         const getNewsBtn = document.createElement('button');
         getNewsBtn.type = 'button';
@@ -274,26 +274,26 @@ function renderThumbnails(results = [], container) {
 
 export async function performScrollSearch(record) {
     showLoadingOverlay();
-
+    
     try {
 
         // Get current model
         const model = document.querySelector('input[name="model"]:checked').value;
         let activeModel = model;
-
+        
         // Handle temporal models
         if (model.startsWith('TEMPORAL_')) {
             activeModel = model.replace('TEMPORAL_', '');
         }
-
+        
         // Get scroll endpoint
         const routeSet = ROUTES[activeModel] || {};
         const url = routeSet.scroll || '';
-
+        
         if (!url) {
             throw new Error('Scroll endpoint not available for this model');
         }
-
+        
         // Get current settings
         const kVal = document.getElementById('k').value;
         const returnS2T = document.getElementById('return-s2t-checkbox').checked;
@@ -303,35 +303,35 @@ export async function performScrollSearch(record) {
         // Prepare form data
         const fd = new FormData();
         const videoName = record.video_name.replace('.mp4', '');
-
+        
         // Convert frames to time (mm:ss)
         const fps = parseFloat(record.fps);
         const startFrame = parseInt(record.related_start_frame);
         const endFrame = parseInt(record.related_end_frame);
         const startTime = frameToTime(startFrame, fps);
         const endTime = frameToTime(endFrame, fps);
-
+        
         // Set parameters
-        fd.set('k', 273); // Large enough to get all frames in segment
+        fd.set('k', 2000); // Large enough to get all frames in segment
         fd.set('video_filter', videoName);
         fd.set('return_s2t', returnS2T);
         fd.set('return_object', returnObject);
         fd.set('frame_class_filter', frameClassFilter);
         fd.set('time_in', startTime);
         fd.set('time_out', endTime);
-
+        
         // Build full URL
         const fullUrl = buildUrl(url);
-
+        
         // Execute request
         const resp = await fetch(fullUrl, { method: 'POST', body: fd });
         if (!resp.ok) {
             const err = await resp.text();
             throw new Error('Scroll search error: ' + err);
         }
-
+        
         const payload = await resp.json();
-
+        
         // Create proper search context for scroll search
         const searchContext = {
             timestamp: new Date().toISOString(),
@@ -354,12 +354,18 @@ export async function performScrollSearch(record) {
             results: payload.data.data
         };
 
+        // Find the index of the original frame in the results
+        const originalFrameIndex = searchContext.results.findIndex(r => 
+            r.video_name === record.video_name && 
+            r.keyframe_id === record.keyframe_id
+        );
+
         // Update history
         window.updateQueryHistory(searchContext);
-
+        
         // Render results
-        renderResults(searchContext.results);
-
+        renderResults(searchContext.results, originalFrameIndex);
+        
     } catch (error) {
         alert('Scroll search error: ' + error.message);
     } finally {
@@ -375,34 +381,36 @@ function frameToTime(frame, fps) {
     return `${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
 }
 
-function renderResults(results) {
+function renderResults(results, highlightIndex = -1) {
     // Clear previous results
     videos.innerHTML = '';
     videos.classList.remove('table-view');
-
+    
     // Handle normal results (array of objects)
     if (Array.isArray(results) && results.length > 0 && results[0].video_name) {
-        renderThumbnails(results, videos);
-        setResults(results);
-    }
+        renderThumbnails(results, videos, highlightIndex);
+        setResults(results, highlightIndex);
+    } 
     // Handle temporal results (array of arrays)
     else if (Array.isArray(results) && results.length > 0 && Array.isArray(results[0])) {
         videos.classList.add('table-view');
         const { flattenedResults, tableElement } = displayTemporalResults(results);
         setTemporalResults(tableElement);
+        window.currentVideos = flattenedResults;
     }
     // Handle object-based temporal results
     else if (results && results.rows) {
         videos.classList.add('table-view');
         const { flattenedResults, tableElement } = displayTemporalResults(results.rows);
         setTemporalResults(tableElement);
+        window.currentVideos = flattenedResults;
     }
     // Handle error cases
     else {
         console.error('Unknown results format', results);
         videos.innerHTML = '<p>No results found</p>';
     }
-
+    
     adjustThumbnailSize();
     initS2THover();
     initThumbnailView();
@@ -412,7 +420,7 @@ function renderResults(results) {
 export function loadSearchContext(context) {
     // Set form values
     document.getElementById('query').value = context.query;
-
+    
     // Only set query type if it's not scroll or temporal
     if (context.queryType !== 'scroll' && context.queryType !== 'temporal') {
         const queryTypeRadio = document.querySelector(`input[name="query-type"][value="${context.queryType}"]`);
@@ -420,7 +428,7 @@ export function loadSearchContext(context) {
             queryTypeRadio.checked = true;
         }
     }
-
+    
     let modelRadio;
 
     // Set model radio button
@@ -434,20 +442,20 @@ export function loadSearchContext(context) {
     if (modelRadio) {
         modelRadio.checked = true;
     }
-
+    
     // Set settings
     document.getElementById('return-s2t-checkbox').checked = context.settings.returnS2T;
     document.getElementById('return-object-checkbox').checked = context.settings.returnObject;
     document.getElementById('frame-class-filter-checkbox').checked = context.settings.frameClassFilter;
     document.getElementById('k').value = context.settings.k;
     document.getElementById('slider_k').value = context.settings.k;
-
+    
     // Set filters
     const filters = context.filters;
     document.getElementById('s2t_filter').value = filters.s2t_filter || '';
     document.getElementById('time_in').value = filters.time_in || '';
     document.getElementById('time_out').value = filters.time_out || '';
-
+    
     // Set video filter
     if (filters.video_filter) {
         const videoNames = filters.video_filter.split(',');
@@ -456,7 +464,7 @@ export function loadSearchContext(context) {
             option.selected = videoNames.includes(option.value);
         }
     }
-
+    
     // Set excluded frames
     if (filters.skip_frames) {
         window.excludedFrames = filters.skip_frames.split(',').map(frame => {
@@ -465,7 +473,7 @@ export function loadSearchContext(context) {
         });
         updateExcludedList();
     }
-
+    
     // Render results directly
     renderResults(context.results);
 

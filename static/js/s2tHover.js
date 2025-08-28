@@ -12,7 +12,7 @@ export function initS2THover() {
         hover.addEventListener('click', function () {
             text.classList.add('expanded');
             hover.style.zIndex = '-1';
-        });
+        });        
 
         text.addEventListener('mouseleave', function () {
             text.classList.remove('expanded');

@@ -3,7 +3,7 @@ export function initVideoFilter() {
 
     videoFilter.addEventListener('input', (e) => {
         let value = e.target.value.toUpperCase();
-
+        
         if (e.inputType !== 'deleteContentBackward') {
             if (!value.startsWith('L')) value = 'L' + value;
             if (/^L\d{2}$/.test(value)) value += '_V';

@@ -18,7 +18,7 @@ export function initSliderControls() {
     const kInput = document.getElementById('k');
     const resultsPerPageSlider = document.getElementById('results-per-page-slider');
     const resultsPerPageValue = document.getElementById('results-per-page-value');
-
+    
     // START: Get new checkbox elements
     const returnS2TCheckbox = document.getElementById('return-s2t-checkbox');
     const returnObjectCheckbox = document.getElementById('return-object-checkbox');
@@ -69,5 +69,5 @@ export function initSliderControls() {
     slider.addEventListener('input', () => kInput.value = slider.value);
     kInput.addEventListener('input', () => slider.value = kInput.value);
     slider.addEventListener('change', () => kInput.value = slider.value);
-    kInput.addEventListener('change', () => slider.value = kInput.value);
+    kInput.addEventListener('change', () => slider.value = kInput.value);    
 }
