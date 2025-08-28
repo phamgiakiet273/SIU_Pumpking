@@ -17,7 +17,7 @@ export function initFilterPanel() {
 
     // Fetch video names
     document.getElementById('fetch-video-names').addEventListener('click', fetchVideoNames);
-
+    
     // Reset filters
     document.getElementById('reset-filters').addEventListener('click', resetFilters);
 
@@ -36,7 +36,7 @@ export function initFilterPanel() {
         videoSearch.addEventListener('input', () => {
             const searchTerm = videoSearch.value.toLowerCase();
             const options = videoDropdown.querySelectorAll('option');
-
+            
             options.forEach(option => {
                 const text = option.textContent.toLowerCase();
                 option.style.display = text.includes(searchTerm) ? '' : 'none';
@@ -44,7 +44,7 @@ export function initFilterPanel() {
         });
     }
 
-
+    
     // Batch selection change handling
     const batchCheckboxes = document.querySelectorAll('input[name="batch"]');
     batchCheckboxes.forEach(checkbox => {
@@ -53,7 +53,7 @@ export function initFilterPanel() {
 
     // Fetch videos on initial load
     fetchVideoNames();
-
+    
     // Reset filters
     document.getElementById('reset-filters')?.addEventListener('click', resetFilters);
 }
@@ -61,7 +61,7 @@ export function initFilterPanel() {
 export async function fetchVideoNames() {
     const batches = Array.from(document.querySelectorAll('input[name="batch"]:checked'))
         .map(cb => parseInt(cb.value));
-
+    
     try {
         const formData = new FormData();
         formData.append('batch_id', JSON.stringify(batches));  // batches = [0, 1]
@@ -70,14 +70,14 @@ export async function fetchVideoNames() {
             method: 'POST',
             body: formData
         });
-
+                
         if (!response.ok) {
             throw new Error('Failed to fetch video names');
         }
-
+        
         const data = await response.json();
         const dropdown = document.getElementById('video-names-dropdown');
-
+        
         dropdown.innerHTML = '';
         data.data.forEach(video => {
             const option = document.createElement('option');
@@ -93,14 +93,14 @@ export async function fetchVideoNames() {
 export function addExcludedFrame(frameRecord) {
     const { video_name, keyframe_id, related_start_frame, related_end_frame } = frameRecord;
     const frameName = keyframe_id; // Alias for clarity
-
+    
     let video_name_adjusted = video_name.replace('.mp4','');
 
     // Check for existing exclusion
-    const isAlreadyExcluded = excludedFrames.some(f =>
+    const isAlreadyExcluded = excludedFrames.some(f => 
         f.video_name === video_name_adjusted && f.frame_name === frameName
     );
-
+    
     if (!isAlreadyExcluded) {
         excludedFrames.push({
             video_name: video_name_adjusted,
@@ -115,13 +115,13 @@ export function addExcludedFrame(frameRecord) {
 export function updateExcludedList() {
     const list = document.getElementById('excluded-frames-list');
     list.innerHTML = '';
-
+    
     excludedFrames.forEach((frame, index) => {
         const li = document.createElement('li');
         li.textContent = `${frame.video_name} - ${frame.frame_name}`;
         li.style.padding = '5px';
         li.style.borderBottom = '1px solid #444';
-
+        
         const removeBtn = document.createElement('button');
         removeBtn.type = 'button';
         removeBtn.textContent = '×';
@@ -131,7 +131,7 @@ export function updateExcludedList() {
         excludedFrames.splice(index, 1);
         updateExcludedList();
         });
-
+        
         li.appendChild(removeBtn);
         list.appendChild(li);
     });
@@ -149,7 +149,7 @@ function resetFilters() {
 export function getFilters() {
     const videoFilter = Array.from(document.getElementById('video-names-dropdown').selectedOptions)
         .map(opt => opt.value);
-
+    
     return {
         video_filter: videoFilter.join(', '),
         s2t_filter: document.getElementById('s2t_filter').value,

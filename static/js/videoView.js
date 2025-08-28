@@ -38,7 +38,7 @@ function createVideoModal() {
                 z-index: 1002;
                 position: relative;
             ">×</span>
-
+            
             <div class="video-container" style="position: relative; padding-top: 56.25%; /* 16:9 Aspect Ratio */">
                 <video id="modal-video" controls style="
                     position: absolute;
@@ -60,7 +60,7 @@ function createVideoModal() {
                     display: none;
                 ">Loading video...</div>
             </div>
-
+            
             <div class="video-info" style="
                 color: white;
                 padding: 15px 0;
@@ -88,9 +88,9 @@ function createVideoModal() {
         </div>
     </div>
     `;
-
+    
     document.body.insertAdjacentHTML('beforeend', modalHTML);
-
+    
     // Setup close handlers
     document.querySelector('#video-modal .video-close').addEventListener('click', closeVideoModal);
     document.getElementById('video-modal').addEventListener('click', (e) => {
@@ -98,7 +98,7 @@ function createVideoModal() {
             closeVideoModal();
         }
     });
-
+    
     // Close on ESC key
     document.addEventListener('keydown', (e) => {
         if (e.key === 'Escape' && document.getElementById('video-modal').style.display === 'block') {
@@ -124,7 +124,7 @@ function createVideoModal() {
             // Call the imported function with the NEW, DYNAMIC data
             // We pass the FPS so fillSubmissionForm can correctly calculate the time in milliseconds
             fillSubmissionForm(videoName, currentFrameId.toString(), fps);
-
+            
             // Close the modal after selection
             closeVideoModal();
         } else {
@@ -138,13 +138,13 @@ function createVideoModal() {
 function closeVideoModal() {
     const modal = document.getElementById('video-modal');
     const video = document.getElementById('modal-video');
-
+    
     if (video) {
         video.pause();
         video.removeAttribute('src');
         video.load();
     }
-
+    
     modal.style.display = 'none';
     document.getElementById('video-spinner').style.display = 'none';
 }
@@ -154,7 +154,7 @@ function showVideoModal(record) {
     if (!document.getElementById('video-modal')) {
         createVideoModal();
     }
-
+    
     const modal = document.getElementById('video-modal');
     const video = document.getElementById('modal-video');
     const spinner = document.getElementById('video-spinner');
@@ -164,21 +164,21 @@ function showVideoModal(record) {
 
     spinner.style.display = 'block';
     modal.style.display = 'block';
-
+    
     filename.textContent = record.video_name;
-
+    
     const frameNum = parseInt(record.keyframe_id);
     const fps = parseFloat(record.fps) || 25;
     const startTime = frameNum / fps;
-
+    
     const formatTime = (seconds) => {
         const date = new Date(0);
         date.setSeconds(seconds);
         return date.toISOString().substring(11, 19);
     };
-
+    
     timestamp.textContent = `Start: ${formatTime(startTime)}`;
-
+    
     // Store the necessary data on the button itself.
     // Note we no longer need to store frameId here, but it doesn't hurt.
     chooseBtn.dataset.videoName = record.video_name;
@@ -188,20 +188,20 @@ function showVideoModal(record) {
 
     const relativePath = record.video_path;
     const videoSrc = `hub/send_video/${encodeURIComponent(relativePath)}#t=${startTime}`;
-
+    
     video.src = videoSrc;
-
+    
     video.onloadedmetadata = () => {
         spinner.style.display = 'none';
         video.currentTime = startTime;
     };
-
+    
     video.onerror = () => {
         spinner.style.display = 'none';
         alert('Error loading video');
         closeVideoModal();
     };
-
+    
     video.oncanplay = () => {
         video.play().catch(e => console.log('Autoplay prevented:', e));
     };
@@ -212,12 +212,12 @@ export function initVideoView() {
     if (!document.getElementById('video-modal')) {
         createVideoModal();
     }
-
+    
     document.querySelectorAll('.video_id').forEach(element => {
         element.addEventListener('click', function(e) {
             e.preventDefault();
             const index = this.getAttribute('target');
-
+            
             if (window.currentVideos && window.currentVideos[index]) {
                 showVideoModal(window.currentVideos[index]);
             }

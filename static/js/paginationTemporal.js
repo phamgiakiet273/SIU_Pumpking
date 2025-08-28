@@ -67,11 +67,11 @@ export function setTemporalResultsPerPage(newSize) {
 
     resultsPerPage = newSize;
     const totalPages = Math.ceil(totalRows / resultsPerPage) || 1;
-
+    
     if (currentPage > totalPages) {
         currentPage = totalPages;
     }
-
+    
     displayTemporalPage(currentPage);
 }
 
@@ -117,9 +117,9 @@ function goToNextPage() {
 
 function handleKeyDown(event) {
     if (window.isModalOpen) {
-        return;
+        return; 
     }
-
+    
     const isInputFocused = document.activeElement.tagName === 'INPUT' ||
                           document.activeElement.tagName === 'TEXTAREA';
     if (isInputFocused) return;

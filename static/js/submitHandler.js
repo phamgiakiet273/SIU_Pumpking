@@ -4,23 +4,23 @@ import { createLoadingOverlay, showLoadingOverlay, hideLoadingOverlay } from './
 export function initSubmitHandler() {
     const tabButtons = document.querySelectorAll('.tab-button');
     if (!tabButtons.length) return;
-
+    
     tabButtons.forEach(button => {
         button.addEventListener('click', function(e) {
             e.preventDefault();
-
+            
             const tabId = this.dataset.tab;
             const tabContent = document.getElementById(tabId);
-
+            
             if (!tabContent) {
                 console.error(`Tab content not found: ${tabId}`);
                 return;
             }
-
+            
             // Remove active class from all tabs
             document.querySelectorAll('.tab-button').forEach(b => b.classList.remove('active'));
             document.querySelectorAll('.tab-content').forEach(t => t.classList.remove('active'));
-
+            
             // Add active class to current tab
             this.classList.add('active');
             tabContent.classList.add('active');
@@ -103,20 +103,20 @@ export function initSubmitHandler() {
                     method: 'POST',
                     body: formData
                 });
-
+                
                 const result = await response.json();
                 const statusDiv = document.getElementById('submission-status');
-
+                
                 if (result.status === 200) {
                     statusDiv.textContent = result.data.description;
-                    statusDiv.className = result.data.submission === 'CORRECT' ?
+                    statusDiv.className = result.data.submission === 'CORRECT' ? 
                         'submission-success' : 'submission-error';
                 } else {
                     statusDiv.textContent = 'Submission failed: ' + result.message;
                     statusDiv.className = 'submission-error';
                 }
-
-            }
+                
+            } 
             catch (error)
             {
                 console.error('Submission error:', error);
@@ -192,7 +192,7 @@ export function initThumbnailSelection() {
         if (!thumb.querySelector('.select-btn')) {
             const videoName = thumb.querySelector('.video_id')?.textContent.trim();
             const frameId = thumb.querySelector('.image_id')?.textContent.trim();
-
+            
             if (videoName && frameId) {
                 const selectBtn = document.createElement('button');
                 selectBtn.className = 'select-btn';
@@ -200,7 +200,7 @@ export function initThumbnailSelection() {
                 selectBtn.dataset.video = videoName;
                 selectBtn.dataset.frame = frameId;
                 selectBtn.innerHTML = '✓';
-
+                
                 thumb.querySelector('div[style*="position: relative"]').appendChild(selectBtn);
             }
         }
@@ -212,7 +212,7 @@ export function initThumbnailSelection() {
             e.stopPropagation();
             const video = this.dataset.video;
             const frame = this.dataset.frame;
-
+            
             // Mark as selected visually
             document.querySelectorAll('.select-btn').forEach(b => {
                 b.classList.remove('selected');
@@ -220,7 +220,7 @@ export function initThumbnailSelection() {
             });
             this.classList.add('selected');
             this.style.opacity = 1;
-
+            
             // Fill submission form and focus submit button
             fillSubmissionForm(video, frame);
         });
@@ -234,7 +234,7 @@ export function initThumbnailSelection() {
                 btn.style.opacity = 0.7;
             }
         });
-
+        
         thumb.addEventListener('mouseleave', function() {
             const btn = this.querySelector('.select-btn');
             if (btn && !btn.classList.contains('selected')) {
