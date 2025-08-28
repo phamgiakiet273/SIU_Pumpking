@@ -127,6 +127,7 @@ class SIGLIPV2Handler:
             return_object=req.return_object,
             frame_class_filter=req.frame_class_filter,
             skip_frames=req.skip_frames,
+            sort_to_news=req.sort_to_news,
         )
         logger.info(f"Text search completed with query {str(req.text)}")
         return APIResponse(status=HTTPStatus.OK.value, message="Success", data=result)
@@ -153,6 +154,7 @@ class SIGLIPV2Handler:
             return_object=req.return_object,
             frame_class_filter=req.frame_class_filter,
             skip_frames=req.skip_frames,
+            sort_to_news=req.sort_to_news,
         )
         logger.info("Image search completed")
         return APIResponse(status=HTTPStatus.OK.value, message="Success", data=result)
