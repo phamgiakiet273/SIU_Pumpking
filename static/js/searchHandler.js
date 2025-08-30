@@ -153,16 +153,33 @@ export function initSearchHandler() {
             if (queryType == 'image') {
                 const imagePreview = document.getElementById('image-preview');
                 const imageUrlInput = document.getElementById('image-url');
-
+                
+                // Check if we have a data URL (file upload or direct image data)
                 if (imagePreview.src.startsWith('data:')) {
                     fd.set('image_path', imagePreview.src);
-                } else if (imageUrlInput.value) {
+                } 
+                // Check if we have a URL input
+                else if (imageUrlInput.value) {
                     fd.set('image_path', imageUrlInput.value);
-                } else {
-                    alert('Please select an image first');
-                    hideLoadingOverlay();
-                    return;
-                }
+                } 
+                // Check if we have a server path (from image search button)
+                else if (imagePreview.src && imagePreview.src !== '') {
+                    // For server paths, we need to convert to data URL
+                    try {
+                        const response = await fetch(imagePreview.src);
+                        const blob = await response.blob();
+                        const dataUrl = await new Promise((resolve) => {
+                            const reader = new FileReader();
+                            reader.onload = () => resolve(reader.result);
+                            reader.readAsDataURL(blob);
+                        });
+                        fd.set('image_path', dataUrl);
+                    } catch (error) {
+                        alert('Error loading image: ' + error.message);
+                        hideLoadingOverlay();
+                        return;
+                    }
+                } 
             } else if (queryType == 'temporal') {
                 fd.set('return_list', 'true');
             }
@@ -478,4 +495,57 @@ export function loadSearchContext(context) {
     renderResults(context.results);
 
     // document.getElementById('prev-model').textContent = `(${context.model})`;
+}
+
+export async function performImageSearch(imageDataUrl) {
+
+    
+    try {
+        showLoadingOverlay();
+        // Switch to image search
+        const imageRadio = document.querySelector('input[name="query-type"][value="image"]');
+
+        // Discard temporal prefix
+        const temporalSelected = document.querySelector('input[name="model"]:checked');
+        if (temporalSelected && temporalSelected.value.startsWith("TEMPORAL_")) {
+            const normalized = temporalSelected.value.replace(/^TEMPORAL_/, '');
+            const replacementRadio = document.querySelector(`input[name="model"][value="${normalized}"]`);
+            if (replacementRadio) {
+                replacementRadio.checked = true;
+                // Fire change event so other listeners update state
+                replacementRadio.dispatchEvent(new Event('change'));
+            }
+        }
+
+
+        if (imageRadio) {
+            imageRadio.checked = true;
+            const event = new Event('change');
+            imageRadio.dispatchEvent(event);
+        }
+
+        // Set the image preview with the actual image data
+        const imagePreview = document.getElementById('image-preview');
+        const imageUrlInput = document.getElementById('image-url');
+        
+        // Use the actual image data
+        imagePreview.src = imageDataUrl;
+        imageUrlInput.value = ''; // Clear URL input since we're using data URL
+        
+        // Show the preview container
+        document.getElementById('image-upload-container').style.display = 'none';
+        document.getElementById('image-preview-container').style.display = 'block';
+        
+        // Store the image data for the search
+        imagePreview.dataset.fileContent = imageDataUrl.split(',')[1];
+        imagePreview.dataset.fileName = 'search_image.jpg';
+        
+        // Submit the form
+        document.getElementById('form').requestSubmit();
+        
+    } catch (error) {
+        alert('Image search error: ' + error.message);
+    } finally {
+        hideLoadingOverlay();
+    }
 }

@@ -708,3 +708,15 @@ input, button, select, textarea {
     transform: scale(1.5); /* scale up */
     accent-color: #40E0D0; /* makes it match your theme */
 }
+
+.vqa-tips {
+    margin-top: 0.8rem;
+    padding-left: 1.5rem;  /* indent bullets */
+    font-size: 1.1rem;
+    color: #666; /* grey-ish font */
+    list-style-type: disc; /* bullet points */
+}
+
+.vqa-tips li {
+    margin-bottom: 0.4rem; /* space between tips */
+}

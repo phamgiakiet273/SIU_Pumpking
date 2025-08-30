@@ -41,7 +41,7 @@ body {
     box-sizing: border-box;
 }
 
-.main-content button:not(.exclude-btn):not(.select-btn):not(.remove-btn):not(.get-news-btn):not(.tab-button):not(.download-section),
+.main-content button:not(.exclude-btn):not(.select-btn):not(.remove-btn):not(.get-news-btn):not(.tab-button):not(.download-section):not(.image-search-btn),
 audio,
 #choosingFrameBtn {
     padding: 0.6rem 1rem;
@@ -1195,4 +1195,23 @@ textarea.autogrow {
 
 #download-results-btn:hover {
     background: #0056b3;
+}
+
+.image-search-btn {
+    position: absolute;
+    top: 65px; /* Below the get-news button */
+    right: 5px;
+    background: rgba(255, 215, 0, 0.1); /* Gold background */
+    color: #003b6d;
+    border: none;
+    border-radius: 4px;
+    padding: 2px 5px;
+    font-size: 0.8rem;
+    cursor: pointer;
+    z-index: 100;
+    transition: background 0.2s;
+}
+
+.image-search-btn:hover {
+    background: rgba(255, 215, 0, 0.7);
 }

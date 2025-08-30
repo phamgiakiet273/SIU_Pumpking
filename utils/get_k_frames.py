@@ -1,123 +1,64 @@
 import os
-import json
-from typing import Tuple, List
-from pathlib import Path
-import sys
+import glob
 
-current_path = Path(__file__).resolve()
-for parent in current_path.parents:
-    if parent.name == "SIU_Pumpking":
-        #print(f"Adding {parent} to sys.path")
-        sys.path.append(str(parent))
-        break
-else:
-    raise RuntimeError("Could not find 'SIU_Pumpking' in the path hierarchy.")
+BASE_PATH = "/dataset/AIC_2025/SIU_Pumpking"
 
-from dotenv import load_dotenv
-
-load_dotenv()
-
-from configs.util import UtilConfig
-from configs.app import AppConfig
-
-# Khởi tạo config
-config = UtilConfig()
-
-# Gọi lại BASE_PATH
-base_path = config.DATASET_PATH_TEAM
-print("BASE_PATH:", base_path)
-
+# Config batch → dễ mở rộng
+BATCH_CONFIG = {
+    0: {"prefix": "L", "ext": ".avif", "split": "low_res_autoshot"},
+    1: {"prefix": "K", "ext": ".avif", "split": "low_res_autoshot"},
+    2: {"prefix": "X", "ext": ".avif", "split": "low_res_autoshot"},  
+}
 
 def get_batch(video_name: str) -> int:
-    """
-    Xác định batch (0, 1, hoặc 2) dựa trên số trong video_name.
-    """
-    try:
-        # Tách "L01_V001" → "01"
-        num = int(video_name.split("_")[0][1:])
-    except (IndexError, ValueError):
-        raise ValueError("video_name phải có định dạng 'Lxx_Vyyy'")
+    """Tự động nhận batch từ prefix video_name (L.. → 0, K.. → 1, …)"""
+    for batch, cfg in BATCH_CONFIG.items():
+        if video_name.startswith(cfg["prefix"]):
+            return batch
+    raise ValueError(f"Không nhận diện được batch cho video_name: {video_name}")
 
-    if 21 <= num <= 30:
-        return 0
-
-
-def get_neighboring_frames(
-    frame_num: str, video_name: str, k: int
-) -> Tuple[List[str], List[str]]:
+def get_neighboring_frames(frame_num: str, video_name: str, k: int = 3):
     """
-    Lấy k frame trước và k frame sau của frame_num trong video_name.
-    Trả về tuple chứa danh sách đường dẫn tới các file .avif.
+    Lấy k frame trước & sau frame_num trong video.
+    frame_num: "00429" (có zero-pad cũng ok)
+    video_name: ví dụ "K10_V001"
+    k: số frame trước/sau
     """
-    # Xác định batch
     batch = get_batch(video_name)
+    cfg = BATCH_CONFIG[batch]
 
-    # Xây dựng đường dẫn tới file JSON
-    json_path = os.path.join(base_path, f"{batch}/index/{video_name}.json")
-    if not os.path.exists(json_path):
-        raise FileNotFoundError(f"File JSON {json_path} không tồn tại")
-
-    # Đọc file JSON
-    with open(json_path, "r") as f:
-        frame_index = json.load(f)
-
-    # Kiểm tra frame_num có trong JSON không
-    if frame_num not in frame_index:
-        raise ValueError(f"Frame {frame_num} không tồn tại trong {video_name}.json")
-
-    # Lấy index của frame hiện tại
-    current_index = frame_index[frame_num]
-
-    # Tìm k frame trước
-    prev_frames = []
-    for i in range(1, k + 1):
-        prev_index = current_index - i
-        # Tìm frame tương ứng với prev_index
-        prev_frame = next((k for k, v in frame_index.items() if v == prev_index), None)
-        if prev_frame is None:
-            break
-        prev_frames.append(prev_frame)
-
-    # Tìm k frame sau
-    next_frames = []
-    for i in range(1, k + 1):
-        next_index = current_index + i
-        # Tìm frame tương ứng với next_index
-        next_frame = next((k for k, v in frame_index.items() if v == next_index), None)
-        if next_frame is None:
-            break
-        next_frames.append(next_frame)
-
-    # Xác định xx từ video_name (ví dụ: "01" từ "L01_V001")
-    xx = video_name.split("_")[0][1:]
-
-    # Xây dựng đường dẫn cơ bản
-    frame_base_path = os.path.join(
-        base_path,
-        f"{batch}/frames/{AppConfig().SPLIT_NAME}/Keyframes_L{xx}/keyframes/{video_name}",
+    frame_dir = os.path.join(
+        BASE_PATH, str(batch), "frames", cfg["split"],
+        f"Keyframes_{cfg['prefix']}{video_name[1:3]}", "keyframes", video_name
     )
 
-    # Tạo danh sách đường dẫn cho cả prev_frames và next_frames
-    prev_paths = [
-        os.path.join(frame_base_path, f"{frame.zfill(5)}.avif") for frame in prev_frames
-    ]
-    next_paths = [
-        os.path.join(frame_base_path, f"{frame.zfill(5)}.avif") for frame in next_frames
-    ]
+    all_frames = sorted(glob.glob(os.path.join(frame_dir, f"*{cfg['ext']}")))
+    if not all_frames:
+        print(f"[WARN] Không tìm thấy frame {cfg['ext']} cho {video_name} trong {frame_dir}")
+        return [], []
 
-    # Đảo ngược prev_paths để giữ thứ tự thời gian tăng dần
-    prev_paths.reverse()
+    # map frame_num (zero-padded) → index
+    frame_map = {os.path.splitext(os.path.basename(f))[0]: i for i, f in enumerate(all_frames)}
 
-    return prev_paths, next_paths
+    if frame_num not in frame_map:
+        print(f"[WARN] Frame {frame_num} không có trong {video_name}")
+        return [], []
+
+    idx = frame_map[frame_num]
+    prev_frames = all_frames[max(0, idx-k):idx]
+    next_frames = all_frames[idx+1:idx+1+k]
+
+    return prev_frames, next_frames
 
 
-# Ví dụ sử dụng
+# ==========================
+# Demo test
+# ==========================
 if __name__ == "__main__":
-    try:
-        prev_frames, next_frames = get_neighboring_frames(
-            frame_num="40", video_name="L25_V008", k=30
-        )
-        print("Frame trước:", prev_frames)
-        print("Frame sau:", next_frames)
-    except (ValueError, FileNotFoundError) as e:
-        print(f"Lỗi: {e}")
+    prev, nxt = get_neighboring_frames("03543", "L29_V005", k=2)
+    print("Prev:", prev)
+    print("Next:", nxt)
+
+    prev, nxt = get_neighboring_frames("09771", "L22_V019", k=2)
+    print("Prev:", prev)
+    print("Next:", nxt)

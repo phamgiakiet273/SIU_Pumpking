@@ -78,6 +78,7 @@ class HubHandler:
         return RedirectResponse(url=target, status_code=307)
 
     async def send_img_original_handler(self, full_path: str):
+        full_path = full_path.replace(SPLIT_NAME_LOW_RES, SPLIT_NAME)
         full_path = full_path.replace(".avif", ".jpg")
         target = f"{NGINXConfig().NGINX_IMAGE_HOST}/{full_path}"
         logger.info(f"send_img_handler path: {target}")
@@ -233,6 +234,11 @@ class HubHandler:
         """
         Get k frame back & forth.
         """
+        
+        # Pad frame_num to length 5 with leading zeros
+        if len(frame_num) < 5:
+            frame_num = frame_num.zfill(5)
+        
         url = f"{UtilConfig().UTIL_HOST}/util/get_neighboring_frames"
         payload = {"frame_num": frame_num, "video_name": video_name, "k": k}
         async with httpx.AsyncClient(timeout=timeout) as client:

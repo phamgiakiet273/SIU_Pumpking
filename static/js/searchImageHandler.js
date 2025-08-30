@@ -151,7 +151,12 @@ export function initImageUpload() {
         
         const reader = new FileReader();
         reader.onload = function(e) {
+            const imagePreview = document.getElementById('image-preview');
+            const imageUrlInput = document.getElementById('image-url');
+            
             imagePreview.src = e.target.result;
+            imageUrlInput.value = ''; // Clear URL input when using file upload
+            
             showImagePreview();
             
             // Store file reference for upload
