@@ -234,6 +234,11 @@ class HubHandler:
         """
         Get k frame back & forth.
         """
+        
+        # Pad frame_num to length 5 with leading zeros
+        if len(frame_num) < 5:
+            frame_num = frame_num.zfill(5)
+        
         url = f"{UtilConfig().UTIL_HOST}/util/get_neighboring_frames"
         payload = {"frame_num": frame_num, "video_name": video_name, "k": k}
         async with httpx.AsyncClient(timeout=timeout) as client:
