@@ -32,9 +32,9 @@ class SIGLIPV2Config:
                 f"Invalid list format for SIGLIP_V2_FEATURES_PATH: {features_path_env}"
             ) from e
 
-        for path in self.SIGLIP_V2_FEATURES_PATH:
-            if not os.path.exists(path):
-                raise FileNotFoundError(f"Feature path '{path}' does not exist")
+        # for path in self.SIGLIP_V2_FEATURES_PATH:
+        #     if not os.path.exists(path):
+        #         raise FileNotFoundError(f"Feature path '{path}' does not exist")
 
         self.SIGLIP_V2_FEATURES_SIZE = int(os.getenv("SIGLIP_V2_FEATURES_SIZE", "1536"))
 
@@ -43,9 +43,9 @@ class SIGLIPV2Config:
             self.SIGLIP_V2_DUMMY_VECTOR_PATH
         ), "Environment variable 'SIGLIP_V2_DUMMY_VECTOR_PATH' must be set"
 
-        if not os.path.exists(self.SIGLIP_V2_DUMMY_VECTOR_PATH):
-            raise FileNotFoundError(
-                f"Dummy vector path '{self.SIGLIP_V2_DUMMY_VECTOR_PATH}' does not exist"
-            )
+        # if not os.path.exists(self.SIGLIP_V2_DUMMY_VECTOR_PATH):
+        #     raise FileNotFoundError(
+        #         f"Dummy vector path '{self.SIGLIP_V2_DUMMY_VECTOR_PATH}' does not exist"
+        #     )
 
         self.HUGGINGFACE_HUB_TOKEN = os.getenv("HUGGINGFACE_HUB_TOKEN")
