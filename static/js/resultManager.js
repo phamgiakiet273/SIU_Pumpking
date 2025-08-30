@@ -674,7 +674,7 @@ function downloadAdjustedCsv() {
         });
     }
 
-    const blob = new Blob([csvContent], { type: 'text/csv' });
+    const blob = new Blob(["\uFEFF" + csvContent], { type: 'text/csv;charset=utf-8;' });
     const url = URL.createObjectURL(blob);
     const a = document.createElement('a');
     a.href = url;
@@ -1114,7 +1114,7 @@ function downloadTrakeCsv() {
     csvContent += '\n';
     
     // Create and trigger download
-    const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
+    const blob = new Blob(["\uFEFF" + csvContent], { type: 'text/csv;charset=utf-8;' });
     const url = URL.createObjectURL(blob);
     const a = document.createElement('a');
     a.href = url;
