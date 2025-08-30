@@ -4,7 +4,7 @@ import { adjustThumbnailSize } from './sliderControls.js';
 import { initS2THover } from './s2tHover.js'
 import { initThumbnailView } from './thumbnailView.js';
 import { initVideoView } from './videoView.js'
-import { performScrollSearch } from './searchHandler.js'
+import { performScrollSearch, performImageSearch } from './searchHandler.js'
 
 // State variables
 let currentPage = 1;
@@ -240,6 +240,34 @@ function createThumbnailElement(rec) {
     });
     thumbDiv.appendChild(getNewsBtn);
 
+    // Add image search button
+    const imageSearchBtn = document.createElement('button');
+    imageSearchBtn.type = 'button';
+    imageSearchBtn.className = 'image-search-btn';
+    imageSearchBtn.innerHTML = '🖼️';
+    imageSearchBtn.title = 'Search with this image';
+    imageSearchBtn.addEventListener('click', async (e) => {
+        e.stopPropagation();
+        
+        // Get the image element
+        const thumbnail = e.currentTarget.closest('.thumbnail');
+        const imgElement = thumbnail.querySelector('img');
+
+        if (imgElement) {
+            // Convert the image to a data URL
+            try {
+                const response = await fetch(imgElement.src.replace("send_img","send_img_original"));
+                const blob = await response.blob();
+                const dataUrl = await blobToDataURL(blob);
+                performImageSearch(dataUrl);
+            } catch (error) {
+                console.error('Error converting image to data URL:', error);
+                alert('Failed to prepare image for search');
+            }
+        }
+    });
+    thumbDiv.appendChild(imageSearchBtn);
+
     return tpl;
 }
 
@@ -260,4 +288,13 @@ function positionPaginator() {
     - paginator.offsetHeight 
     - 16
   ) + 'px';
+}
+
+function blobToDataURL(blob) {
+    return new Promise((resolve, reject) => {
+        const reader = new FileReader();
+        reader.onload = () => resolve(reader.result);
+        reader.onerror = reject;
+        reader.readAsDataURL(blob);
+    });
 }

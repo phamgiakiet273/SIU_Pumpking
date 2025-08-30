@@ -23,7 +23,7 @@
                     <button class="tab-button" data-tab="tab-submission-content">SUBMIT</button>
                     <!-- <button class="tab-button" data-tab="tab-chatbot-content">CHAT</button> -->
                 </nav>
-
+                
                 <!-- 2. This container holds the switchable content for the tabs -->
                 <div class="tab-content-container-inner">
                     <!-- Search Tab Content -->
@@ -37,18 +37,18 @@
                         <!-- Text Search Inputs -->
                         <div class="search-inputs" id="text-query-section" style="display: flex; align-items: flex-start; gap: 0.6rem;">
                             <div style="position: relative; width: 15rem;">
-                                <textarea name="query" id="query" class="autogrow" placeholder="Text Query Here..."
+                                <textarea name="query" id="query" class="autogrow" placeholder="Text Query Here..." 
                                     style="width: 100%; height: 5.6rem;" autofocus></textarea>
-                                <div id="charCount" class="char-count"
+                                <div id="charCount" class="char-count" 
                                     style="position: absolute; bottom: 1.5rem; right: 1rem; font-size: 1rem; color: #666;"></div>
                             </div>
                             <div style="display: flex; flex-direction: column; align-items: left; gap: 0px;">
-                                <button id="translateBtn" type="button"
+                                <button id="translateBtn" type="button" 
                                     style="width: 2.5rem; height: 2.5rem; border-radius: 0.3rem; background-color: white; color: #003b6d; border: 0.2rem solid #003b6d; font-size: 1.5rem; font-weight: bold; cursor: pointer; display: flex; align-items: center; justify-content: center; padding: 0;"
                                     title="Translate text">T</button>
-                                <button id="voiceBtn" type="button"
+                                <button id="voiceBtn" type="button" 
                                     style="width: 2.5rem; height: 2.5rem; padding: 0; margin: 0; border: none; border-radius: 50%; background: #003b6d; cursor: pointer;">
-                                    <img src="static/icon/free-microphone-icon-342-thumb.png"
+                                    <img src="static/icon/free-microphone-icon-342-thumb.png" 
                                         alt="Microphone"
                                         style="width: 2.3rem; height: 2.3rem; border-radius: 50%; background-color: white;">
                                 </button>
@@ -87,7 +87,7 @@
                         </div>
 
                         <!-- <div class="input-container">
-                            <input id="video_filter" type="text" placeholder="Video name..." name="video_filter"
+                            <input id="video_filter" type="text" placeholder="Video name..." name="video_filter" 
                                 oninput="this.value = this.value.toUpperCase()">
                             <input id="time_in" type="text" placeholder="Start..." name="time_in">
                             <input id="time_out" type="text" placeholder="End..." name="time_out">
@@ -96,17 +96,26 @@
                         <div class="input-container">
                             <input type="text" placeholder="S2T filter..." name="s2t_filter" id="s2t_filter">
                         </div> -->
-
+                        
                         <fieldset class="model-options" style="font-size: 1.2rem;">
                             <legend>Models</legend>
 
                             <label><input type="radio" name="model" value="SIGLIP_V2" checked> SIGLIP_V2</label>
-                            <label><input type="radio" name="model" value="TEMPORAL_SIGLIP_V2"> TEMPORAL_SIGLIP_V2</label>
+                            <label><input type="radio" name="model" value="TEMPORAL_SIGLIP_V2"> TEMPORAL_SIGLIP_V2</label> 
                             <label><input type="radio" name="model" value="META"> META</label>
-                            <label><input type="radio" name="model" value="TEMPORAL_META"> TEMPORAL_META</label>
+                            <label><input type="radio" name="model" value="TEMPORAL_META"> TEMPORAL_META</label>                                                         
                             <label><input type="radio" name="model" value="META_V2"> META_V2</label>
                             <label><input type="radio" name="model" value="TEMPORAL_META_V2"> TEMPORAL_META_V2</label>
                         </fieldset>
+
+                        <!-- Download Section -->
+                        <div class="download-section">
+                            <h3>Download Results</h3>
+                            <div class="download-controls">
+                                <input type="text" id="download-filename" value="result.csv" placeholder="Filename">
+                                <button type="button" id="download-results-btn">Download</button>
+                            </div>
+                        </div>
 
                         <!-- <button id="rerank-color-btn" type="button" style="font-size: 1.2rem; background-color: #FFD700;">Rerank by Color</button> -->
 
@@ -145,7 +154,7 @@
                             <div id="submission-status"></div>
                         </div>
                     </div>
-
+                    
                     <!-- Chatbot Tab Content -->
                     <!-- <div id="tab-chatbot-content" class="tab-content">
                         <div id="n8n-chat"></div>
@@ -186,6 +195,14 @@
                             Auto Translate
                         </label>
                     </div>
+                    
+                    <!-- Re-search when skip -->
+                    <div class="setting-item">
+                        <label for="immediate-rerun-checkbox">
+                            <input type="checkbox" id="immediate-rerun-checkbox" name="immediate_rerun">
+                            Immediate Re-search on Skip
+                        </label>
+                    </div>
 
                     <!-- Number of Results -->
                     <div class="setting-item">
@@ -194,14 +211,14 @@
                             oninput="document.getElementById('k').value = this.value">
                         <input class="textbox" id="k" value="100" type="text" name="k">
                     </div>
-
+                    
                     <!-- Results per Page -->
                     <div class="setting-item">
                         <h3>Results per Page</h3>
                         <input type="range" id="results-per-page-slider" min="10" max="200" value="50" step="10">
                         <input class="textbox" id="results-per-page-value" value="50" type="text">
                     </div>
-
+                    
                     <!-- Number of neighbor frames -->
                     <div class="setting-item">
                         <h3>Neighbor Frames Count</h3>
@@ -215,6 +232,12 @@
                         <input type="range" id="size-slider" min="100" max="400" value="300">
                     </div>
 
+                    <!-- Download Limit -->
+                    <div class="setting-item">
+                        <h3>Download Limit</h3>
+                        <input type="range" id="download-limit-slider" min="1" max="1000" value="100" step="1">
+                        <input class="textbox" id="download-limit-value" value="100" type="text" style="width: 50px;">
+                    </div>
 
                 </div>
             </div>
@@ -235,13 +258,13 @@
                         </div>
                         <button id="fetch-video-names" style="margin-top: 10px;" type="button">Fetch Videos</button>
                     </div>
-
+                    
                     <!-- Excluded Frames -->
                     <div class="filter-section">
                         <h3>Excluded Frames</h3>
                         <ul id="excluded-frames-list" style="max-height: 150px; overflow-y: auto; background: #333; padding: 5px; border-radius: 5px;"></ul>
                     </div>
-
+                    
                     <!-- Other Filters -->
                     <div class="filter-section">
                         <h3>Other Filters</h3>
@@ -251,7 +274,7 @@
                             <input type="text" placeholder="End..." name="time_out" id="time_out" style="flex: 1;">
                         </div>
                     </div>
-
+                    
                     <button id="reset-filters" style="margin-top: 15px;" type="button">Reset All Filters</button>
                 </div>
             </div>
@@ -267,14 +290,14 @@
                             <a class="video_id text-overlay-top" data-imageid="{{ video_name }}" target="{{ index }}">
                                 {{ video_name }}
                             </a>
-                            <img data-src="{{ url_for('send_file', path=frame_path) }}"
-                                id="{{ index }}"
-                                class="lazy-image"
+                            <img data-src="{{ url_for('send_file', path=frame_path) }}" 
+                                id="{{ index }}" 
+                                class="lazy-image" 
                                 loading="lazy"
                                 style="width: var(--thumbnail-width); height: var(--thumbnail-height);">
-                            <a class="image_id text-overlay-bottom"
-                            style="left: 0; bottom: 1.5rem;"
-                            id="frame_name-{{ index }}"
+                            <a class="image_id text-overlay-bottom" 
+                            style="left: 0; bottom: 1.5rem;" 
+                            id="frame_name-{{ index }}" 
                             target="{{ index }}">
                                 {{ frame_name }}
                             </a>
@@ -293,6 +316,9 @@
     <!-- Scripts -->
     <script src="static/js/jquery-3.6.0.min.js"></script>
     <script src="static/js/jszip.min.js"></script>
+    <script>
+        window.BASE_URL = "{{ base_url }}";
+    </script>
     <script type="module" src="static/js/main.js"></script>
 </body>
 </html>

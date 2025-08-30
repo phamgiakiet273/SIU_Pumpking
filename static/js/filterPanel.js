@@ -109,6 +109,13 @@ export function addExcludedFrame(frameRecord) {
             related_end_frame
         });
         updateExcludedList();
+
+        // If re-search is enabled
+        const immediateRerun = document.getElementById('immediate-rerun-checkbox').checked;
+        if (immediateRerun) {
+            // Trigger a new search
+            document.getElementById('form').requestSubmit();
+        }
     }
 }
 
