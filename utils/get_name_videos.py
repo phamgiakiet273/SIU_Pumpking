@@ -1,6 +1,5 @@
 from typing import List
 import os
-
 from pathlib import Path
 import sys
 
@@ -14,21 +13,18 @@ else:
     raise RuntimeError("Could not find 'SIU_Pumpking' in the path hierarchy.")
 
 from dotenv import load_dotenv
-
 load_dotenv()
 
 from configs.app import AppConfig
-
 config = AppConfig()
-
 
 def get_video_names(batch_numbers: List[int]) -> List[str]:
     """
     Get list of folder names (LXX) followed by video names (LXX_VYYY) from specified batches.
-
+    
     Args:
         batch_numbers: List of batch numbers (0, 1, 2, ...)
-
+    
     Returns:
         Combined list of folder names (LXX) followed by video names.
     """
@@ -61,7 +57,6 @@ def get_video_names(batch_numbers: List[int]) -> List[str]:
     # Kết hợp danh sách LXX (đã sort) với danh sách video names
     sorted_lxx = sorted(list(lxx_folders))
     return sorted_lxx + video_names
-
 
 # Test thử:
 if __name__ == "__main__":
