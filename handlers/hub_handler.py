@@ -42,6 +42,8 @@ from configs.util import UtilConfig
 from configs.nginx_config import NGINXConfig
 from configs.submission import SubmissionConfig
 
+from handlers.submission_handler import SubmissionHandler
+
 SPLIT_NAME = os.getenv("SPLIT_NAME", "autoshot")
 SPLIT_NAME_LOW_RES = os.getenv("SPLIT_NAME_LOW_RES", "low_res_autoshot")
 timeout = HubConfig().REQUEST_TIMEOUT
@@ -167,6 +169,10 @@ class HubHandler:
 
     async def get_sessionID_evalID_DRES_handler(self) -> APIResponse:
         base_url = f"{SubmissionConfig().SUBMISSION_HOST}/submission"
+        
+        submission_handler = SubmissionHandler()
+        await submission_handler.relogin()
+        
         async with httpx.AsyncClient(timeout=timeout) as client:
             # Lấy session_id
             resp1 = await client.get(f"{base_url}/get_session_id")
