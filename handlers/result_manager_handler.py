@@ -9,7 +9,7 @@ import json
 # keep your existing imports
 from schema.api import APIResponse
 from utils.logger import get_logger
-from utils.get_k_frames import detect_batch as get_batch
+from utils.get_k_frames import get_batch as get_batch
 from configs.nginx_config import NGINXConfig
 
 from configs.app import AppConfig
@@ -64,7 +64,10 @@ class ResultManagerHandler:
             batch = get_batch(video_name)
 
             # build the canonical path (using SPLIT_NAME) and then swap to low-res split
-            full_path = f"{batch}/frames/{SPLIT_NAME}/Keyframes_L{level_num}/keyframes/{video_name}/{frame_file}"
+            if batch == 0:
+                full_path = f"{batch}/frames/{SPLIT_NAME}/Keyframes_L{level_num}/keyframes/{video_name}/{frame_file}"
+            else:
+                full_path = f"{batch}/frames/{SPLIT_NAME}/Keyframes_K{level_num}/keyframes/{video_name}/{frame_file}"
             # switch to low-res split (keeps other path parts identical)
             full_path = full_path.replace(f"/{SPLIT_NAME}/", f"/{SPLIT_NAME_LOW_RES}/")
 
