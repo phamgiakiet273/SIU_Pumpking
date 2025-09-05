@@ -97,7 +97,7 @@ class METACLIPHandler:
 
     async def text_search_handler(self, req: RetrievalRequest) -> APIResponse:
 
-        logger.info(f"text_search called with text={req.text}, k={req.k}")
+        logger.info(f"text_search called with text={req.text}, k={req.k}, frame_class_filter={req.frame_class_filter}")
         if not req.text:
             logger.error("Missing text for search")
             raise HTTPException(
