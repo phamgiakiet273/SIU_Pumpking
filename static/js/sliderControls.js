@@ -22,7 +22,6 @@ export function initSliderControls() {
     // START: Get new checkbox elements
     const returnS2TCheckbox = document.getElementById('return-s2t-checkbox');
     const returnObjectCheckbox = document.getElementById('return-object-checkbox');
-    const frameClassFilterCheckbox = document.getElementById('frame-class-filter-checkbox');
     // END: Get new checkbox elements
 
     // Initialize values
@@ -35,7 +34,6 @@ export function initSliderControls() {
     // START: Initialize new checkbox values based on your defaults
     returnS2TCheckbox.checked = true;       // default: true
     returnObjectCheckbox.checked = false;   // default: false
-    frameClassFilterCheckbox.checked = true;// default: true
     // END: Initialize new checkbox values
 
     // Apply initial thumbnail size
