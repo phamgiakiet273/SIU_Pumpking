@@ -331,7 +331,7 @@ class HubHandler:
         s2t_filter: Optional[str] = Form(None),
         return_s2t: bool = Form(True),
         return_object: bool = Form(True),
-        frame_class_filter: Optional[str] = Form(''),
+        frame_class_filter: Optional[str] = Form('[]'),
         skip_frames: Optional[str] = Form("[]"),
         sort_to_news: bool = Form(True)
     ) -> APIResponse:
@@ -453,7 +453,7 @@ class HubHandler:
         s2t_filter: Optional[str] = Form(None),
         return_s2t: bool = Form(True),
         return_object: bool = Form(True),
-        frame_class_filter: Optional[str] = Form(''),
+        frame_class_filter: Optional[str] = Form('[]'),
         skip_frames: Optional[str] = Form("[]"),
         sort_to_news: bool = Form(True)
     ) -> APIResponse:
@@ -511,7 +511,7 @@ class HubHandler:
         s2t_filter: Optional[str] = Form(None),
         return_s2t: bool = Form(True),
         return_object: bool = Form(True),
-        frame_class_filter: Optional[str] = Form(''),
+        frame_class_filter: Optional[str] = Form('[]'),
         skip_frames: Optional[str] = Form("[]"),
         sort_to_news: bool = Form(True)
     ) -> APIResponse:
@@ -650,7 +650,7 @@ class HubHandler:
         time_out: Optional[str] = Form(None),
         return_s2t: bool = Form(True),
         return_object: bool = Form(True),
-        frame_class_filter: Optional[str] = Form(''),
+        frame_class_filter: Optional[str] = Form('[]'),
         skip_frames: Optional[str] = Form("[]"),
         sort_to_news: bool = Form(True)
     ) -> APIResponse:
@@ -704,7 +704,7 @@ class HubHandler:
         s2t_filter: Optional[str] = Form(None),
         return_s2t: bool = Form(True),
         return_object: bool = Form(True),
-        frame_class_filter: Optional[str] = Form(''),
+        frame_class_filter: Optional[str] = Form('[]'),
         skip_frames: Optional[str] = Form(
             '[{"video_name": "L27_V015", "frame_name": "05643", "related_start_frame": "0", "related_end_frame": "50000"}]'
         ),
@@ -830,7 +830,7 @@ class HubHandler:
         s2t_filter: Optional[str] = Form(None),
         return_s2t: bool = Form(True),
         return_object: bool = Form(True),
-        frame_class_filter: Optional[str] = Form(''),
+        frame_class_filter: Optional[str] = Form('[]'),
         skip_frames: Optional[str] = Form("[]"),
         sort_to_news: bool = Form(True)
     ) -> APIResponse:
@@ -889,7 +889,7 @@ class HubHandler:
         return_list: bool = Form(False),
         return_s2t: bool = Form(True),
         return_object: bool = Form(True),
-        frame_class_filter: Optional[str] = Form(''),
+        frame_class_filter: Optional[str] = Form('[]'),
         skip_frames: Optional[str] = Form("[]"),
         sort_to_news: bool = Form(True)
     ) -> APIResponse:
@@ -1028,7 +1028,7 @@ class HubHandler:
         time_out: Optional[str] = Form(None),
         return_s2t=Form(True),
         return_object=Form(True),
-        frame_class_filter: Optional[str] = Form(''),
+        frame_class_filter: Optional[str] = Form('[]'),
         skip_frames: Optional[str] = Form("[]"),
         sort_to_news: bool = Form(True)
     ) -> APIResponse:
@@ -1082,7 +1082,7 @@ class HubHandler:
         s2t_filter: Optional[str] = Form(None),
         return_s2t: bool = Form(True),
         return_object: bool = Form(True),
-        frame_class_filter: Optional[str] = Form(''),
+        frame_class_filter: Optional[str] = Form('[]'),
         skip_frames: Optional[str] = Form(
             '[{"video_name": "L27_V015", "frame_name": "05643", "related_start_frame": "0", "related_end_frame": "50000"}]'
         ),
@@ -1205,7 +1205,7 @@ class HubHandler:
         s2t_filter: Optional[str] = Form(None),
         return_s2t: bool = Form(True),
         return_object: bool = Form(True),
-        frame_class_filter: Optional[str] = Form(''),
+        frame_class_filter: Optional[str] = Form('[]'),
         skip_frames: Optional[str] = Form("[]"),
         sort_to_news: bool = Form(True)
     ) -> APIResponse:
@@ -1264,7 +1264,7 @@ class HubHandler:
         return_list: bool = Form(False),
         return_s2t: bool = Form(True),
         return_object: bool = Form(True),
-        frame_class_filter: Optional[str] = Form(''),
+        frame_class_filter: Optional[str] = Form('[]'),
         skip_frames: Optional[str] = Form("[]"),
         sort_to_news: bool = Form(True)
     ) -> APIResponse:
@@ -1403,7 +1403,7 @@ class HubHandler:
         time_out: Optional[str] = Form(None),
         return_s2t=Form(True),
         return_object=Form(True),
-        frame_class_filter: Optional[str] = Form(''),
+        frame_class_filter: Optional[str] = Form('[]'),
         skip_frames: Optional[str] = Form("[]"),
         sort_to_news: bool = Form(True)
     ) -> APIResponse:
