@@ -73,9 +73,9 @@ class QDRANT:
                         binary=models.BinaryQuantizationConfig(always_ram=True),
                     )
                 ),
-                optimizers_config=models.OptimizersConfigDiff(default_segment_number=4, max_segment_size=2000000000),
+                optimizers_config=models.OptimizersConfigDiff(default_segment_number=6, max_segment_size=20000000, indexing_threshold=0),
                 on_disk_payload=True,
-                shard_number=80,
+                shard_number=90,
                 hnsw_config=HnswConfigDiff(
                     m=8,                         
                     ef_construct=50,          
@@ -122,10 +122,10 @@ class QDRANT:
         struct_id = 0
         
         
-        for idx_folder, folder_path in enumerate(FEATURES_PATH):
+        for idx_folder, folder_path in enumerate(FEATURES_PATH[:2]):
             insert_points = []
             
-            for feat_npy in tqdm(sorted(os.listdir(folder_path))):
+            for feat_npy in tqdm(sorted(os.listdir(folder_path))[:2]):
                 video_name = feat_npy.split('.')[0]
                 npy_path = os.path.join(folder_path, feat_npy)
 
@@ -184,8 +184,15 @@ class QDRANT:
             operation_info = self.client.upsert(
                 collection_name=self.collection_name,
                 wait=False,
-                points=insert_points
+                points=insert_points[:len(insert_points)//2]
             )
+            
+            operation_info = self.client.upsert(
+                collection_name=self.collection_name,
+                wait=False,
+                points=insert_points[len(insert_points)//2:]
+            )
+            
             logger.info(f"Dataset Insert Completed {str(int(idx_folder)+1)}/{len(FEATURES_PATH)}")
         
         logger.info("Cleaning up dictionary")
@@ -208,7 +215,7 @@ class QDRANT:
             field_schema=models.TextIndexParams(
                 type="text",
                 tokenizer=models.TokenizerType.WORD,
-                min_token_len=2,
+                min_token_len=2,    
                 max_token_len=15,
                 lowercase=True,
             ),
@@ -220,8 +227,8 @@ class QDRANT:
             field_schema=models.IntegerIndexParams(
                 type=models.IntegerIndexType.INTEGER,
                 on_disk=True,
-                lookup=False,
-                range=True,
+                lookup=True,
+                range=False,
             ),
         )
         logger.info("Create payload index complete")
@@ -234,7 +241,8 @@ class QDRANT:
                      time_in: str = None, 
                      time_out: str = None, 
                      s2t_filter: str = None,
-                     frame_class_filter: bool = True, 
+                    #  frame_class_filter: bool = True, 
+                     frame_class_filter: list = [],
                      skip_frames: list = [],
                      return_s2t: bool = True, # True mặc định là return bth, False là ko return field "s2t" trong cái result ở dưới
                      return_object: bool = True): # giống cái s2t ở trên, lần này là vs field "object"
@@ -252,10 +260,10 @@ class QDRANT:
         
         mustnot_field = []
         if frame_class_filter:
-            mustnot_field.append(
+            must_field.append(
                 models.FieldCondition(
                     key="frame_class",
-                    match=models.MatchValue(value=0),
+                    match=models.MatchAny(any=frame_class_filter),
                 ),
             )
             
@@ -289,7 +297,8 @@ class QDRANT:
                k: int = 100, 
                video_filter: str = "", 
                s2t_filter: str = None,
-               frame_class_filter: bool = True,
+            #    frame_class_filter: bool = True,
+               frame_class_filter: list = [],
                skip_frames: list = [],
                sort_to_news: bool = True,
                return_s2t: bool = True,
@@ -319,10 +328,10 @@ class QDRANT:
         
         mustnot_field = []
         if frame_class_filter:
-            mustnot_field.append(
+            must_field.append(
                 models.FieldCondition(
                     key="frame_class",
-                    match=models.MatchValue(value=0),
+                    match=models.MatchAny(any=frame_class_filter),
                 ),
             )
         idCondition = set()
@@ -336,6 +345,8 @@ class QDRANT:
         mustnot_field.append(models.HasIdCondition(has_id=list(idCondition)))
         FILTER_RESULTS = models.Filter(must=must_field, must_not=mustnot_field)
         
+        logger.info("Processed before search")
+        
         SEARCH_RESULTS = self.client.query_points(
             collection_name=self.collection_name,
             query=query,
@@ -343,7 +354,8 @@ class QDRANT:
             timeout=self.timeout,
             limit=int(k),
         ).points
-            
+        
+        logger.info("Processed after search")
         return_result = self._format_search_results(SEARCH_RESULTS, return_s2t=return_s2t, return_object=return_object)
         
         
@@ -383,6 +395,7 @@ class QDRANT:
                 ),
                 reverse=True
             )
+        logger.info("Processed sort")
         
         return return_result
 
@@ -399,7 +412,7 @@ class QDRANT:
                         k: int = 100, 
                         video_filter: list = [],  
                         s2t_filter: str = None,
-                        frame_class_filter: bool = True,
+                        frame_class_filter: list = [],
                         skip_frames: list = [],
                         return_s2t: bool = True,
                         return_object: bool = True):
@@ -428,10 +441,10 @@ class QDRANT:
             
         mustnot_field = []
         if frame_class_filter:
-            mustnot_field.append(
+            must_field.append(
                 models.FieldCondition(
                     key="frame_class",
-                    match=models.MatchValue(value=0),
+                    match=models.MatchAny(any=frame_class_filter),
                 ),
             )
         idCondition = set()
@@ -594,14 +607,14 @@ class QDRANT:
             Lpath = os.path.join(
                 iBpath, 
                 "frames/autoshot",
-                "Keyframes_L*"
+                "Keyframes_*"
             )
             lLpath = sorted(glob.glob(Lpath))
             for iLpath in lLpath:
                 Vpath = os.path.join(
                     iLpath, 
                     "keyframes",
-                    "L*"
+                    "*"
                 )
                 lVpath = sorted(glob.glob(Vpath))
                 for iVpath in lVpath:
