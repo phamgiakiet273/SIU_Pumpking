@@ -75,13 +75,15 @@ export function initSearchHandler() {
             // Read checkbox values from the settings panel
             const returnS2T = document.getElementById('return-s2t-checkbox').checked;
             const returnObject = document.getElementById('return-object-checkbox').checked;
-            const frameClassFilter = document.getElementById('frame-class-filter-checkbox').checked;
+            const frameClassValues = Array.from(document.querySelectorAll('input[name="frame-class"]:checked'))
+                .map(checkbox => parseInt(checkbox.value));
+
 
             // Add them to the FormData object
             fd.set('return_s2t', returnS2T);
             fd.set('return_object', returnObject);
-            fd.set('frame_class_filter', frameClassFilter);
-            
+            fd.set('frame_class_filter', JSON.stringify(frameClassValues));
+
             // Get filters from filter panel
             const filters = getFilters();
             fd.set('video_filter', filters.video_filter);
@@ -213,7 +215,7 @@ export function initSearchHandler() {
                     k: kVal,
                     returnS2T,
                     returnObject,
-                    frameClassFilter
+                    frameClassValues
                 },
                 results: payload.data.data // Store actual results
             };
@@ -315,7 +317,8 @@ export async function performScrollSearch(record) {
         const kVal = document.getElementById('k').value;
         const returnS2T = document.getElementById('return-s2t-checkbox').checked;
         const returnObject = document.getElementById('return-object-checkbox').checked;
-        const frameClassFilter = document.getElementById('frame-class-filter-checkbox').checked;
+        const frameClassValues = Array.from(document.querySelectorAll('input[name="frame-class"]:checked'))
+            .map(checkbox => parseInt(checkbox.value));
 
         // Prepare form data
         const fd = new FormData();
@@ -333,7 +336,7 @@ export async function performScrollSearch(record) {
         fd.set('video_filter', videoName);
         fd.set('return_s2t', returnS2T);
         fd.set('return_object', returnObject);
-        fd.set('frame_class_filter', frameClassFilter);
+        fd.set('frame_class_filter', JSON.stringify(frameClassValues));
         fd.set('time_in', startTime);
         fd.set('time_out', endTime);
         
@@ -366,7 +369,7 @@ export async function performScrollSearch(record) {
                 k: kVal,
                 returnS2T,
                 returnObject,
-                frameClassFilter
+                frameClassValues
             },
             results: payload.data.data
         };
@@ -463,7 +466,20 @@ export function loadSearchContext(context) {
     // Set settings
     document.getElementById('return-s2t-checkbox').checked = context.settings.returnS2T;
     document.getElementById('return-object-checkbox').checked = context.settings.returnObject;
-    document.getElementById('frame-class-filter-checkbox').checked = context.settings.frameClassFilter;
+    if (context.settings.frameClassFilter) {
+        // If it's an array (new format), set each checkbox
+        if (Array.isArray(context.settings.frameClassFilter)) {
+            document.querySelectorAll('input[name="frame-class"]').forEach(checkbox => {
+                checkbox.checked = context.settings.frameClassFilter.includes(parseInt(checkbox.value));
+            });
+        } 
+        // Handle legacy boolean format for backward compatibility
+        else if (context.settings.frameClassFilter === true) {
+            // Set default classes 2 and 3
+            document.querySelector('input[name="frame-class"][value="2"]').checked = true;
+            document.querySelector('input[name="frame-class"][value="3"]').checked = true;
+        }
+    }
     document.getElementById('k').value = context.settings.k;
     document.getElementById('slider_k').value = context.settings.k;
     
