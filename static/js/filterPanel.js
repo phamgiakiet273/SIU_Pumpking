@@ -24,7 +24,10 @@ export function initFilterPanel() {
     // Enter upon submit
     document.querySelector('.filters-panel').addEventListener('keydown', (e) => {
         if (e.key === 'Enter') {
-            document.getElementById('form').submit();
+            const form = e.target.closest('form'); // finds nearest enclosing <form>
+            if (form) {
+                form.requestSubmit(); // better than .submit(), triggers validation + events
+            }
         }
     });
 
