@@ -331,11 +331,12 @@ class HubHandler:
         s2t_filter: Optional[str] = Form(None),
         return_s2t: bool = Form(True),
         return_object: bool = Form(True),
-        frame_class_filter: bool = Form(True),
+        frame_class_filter: Optional[str] = Form(''),
         skip_frames: Optional[str] = Form("[]"),
         sort_to_news: bool = Form(True)
     ) -> APIResponse:
 
+        frame_class_filter = json.loads(frame_class_filter)
         skip_frames_list = json.loads(skip_frames)
 
         # prepare url + json to send to SIGLIP service
@@ -452,11 +453,12 @@ class HubHandler:
         s2t_filter: Optional[str] = Form(None),
         return_s2t: bool = Form(True),
         return_object: bool = Form(True),
-        frame_class_filter: bool = Form(True),
+        frame_class_filter: Optional[str] = Form(''),
         skip_frames: Optional[str] = Form("[]"),
         sort_to_news: bool = Form(True)
     ) -> APIResponse:
 
+        frame_class_filter = json.loads(frame_class_filter)
         skip_frames_list = json.loads(skip_frames)
 
         try:
@@ -509,11 +511,12 @@ class HubHandler:
         s2t_filter: Optional[str] = Form(None),
         return_s2t: bool = Form(True),
         return_object: bool = Form(True),
-        frame_class_filter: bool = Form(True),
+        frame_class_filter: Optional[str] = Form(''),
         skip_frames: Optional[str] = Form("[]"),
         sort_to_news: bool = Form(True)
     ) -> APIResponse:
 
+        frame_class_filter = json.loads(frame_class_filter)
         skip_frames_list = json.loads(skip_frames)
 
         url = f"{SIGLIPV2Config().SIGLIP_V2_HOST}/siglip_v2/temporal_search"
@@ -647,11 +650,12 @@ class HubHandler:
         time_out: Optional[str] = Form(None),
         return_s2t: bool = Form(True),
         return_object: bool = Form(True),
-        frame_class_filter: bool = Form(True),
+        frame_class_filter: Optional[str] = Form(''),
         skip_frames: Optional[str] = Form("[]"),
         sort_to_news: bool = Form(True)
     ) -> APIResponse:
 
+        frame_class_filter = json.loads(frame_class_filter)
         skip_frames_list = json.loads(skip_frames)
 
         try:
@@ -700,14 +704,18 @@ class HubHandler:
         s2t_filter: Optional[str] = Form(None),
         return_s2t: bool = Form(True),
         return_object: bool = Form(True),
-        frame_class_filter: bool = Form(True),
+        frame_class_filter: Optional[str] = Form(''),
         skip_frames: Optional[str] = Form(
             '[{"video_name": "L27_V015", "frame_name": "05643", "related_start_frame": "0", "related_end_frame": "50000"}]'
         ),
         sort_to_news: bool = Form(True)
     ) -> APIResponse:
 
+        frame_class_filter = json.loads(frame_class_filter)
         skip_frames_list = json.loads(skip_frames)
+        
+        types = [type(x) for x in frame_class_filter]
+        logger.info(f"frame_class_filter: {frame_class_filter} | Element types: {types}")
 
         url = f"{METACLIPConfig().METACLIP_HOST}/metaclip/text_search"
 
@@ -822,11 +830,12 @@ class HubHandler:
         s2t_filter: Optional[str] = Form(None),
         return_s2t: bool = Form(True),
         return_object: bool = Form(True),
-        frame_class_filter: bool = Form(True),
+        frame_class_filter: Optional[str] = Form(''),
         skip_frames: Optional[str] = Form("[]"),
         sort_to_news: bool = Form(True)
     ) -> APIResponse:
 
+        frame_class_filter = json.loads(frame_class_filter)
         skip_frames_list = json.loads(skip_frames)
 
         try:
@@ -880,11 +889,12 @@ class HubHandler:
         return_list: bool = Form(False),
         return_s2t: bool = Form(True),
         return_object: bool = Form(True),
-        frame_class_filter: bool = Form(True),
+        frame_class_filter: Optional[str] = Form(''),
         skip_frames: Optional[str] = Form("[]"),
         sort_to_news: bool = Form(True)
     ) -> APIResponse:
 
+        frame_class_filter = json.loads(frame_class_filter)
         skip_frames_list = json.loads(skip_frames)
 
         url = f"{METACLIPConfig().METACLIP_HOST}/metaclip/temporal_search"
@@ -1018,11 +1028,12 @@ class HubHandler:
         time_out: Optional[str] = Form(None),
         return_s2t=Form(True),
         return_object=Form(True),
-        frame_class_filter: bool = Form(True),
+        frame_class_filter: Optional[str] = Form(''),
         skip_frames: Optional[str] = Form("[]"),
         sort_to_news: bool = Form(True)
     ) -> APIResponse:
 
+        frame_class_filter = json.loads(frame_class_filter)
         skip_frames_list = json.loads(skip_frames)
 
         try:
@@ -1071,13 +1082,14 @@ class HubHandler:
         s2t_filter: Optional[str] = Form(None),
         return_s2t: bool = Form(True),
         return_object: bool = Form(True),
-        frame_class_filter: bool = Form(True),
+        frame_class_filter: Optional[str] = Form(''),
         skip_frames: Optional[str] = Form(
             '[{"video_name": "L27_V015", "frame_name": "05643", "related_start_frame": "0", "related_end_frame": "50000"}]'
         ),
         sort_to_news: bool = Form(True)
     ) -> APIResponse:
 
+        frame_class_filter = json.loads(frame_class_filter)
         skip_frames_list = json.loads(skip_frames)
 
         url = f"{METACLIPV2Config().METACLIP_V2_HOST}/metaclip_v2/text_search"
@@ -1193,11 +1205,12 @@ class HubHandler:
         s2t_filter: Optional[str] = Form(None),
         return_s2t: bool = Form(True),
         return_object: bool = Form(True),
-        frame_class_filter: bool = Form(True),
+        frame_class_filter: Optional[str] = Form(''),
         skip_frames: Optional[str] = Form("[]"),
         sort_to_news: bool = Form(True)
     ) -> APIResponse:
 
+        frame_class_filter = json.loads(frame_class_filter)
         skip_frames_list = json.loads(skip_frames)
 
         try:
@@ -1251,11 +1264,12 @@ class HubHandler:
         return_list: bool = Form(False),
         return_s2t: bool = Form(True),
         return_object: bool = Form(True),
-        frame_class_filter: bool = Form(True),
+        frame_class_filter: Optional[str] = Form(''),
         skip_frames: Optional[str] = Form("[]"),
         sort_to_news: bool = Form(True)
     ) -> APIResponse:
 
+        frame_class_filter = json.loads(frame_class_filter)
         skip_frames_list = json.loads(skip_frames)
 
         url = f"{METACLIPV2Config().METACLIP_V2_HOST}/metaclip_v2/temporal_search"
@@ -1389,11 +1403,12 @@ class HubHandler:
         time_out: Optional[str] = Form(None),
         return_s2t=Form(True),
         return_object=Form(True),
-        frame_class_filter: bool = Form(True),
+        frame_class_filter: Optional[str] = Form(''),
         skip_frames: Optional[str] = Form("[]"),
         sort_to_news: bool = Form(True)
     ) -> APIResponse:
 
+        frame_class_filter = json.loads(frame_class_filter)
         skip_frames_list = json.loads(skip_frames)
 
         try:
