@@ -62,6 +62,10 @@ class ResultManagerHandler:
                 raise ValueError("video_name must be in format 'Lxx_Vyyy', e.g. 'L27_V011'")
 
             batch = get_batch(video_name)
+            
+            if batch == 1 and int(level_num)<10:
+                level_num = str(level_num)
+                level_num = "0" + str(level_num)
 
             # build the canonical path (using SPLIT_NAME) and then swap to low-res split
             if batch == 0:
@@ -127,8 +131,16 @@ class ResultManagerHandler:
 
             batch = get_batch(video_name)
 
+            if batch == 1 and int(level_num)<10:
+                level_num = str(level_num)
+                level_num = "0" + str(level_num)
+
             video_file = f"{video_name}.mp4"
-            full_path = f"{batch}/videos/Videos_L{level_num}/video/{video_file}"
+
+            if batch == 0:
+                full_path = f"{batch}/videos/Videos_L{level_num}/video/{video_file}"
+            else:
+                full_path = f"{batch}/videos/Videos_K{level_num}/video/{video_file}"
 
             target = f"{NGINXConfig().NGINX_VIDEO_HOST}/{full_path}"
             logger.info(f"send_video_handler redirecting to: {target}")
