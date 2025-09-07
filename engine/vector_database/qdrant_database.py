@@ -73,13 +73,13 @@ class QDRANT:
                         binary=models.BinaryQuantizationConfig(always_ram=True),
                     )
                 ),
-                optimizers_config=models.OptimizersConfigDiff(default_segment_number=6, max_segment_size=20000000, indexing_threshold=0),
+                optimizers_config=models.OptimizersConfigDiff(default_segment_number=6, max_segment_size=20000000, indexing_threshold=1000),
                 on_disk_payload=True,
                 shard_number=90,
                 hnsw_config=HnswConfigDiff(
-                    m=8,                         
-                    ef_construct=50,          
-                    full_scan_threshold=0,
+                    m=16,                         
+                    ef_construct=100,          
+                    full_scan_threshold=10000,
                     on_disk=False,                
                 )# https://medium.com/@benitomartin/balancing-accuracy-and-speed-with-qdrant-hyperparameters-hydrid-search-and-semantic-caching-part-84b26037e594
                 #optimizers_config=models.OptimizersConfigDiff(default_segment_number=64)
@@ -122,10 +122,10 @@ class QDRANT:
         struct_id = 0
         
         
-        for idx_folder, folder_path in enumerate(FEATURES_PATH[:2]):
+        for idx_folder, folder_path in enumerate(FEATURES_PATH):
             insert_points = []
             
-            for feat_npy in tqdm(sorted(os.listdir(folder_path))[:2]):
+            for feat_npy in tqdm(sorted(os.listdir(folder_path))):
                 video_name = feat_npy.split('.')[0]
                 npy_path = os.path.join(folder_path, feat_npy)
 
@@ -345,8 +345,6 @@ class QDRANT:
         mustnot_field.append(models.HasIdCondition(has_id=list(idCondition)))
         FILTER_RESULTS = models.Filter(must=must_field, must_not=mustnot_field)
         
-        logger.info("Processed before search")
-        
         SEARCH_RESULTS = self.client.query_points(
             collection_name=self.collection_name,
             query=query,
@@ -355,7 +353,6 @@ class QDRANT:
             limit=int(k),
         ).points
         
-        logger.info("Processed after search")
         return_result = self._format_search_results(SEARCH_RESULTS, return_s2t=return_s2t, return_object=return_object)
         
         
@@ -395,7 +392,6 @@ class QDRANT:
                 ),
                 reverse=True
             )
-        logger.info("Processed sort")
         
         return return_result
 
