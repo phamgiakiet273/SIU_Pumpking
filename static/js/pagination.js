@@ -256,10 +256,22 @@ function createThumbnailElement(rec) {
         if (imgElement) {
             // Convert the image to a data URL
             try {
-                const response = await fetch(imgElement.src.replace("send_img","send_img_original"));
-                const blob = await response.blob();
-                const dataUrl = await blobToDataURL(blob);
-                performImageSearch(dataUrl);
+                const response = await fetch(imgElement.src.replace("send_img", "send_img_original"));
+                // const response = await fetch(imgElement.src.replace(".jpg", ".avif"));
+
+                const url = response.url;
+                const index = url.indexOf("/img");
+
+                if (index !== -1) {
+                    // Skip "/img" entirely by adding 4 (length of "/img")
+                    const trimmedUrl = url.substring(index + 4);
+                    console.log("Trimmed URL (without /img):", trimmedUrl);
+
+                    // Update image source with your API endpoint
+                    const newUrl = `https://api.siu.edu.vn/siu_pumpking_1/hub/send_img_original/${encodeURIComponent(trimmedUrl)}`;
+                    imgElement.src = newUrl;
+                    performImageSearch(newUrl);
+                }
             } catch (error) {
                 console.error('Error converting image to data URL:', error);
                 alert('Failed to prepare image for search');
