@@ -513,7 +513,8 @@ class HubHandler:
         return_object: bool = Form(True),
         frame_class_filter: Optional[str] = Form('[]'),
         skip_frames: Optional[str] = Form("[]"),
-        sort_to_news: bool = Form(True)
+        sort_to_news: bool = Form(True),
+        main_event_index: int = Form(0),
     ) -> APIResponse:
 
         frame_class_filter = json.loads(frame_class_filter)
@@ -530,7 +531,8 @@ class HubHandler:
             "return_object": return_object,
             "frame_class_filter": frame_class_filter,
             "skip_frames": skip_frames_list if skip_frames_list else [],
-            "sort_to_news": sort_to_news
+            "sort_to_news": sort_to_news,
+            "main_event_index": main_event_index,
         }
 
         async with httpx.AsyncClient(timeout=timeout) as client:
@@ -891,7 +893,8 @@ class HubHandler:
         return_object: bool = Form(True),
         frame_class_filter: Optional[str] = Form('[]'),
         skip_frames: Optional[str] = Form("[]"),
-        sort_to_news: bool = Form(True)
+        sort_to_news: bool = Form(True),
+        main_event_index: int = Form(0),
     ) -> APIResponse:
 
         frame_class_filter = json.loads(frame_class_filter)
@@ -909,6 +912,7 @@ class HubHandler:
             "frame_class_filter": frame_class_filter,
             "skip_frames": skip_frames_list if skip_frames_list else [],
             "sort_to_news": sort_to_news,
+            "main_event_index": main_event_index,
         }
 
         async with httpx.AsyncClient(timeout=timeout) as client:
@@ -1266,7 +1270,8 @@ class HubHandler:
         return_object: bool = Form(True),
         frame_class_filter: Optional[str] = Form('[]'),
         skip_frames: Optional[str] = Form("[]"),
-        sort_to_news: bool = Form(True)
+        sort_to_news: bool = Form(True),
+        main_event_index: int = Form(0),
     ) -> APIResponse:
 
         frame_class_filter = json.loads(frame_class_filter)
@@ -1283,7 +1288,8 @@ class HubHandler:
             "return_object": return_object,
             "frame_class_filter": frame_class_filter,
             "skip_frames": skip_frames_list if skip_frames_list else [],
-            "sort_to_news": sort_to_news
+            "sort_to_news": sort_to_news,
+            "main_event_index": main_event_index,
         }
 
         async with httpx.AsyncClient(timeout=timeout) as client:
