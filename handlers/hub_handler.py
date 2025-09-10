@@ -126,7 +126,7 @@ class HubHandler:
                               source: Optional[str] = Form(""),
                               target: Optional[str] = Form("en")) -> APIResponse:
         
-        url = f"http://{UtilConfig().UTIL_HOST}:{UtilConfig().UTIL_PORT}/util/translate"
+        url = f"{HubConfig().UTIL_HOST_PUBLIC}/util/translate"
         
         json = {
             "text": text,
@@ -878,8 +878,8 @@ class HubHandler:
                                     s2t_filter: Optional[str] = Form(None),
                                     time_in: Optional[str] = Form(None),
                                     time_out: Optional[str] = Form(None),
-                                    return_s2t = Form(True), 
-                                    return_object = Form(True),
+                                    return_s2t: bool = Form(True), 
+                                    return_object: bool = Form(True),
                                     frame_class_filter: Optional[str] = Form('[]'),
                                     skip_frames: Optional[str] = Form("[]"),
                                     sort_to_news: bool = Form(True)) -> APIResponse:
@@ -1180,8 +1180,8 @@ class HubHandler:
                                     s2t_filter: Optional[str] = Form(None),
                                     time_in: Optional[str] = Form(None),
                                     time_out: Optional[str] = Form(None),
-                                    return_s2t = Form(True), 
-                                    return_object = Form(True),
+                                    return_s2t: bool = Form(True), 
+                                    return_object: bool = Form(True),
                                     frame_class_filter: Optional[str] = Form('[]'),
                                     skip_frames: Optional[str] = Form("[]"),
                                     sort_to_news: bool = Form(True)) -> APIResponse:
