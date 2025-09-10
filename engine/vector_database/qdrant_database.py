@@ -23,7 +23,7 @@ else:
     raise RuntimeError("Could not find 'SIU_Pumpking' in the path hierarchy.")
 
 #from utils.metadata_util import get_batch#, get_videos_from_batch
-from utils.vector_database_util import merge_scores, preprocess_object_dict
+from utils.vector_database_util import merge_scores, merge_scores_reverse, preprocess_object_dict
 
 from utils.logger import get_logger
 
@@ -404,7 +404,8 @@ class QDRANT:
                 return int(item[1])
         return 0
 
-    def search_temporal(self, queryList = List[List[float]], 
+    def search_temporal(self, queryList = List[List[float]],
+                        query_main: int=0,
                         k: int = 100, 
                         video_filter: list = [],  
                         s2t_filter: str = None,
@@ -453,13 +454,14 @@ class QDRANT:
             idCondition |= set(self._get_frames(video_name, related_start_frame, related_end_frame))
         mustnot_field.append(models.HasIdCondition(has_id=list(idCondition))) 
         
+        queryLen = len(queryList)
         FILTER_RESULTS = models.Filter(must=must_field, must_not=mustnot_field)
         SEARCH_RESULTS = self.client.query_points(
             collection_name=self.collection_name,
-            query=queryList[0],
+            query=queryList[query_main],
             query_filter=FILTER_RESULTS,
             timeout=self.timeout,
-            limit=int(k) * len(queryList),
+            limit=int(k) * queryLen,
         ).points
 
         return_result = self._format_search_results(SEARCH_RESULTS, return_s2t=return_s2t, return_object=return_object)
@@ -468,10 +470,42 @@ class QDRANT:
         SEARCH_RESULTS = [[result] for result in return_result]
         PREVIOUS_SEARCH_RESULTS = SEARCH_RESULTS
         
-        logger.info("Processed scene 1 for temporal")
+        logger.info(f"Processed scene {query_main+1} for temporal")
+        
+        for query_idx in range(queryLen-1,-1,-1):
+            if query_idx >= query_main:
+                continue
+            
+            return_result = []
+            FILTER_RESULTS = []
+            
+            idCondition = set()
+            for result in SEARCH_RESULTS:
+                split_name = result[0]['idx_folder']
+                video_name = result[0]['video_name'].replace('.mp4', '')
+                frame = int(result[0]['keyframe_id'])
+                idCondition |= set(self._get_frames(video_name, frame-1000, frame-1))
+        
+            FILTER_RESULTS = models.Filter(must=[models.HasIdCondition(has_id=list(idCondition))])
+            
+            SEARCH_RESULTS = self.client.query_points(
+                collection_name=self.collection_name,
+                query=queryList[query_idx],
+                query_filter=FILTER_RESULTS,
+                limit=int(k) * (queryLen - query_main + query_idx),
+                timeout=self.timeout,
+            ).points
+            
+            return_result = self._format_search_results(SEARCH_RESULTS, return_s2t=return_s2t, return_object=return_object)
+            
+            SEARCH_RESULTS = return_result
+            SEARCH_RESULTS = merge_scores_reverse(SEARCH_RESULTS, PREVIOUS_SEARCH_RESULTS)
+            PREVIOUS_SEARCH_RESULTS = SEARCH_RESULTS
+            
+            logger.info(f"Processed scene {query_idx+1} for temporal")
         
         for query_idx, query in enumerate(queryList):
-            if query_idx == 0:
+            if query_idx <= query_main:
                 continue
             
             return_result = []
@@ -490,7 +524,7 @@ class QDRANT:
                 collection_name=self.collection_name,
                 query=query,
                 query_filter=FILTER_RESULTS,
-                limit=int(k) * (len(queryList) - query_idx),
+                limit=int(k) * (len(queryList) + query_main - query_idx),
                 timeout=self.timeout,
             ).points
             
@@ -501,15 +535,8 @@ class QDRANT:
             PREVIOUS_SEARCH_RESULTS = SEARCH_RESULTS
             
             logger.info(f"Processed scene {query_idx+1} for temporal")
-    
-        # 
-        max_dict = {}
-        for item in SEARCH_RESULTS:
-            key = str(item[-2]["video_name"]) + "_" + str(item[-2]["keyframe_id"])
-            if key not in max_dict or item[-1]["score"] > max_dict[key][-1]["score"]:
-                max_dict[key] = item
-        SEARCH_RESULTS = list(max_dict.values())
-        
+        if query_main!=0 and query_main+1!=queryLen:
+            sorted_list = sorted(SEARCH_RESULTS, key=lambda x: x[0]['score'] + x[-1]['score'] - x[query_main]['score'], reverse=True)
         return SEARCH_RESULTS
 
     def _format_search_results(self,

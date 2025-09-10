@@ -444,29 +444,35 @@ class HubHandler:
         except Exception as e:
             logger.exception(f"Image loading failed: {e}")
             raise HTTPException(status_code=400, detail=f"Image loading failed: {e}")
-        
-        return await self.siglip_v2_image_query(ImageQuery(image_data = image_data,
-                                      k = k,
-                                      video_filter = video_filter,
-                                      s2t_filter = s2t_filter,
-                                      return_s2t = return_s2t, 
-                                      return_object = return_object,
-                                      frame_class_filter = frame_class_filter,
-                                      skip_frames = skip_frames_list,
-                                      sort_to_news = sort_to_news))        
-        
-        
-    async def siglip_v2_temporal_query_handler(self, text: str = Form(...),
-                                        k: int = Form(100),
-                                        video_filter: Optional[str] = Form(None),
-                                        s2t_filter: Optional[str] = Form(None),
-                                        return_s2t: bool = Form(True), 
-                                        return_object: bool = Form(True),
-                                        frame_class_filter: Optional[str] = Form('[]'),
-                                        skip_frames: Optional[str] = Form("[]"),
-                                        sort_to_news: bool = Form(True),
-                                        main_event_index: int = Form(0)) -> APIResponse:
-        
+
+        return await self.siglip_v2_image_query(
+            ImageQuery(
+                image_data=image_data,
+                k=k,
+                video_filter=video_filter,
+                s2t_filter=s2t_filter,
+                return_s2t=return_s2t,
+                return_object=return_object,
+                frame_class_filter=frame_class_filter,
+                skip_frames=skip_frames_list,
+                sort_to_news=sort_to_news
+            )
+        )
+
+    async def siglip_v2_temporal_query_handler(
+        self,
+        text: str = Form(...),
+        k: int = Form(100),
+        video_filter: Optional[str] = Form(None),
+        s2t_filter: Optional[str] = Form(None),
+        return_s2t: bool = Form(True),
+        return_object: bool = Form(True),
+        frame_class_filter: Optional[str] = Form('[]'),
+        skip_frames: Optional[str] = Form("[]"),
+        sort_to_news: bool = Form(True),
+        main_event_index: int = Form(0),
+    ) -> APIResponse:
+
         frame_class_filter = json.loads(frame_class_filter)
         skip_frames_list = json.loads(skip_frames)
         
@@ -750,30 +756,36 @@ class HubHandler:
         except Exception as e:
             logger.exception(f"Image loading failed: {e}")
             raise HTTPException(status_code=400, detail=f"Image loading failed: {e}")
-        
-        return await self.metaclip_image_query(ImageQuery(image_data = image_data,
-                                      k = k,
-                                      video_filter = video_filter,
-                                      s2t_filter = s2t_filter,
-                                      return_s2t = return_s2t, 
-                                      return_object = return_object,
-                                      frame_class_filter = frame_class_filter,
-                                      skip_frames = skip_frames_list,
-                                      sort_to_news=sort_to_news))        
-        
-        
-    async def metaclip_temporal_query_handler(self, text: str = Form(...),
-                                        k: int = Form(100),
-                                        video_filter: Optional[str] = Form(None),
-                                        s2t_filter: Optional[str] = Form(None),
-                                        return_list: bool = Form(False),
-                                        return_s2t: bool = Form(True), 
-                                        return_object: bool = Form(True),
-                                        frame_class_filter: Optional[str] = Form('[]'),
-                                        skip_frames: Optional[str] = Form("[]"),
-                                        sort_to_news: bool = Form(True),
-                                        main_event_index: int = Form(0)) -> APIResponse:
-        
+
+        return await self.metaclip_image_query(
+            ImageQuery(
+                image_data=image_data,
+                k=k,
+                video_filter=video_filter,
+                s2t_filter=s2t_filter,
+                return_s2t=return_s2t,
+                return_object=return_object,
+                frame_class_filter=frame_class_filter,
+                skip_frames=skip_frames_list,
+                sort_to_news=sort_to_news
+            )
+        )
+
+    async def metaclip_temporal_query_handler(
+        self,
+        text: str = Form(...),
+        k: int = Form(100),
+        video_filter: Optional[str] = Form(None),
+        s2t_filter: Optional[str] = Form(None),
+        return_list: bool = Form(False),
+        return_s2t: bool = Form(True),
+        return_object: bool = Form(True),
+        frame_class_filter: Optional[str] = Form('[]'),
+        skip_frames: Optional[str] = Form("[]"),
+        sort_to_news: bool = Form(True),
+        main_event_index: int = Form(0),
+    ) -> APIResponse:
+
         frame_class_filter = json.loads(frame_class_filter)
         skip_frames_list = json.loads(skip_frames)
         
@@ -1052,30 +1064,36 @@ class HubHandler:
         except Exception as e:
             logger.exception(f"Image loading failed: {e}")
             raise HTTPException(status_code=400, detail=f"Image loading failed: {e}")
-        
-        return await self.metaclip_v2_image_query(ImageQuery(image_data = image_data,
-                                      k = k,
-                                      video_filter = video_filter,
-                                      s2t_filter = s2t_filter,
-                                      return_s2t = return_s2t, 
-                                      return_object = return_object,
-                                      frame_class_filter = frame_class_filter,
-                                      skip_frames = skip_frames_list,
-                                      sort_to_news=sort_to_news))        
-        
-        
-    async def metaclip_v2_temporal_query_handler(self, text: str = Form(...),
-                                        k: int = Form(100),
-                                        video_filter: Optional[str] = Form(None),
-                                        s2t_filter: Optional[str] = Form(None),
-                                        return_list: bool = Form(False),
-                                        return_s2t: bool = Form(True), 
-                                        return_object: bool = Form(True),
-                                        frame_class_filter: Optional[str] = Form('[]'),
-                                        skip_frames: Optional[str] = Form("[]"),
-                                        sort_to_news: bool = Form(True),
-                                        main_event_index: int = Form(0)) -> APIResponse:
-        
+
+        return await self.metaclip_v2_image_query(
+            ImageQuery(
+                image_data=image_data,
+                k=k,
+                video_filter=video_filter,
+                s2t_filter=s2t_filter,
+                return_s2t=return_s2t,
+                return_object=return_object,
+                frame_class_filter=frame_class_filter,
+                skip_frames=skip_frames_list,
+                sort_to_news=sort_to_news
+            )
+        )
+
+    async def metaclip_v2_temporal_query_handler(
+        self,
+        text: str = Form(...),
+        k: int = Form(100),
+        video_filter: Optional[str] = Form(None),
+        s2t_filter: Optional[str] = Form(None),
+        return_list: bool = Form(False),
+        return_s2t: bool = Form(True),
+        return_object: bool = Form(True),
+        frame_class_filter: Optional[str] = Form('[]'),
+        skip_frames: Optional[str] = Form("[]"),
+        sort_to_news: bool = Form(True),
+        main_event_index: int = Form(0),
+    ) -> APIResponse:
+
         frame_class_filter = json.loads(frame_class_filter)
         skip_frames_list = json.loads(skip_frames)
 
