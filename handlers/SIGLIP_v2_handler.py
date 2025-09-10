@@ -186,6 +186,7 @@ class SIGLIPV2Handler:
             return_object=req.return_object,
             frame_class_filter=req.frame_class_filter,
             skip_frames=req.skip_frames,
+            query_main=req.main_event_index,
         )
         logger.info(f"Temporal search completed with query {str(segments)}")
         return APIResponse(status=HTTPStatus.OK.value, message="Success", data=result)

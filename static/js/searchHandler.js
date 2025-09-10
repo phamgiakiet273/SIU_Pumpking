@@ -40,6 +40,141 @@ const ROUTES = {
     }
 };
 
+
+let temporalEvents = [];
+let mainEventIndex = 0;
+
+export function initTemporalEvents() {
+    const modelRadios = document.querySelectorAll('input[name="model"]');
+    modelRadios.forEach(radio => {
+        radio.addEventListener('change', handleModelChange);
+    });
+    
+    // Initialize with current model
+    handleModelChange();
+}
+
+function handleModelChange() {
+    const model = document.querySelector('input[name="model"]:checked').value;
+    const isTemporal = model.startsWith('TEMPORAL_');
+    
+    const textarea = document.getElementById('query');
+    const eventsContainer = document.getElementById('temporal-events-container');
+    
+    if (isTemporal) {
+        textarea.style.display = 'none';
+        eventsContainer.style.display = 'block';
+        
+        // Initialize with at least two event if empty
+        if (temporalEvents.length === 0) {
+            addTemporalEvent();
+            addTemporalEvent();
+        } else {
+            renderTemporalEvents();
+        }
+    } else {
+        textarea.style.display = 'block';
+        eventsContainer.style.display = 'none';
+    }
+}
+
+function addTemporalEvent(text = '') {
+    temporalEvents.push(text);
+    renderTemporalEvents();
+}
+
+function removeTemporalEvent(index) {
+    if (temporalEvents.length <= 1) return;
+    
+    temporalEvents.splice(index, 1);
+    
+    // Adjust main event index if needed
+    if (mainEventIndex >= index) {
+        if (mainEventIndex > 0) {
+            mainEventIndex--;
+        } else {
+            mainEventIndex = 0;
+        }
+    }
+    
+    renderTemporalEvents();
+}
+
+function renderTemporalEvents() {
+    const container = document.getElementById('temporal-events-container');
+    container.innerHTML = '';
+    
+    temporalEvents.forEach((text, index) => {
+        const eventDiv = document.createElement('div');
+        eventDiv.className = 'temporal-event';
+        eventDiv.style.display = 'flex';
+        eventDiv.style.alignItems = 'center';
+        eventDiv.style.marginBottom = '5px';
+        
+        // Radio button for main event
+        const radio = document.createElement('input');
+        radio.type = 'radio';
+        radio.name = 'main-event';
+        radio.value = index;
+        radio.checked = index === mainEventIndex;
+        radio.addEventListener('change', () => {
+            mainEventIndex = index;
+        });
+        
+        // Text input
+        const input = document.createElement('input');
+        input.type = 'text';
+        input.value = text;
+        input.placeholder = `Event ${index + 1}`;
+        input.style.flex = '1';
+        input.style.margin = '0 5px';
+        input.addEventListener('input', (e) => {
+            temporalEvents[index] = e.target.value;
+        });
+        
+        // Form submit and Tab navigation
+        input.addEventListener('keydown', (e) => {
+            if (e.key === 'Enter') {
+                e.preventDefault();
+                const form = document.getElementById('form');
+                if (form) {
+                    // Use requestSubmit if available to trigger form submit handlers; fallback to submit()
+                    if (typeof form.requestSubmit === 'function') {
+                        form.requestSubmit();
+                    } else {
+                        form.submit();
+                    }
+                }
+            } else if (e.key === 'Tab') {
+                e.preventDefault();
+                const nextIndex = (index + 1) % temporalEvents.length;
+                const nextInput = container.querySelectorAll('input[type="text"]')[nextIndex];
+                nextInput.focus();
+            }
+        });
+        
+        // Remove button (only show if more than one event)
+        const removeBtn = document.createElement('button');
+        removeBtn.type = 'button';
+        removeBtn.textContent = '×';
+        removeBtn.style.display = temporalEvents.length > 1 ? 'block' : 'none';
+        removeBtn.addEventListener('click', () => removeTemporalEvent(index));
+        
+        eventDiv.appendChild(radio);
+        eventDiv.appendChild(input);
+        eventDiv.appendChild(removeBtn);
+        
+        container.appendChild(eventDiv);
+    });
+    
+    // Add "Add event" button
+    const addButton = document.createElement('button');
+    addButton.type = 'button';
+    addButton.textContent = '+ Add Event';
+    addButton.addEventListener('click', () => addTemporalEvent());
+    container.appendChild(addButton);
+}
+
 export function initSearchHandler() {
     const form = document.getElementById('form');
     const videos = document.getElementById('videos');
@@ -109,32 +244,36 @@ export function initSearchHandler() {
                 }
             }
 
-            // Update query history
-            // if (queryText) {
-            //     window.updateQueryHistory(queryText);
-            //     document.getElementById('previous-query').textContent = queryText;
-            // }
+
+
+            // Fallback to non-temporal model for single-sentence queries
+            let activeModel = model;
+
+            if (model.startsWith('TEMPORAL_')) {
+                // Build the temporal query from the inputs shown to the user
+                const combined = temporalEvents.filter(t => t.trim()).join('. ');
+                if (combined) {
+                    queryText = combined;                 // override the empty textarea
+                    if (combined.includes('.')){
+                        queryType = 'temporal';              // ensure downstream logic treats it as temporal
+                    }
+                    else {
+                        queryType = 'text';
+                    }
+                    fd.set('main_event_index', mainEventIndex.toString());
+                }
+                activeModel = activeModel.replace("TEMPORAL_","");
+            }
+            
+            console.log(queryText);
+            console.log(activeModel);
+            console.log(queryType);
 
             fd.set('text', queryText);
 
             // Handle empty query - switch to scroll endpoint
             if (!queryText && queryType === 'text') {
                 queryType = 'scroll';
-            }
-
-            // Fallback to non-temporal model for single-sentence queries
-            let activeModel = model;
-            if (model.startsWith('TEMPORAL_')) {
-                if (queryType == 'text'){
-                    if (countSentences(queryText) <= 1) {
-                        console.log('Single-sentence detected, switching to non-temporal');
-                        activeModel = model.replace('TEMPORAL_', '');
-                    }   
-                    else {
-                        queryType = 'temporal';
-                        activeModel = model.replace('TEMPORAL_', '');
-                    }
-                }
             }
 
             // Sync slider and input
@@ -185,6 +324,8 @@ export function initSearchHandler() {
             } else if (queryType == 'temporal') {
                 fd.set('return_list', 'true');
             }
+
+
 
             // Build full URL with prefix
             const fullUrl = buildUrl(url);
@@ -441,6 +582,13 @@ export function loadSearchContext(context) {
     // Set form values
     document.getElementById('query').value = context.query;
     
+    // Handle temporal events if present
+    if (context.temporalEvents) {
+        temporalEvents = context.temporalEvents;
+        mainEventIndex = context.mainEventIndex || 0;
+        renderTemporalEvents();
+    }
+
     // Only set query type if it's not scroll or temporal
     if (context.queryType !== 'scroll' && context.queryType !== 'temporal') {
         const queryTypeRadio = document.querySelector(`input[name="query-type"][value="${context.queryType}"]`);

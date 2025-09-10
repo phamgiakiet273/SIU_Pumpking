@@ -33,12 +33,19 @@
                             <label><input type="radio" name="query-type" value="text" checked> Text Search</label>
                             <label><input type="radio" name="query-type" value="image"> Image Search</label>
                         </div>
-
+                        
                         <!-- Text Search Inputs -->
                         <div class="search-inputs" id="text-query-section" style="display: flex; align-items: flex-start; gap: 0.6rem;">
                             <div style="position: relative; width: 15rem;">
+                                <!-- Single textarea for non-temporal mode -->
                                 <textarea name="query" id="query" class="autogrow" placeholder="Text Query Here..." 
-                                    style="width: 100%; height: 5.6rem;" autofocus></textarea>
+                                    style="width: 100%; height: 5.6rem; display: block;" autofocus></textarea>
+                                
+                                <!-- Temporal events container (hidden by default) -->
+                                <div id="temporal-events-container" style="display: none;">
+                                    <!-- Event inputs will be dynamically added here -->
+                                </div>
+                                
                                 <div id="charCount" class="char-count" 
                                     style="position: absolute; bottom: 1.5rem; right: 1rem; font-size: 1rem; color: #666;"></div>
                             </div>

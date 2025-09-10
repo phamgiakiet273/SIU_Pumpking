@@ -41,7 +41,7 @@ body {
     box-sizing: border-box;
 }
 
-.main-content button:not(.exclude-btn):not(.select-btn):not(.remove-btn):not(.get-news-btn):not(.tab-button):not(.download-section):not(.image-search-btn),
+.main-content button:not(.exclude-btn):not(.select-btn):not(.remove-btn):not(.get-news-btn):not(.tab-button):not(.download-section):not(.image-search-btn):not(.temporal-event button),
 audio,
 #choosingFrameBtn {
     padding: 0.6rem 1rem;
@@ -1214,4 +1214,25 @@ textarea.autogrow {
 
 .image-search-btn:hover {
     background: rgba(255, 215, 0, 0.7);
+}
+
+.temporal-event {
+    display: flex;
+    align-items: center;
+    margin-bottom: 5px;
+}
+
+.temporal-event input[type="text"] {
+    margin: 0 5px;
+    flex: 1;
+}
+
+.temporal-event button {
+    background: #dc3545;
+    color: white;
+    border: none;
+    border-radius: 3px;
+    cursor: pointer;
+    width: 20px;
+    height: 20px;
 }

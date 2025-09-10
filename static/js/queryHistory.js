@@ -70,6 +70,10 @@ export function initQueryHistory() {
     // Update session storage with full search context
     window.updateQueryHistory = (searchContext) => {
         // Add to beginning of history
+        if (searchContext.model.startsWith('TEMPORAL_') && searchContext.queryType === 'temporal') {
+            searchContext.temporalEvents = temporalEvents;
+            searchContext.mainEventIndex = mainEventIndex;
+        }        
         history = [searchContext, ...history].slice(0, 20);
         sessionStorage.setItem('searchHistory', JSON.stringify(history));
         updateDropdown(history);
