@@ -3,7 +3,7 @@
 import { initCharCounter, initTextAutoGrow } from './charCounter.js';
 // import { initVideoFilter } from './videoFilter.js';
 import { initQueryHistory } from './queryHistory.js';
-import { initSearchHandler } from './searchHandler.js';
+import { initSearchHandler, initTemporalEvents } from './searchHandler.js';
 import { initVoiceRecognition } from './voiceRecognition.js';
 import { initSliderControls } from './sliderControls.js';
 import { initS2THover } from './s2tHover.js';
@@ -24,7 +24,7 @@ import { initFilterPanel, fetchVideoNames, addExcludedFrame } from './filterPane
 import { initDownloadResult } from './downloadResult.js'
 
 // Add at the top
-let API_PREFIX = '';
+let API_PREFIX = ''; // let API_PREFIX = '';
 
 export function setApiPrefix(prefix) {
     API_PREFIX = prefix;
@@ -72,6 +72,7 @@ document.addEventListener('DOMContentLoaded', () => {
     initImageUpload();
     initPasteHandler();    
     initSearchHandler();
+    initTemporalEvents();
     // initRerankHandler(); 
     initSubmitHandler();
     initThumbnailSelection();  // Initialize for initial thumbnails        
