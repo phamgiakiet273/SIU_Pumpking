@@ -230,21 +230,6 @@ export function initSearchHandler() {
             let queryType = document.querySelector('input[name="query-type"]:checked').value;
             const model = document.querySelector('input[name="model"]:checked').value;
 
-            // Handle auto-translate for text queries
-            if (autoTranslateCheckbox.checked && queryType == 'text' && queryText) {
-                try {
-                    console.log(`Auto-translating text: "${queryText}"`);
-                    queryText = await translateText(queryText);
-                    console.log(`Translated text: "${queryText}"`);
-                    textarea.value = queryText;
-                } catch (err) {
-                    alert(`Auto-translation failed: ${err.message}\nSearch cancelled.`);
-                    hideLoadingOverlay();
-                    return;
-                }
-            }
-
-
 
             // Fallback to non-temporal model for single-sentence queries
             let activeModel = model;
@@ -265,10 +250,22 @@ export function initSearchHandler() {
                 activeModel = activeModel.replace("TEMPORAL_","");
             }
             
-            console.log(queryText);
-            console.log(activeModel);
-            console.log(queryType);
+            // Handle auto-translate for text or temporal queries
+            if (autoTranslateCheckbox.checked && (queryType == 'text' || queryType == 'temporal') && queryText) {
+                try {
+                    console.log(`Auto-translating text: "${queryText}"`);
+                    queryText = await translateText(queryText);
+                    console.log(`Translated text: "${queryText}"`);
+                    textarea.value = queryText;
+                } catch (err) {
+                    alert(`Auto-translation failed: ${err.message}\nSearch cancelled.`);
+                    hideLoadingOverlay();
+                    return;
+                }
+            }
+            
 
+            // Finally set the text param for the API
             fd.set('text', queryText);
 
             // Handle empty query - switch to scroll endpoint
