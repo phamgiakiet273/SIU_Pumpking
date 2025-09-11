@@ -24,26 +24,40 @@ Follow the steps below to set up and run the project:
     pip install -r requirements.txt
 ```
 -------------------------------
-## 3. Prepare the image directory
+## 3. Prepare the image directory and fps files
 
-- Save your `images` folder anywhere on your machine.
-- Copy the full path of the folder (example below):
+- Download `images` folder from AILab server using `scp` command, example below:
+    ```
+    scp ai_intern@14.224.156.113:/workspace/competitions/AIC_2025/SIU_Pumpking/static.zip C:\Users\F14_TOMCAT\Downloads\Project\AIC_data
+    ```
+- You can save the `images` folder anywhere on your machine.
+- Copy the full **Linux path** of the folder (example below):
 
-    */mnt/c/Users/F14_TOMCAT/Downloads/Project/0_low_res_autoshot_only*
+    */mnt/c/Users/F14_TOMCAT/Downloads/Project/AIC_data/0_low_res_autoshot_only*
+
+- Do the same for 3 fps files (1 for each batch), example command:
+    ```
+    scp ai_intern@14.224.156.113:/dataset/AIC_2025/SIU_Pumpking/0/fps/video_fps_0.json C:\Users\F14_TOMCAT\Downloads\Project\AIC_data
+    ```
 
 ------------------------------------------------------------
-## 4. Set IMAGE_LOCAL_PATH in .env file (WITH folder name included)
+## 4. Set IMAGE_LOCAL_PATH and FPS_PATH in .env file
 
 - Contact the repository owner to get the `.env` file.
 - Open the `.env` file and set `IMAGE_LOCAL_PATH` to the full path INCLUDING the image folder name.
 
   Example:
-    > IMAGE_LOCAL_PATH="/mnt/c/Users/F14_TOMCAT/Downloads/Project/0_low_res_autoshot_only"
+    > IMAGE_LOCAL_PATH="/mnt/c/Users/F14_TOMCAT/Downloads/Project/AIC_data/0_low_res_autoshot_only"
+
+- Finally, set the FPS_PATH to where the 3 downloaded files are located
+
+  Example:
+    > FPS_PATH = ['/mnt/c/Users/F14_TOMCAT/Downloads/Project/AIC_data/video_fps_0.json', '/mnt/c/Users/F14_TOMCAT/Downloads/Project/AIC_data/video_fps_1.json']
 
 ------------------------
 ## 5. Run the Project
 
-- Run the following command to start the service:
+- Run the command below to start the service, then go to **http://127.0.0.1:5501**:
 ```
     python services/hub_service.py
 ```
