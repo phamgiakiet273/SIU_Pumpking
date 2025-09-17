@@ -13,6 +13,7 @@ class SIGLIPV2Config:
         self.SIGLIP_V2_CUDA_VISIBLE_DEVICES = os.getenv(
             "SIGLIP_V2_CUDA_VISIBLE_DEVICES", "2"
         )
+        self.SIGLIP_V2_QDRANT_HOST = os.getenv("SIGLIP_V2_QDRANT_HOST", 6333)
 
         self.SIGLIP_V2_DATABASE_NAME = os.getenv("SIGLIP_V2_DATABASE_NAME")
         assert (

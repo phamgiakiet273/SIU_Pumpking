@@ -30,12 +30,12 @@ from utils.logger import get_logger
 logger = get_logger()
 
 class QDRANT:
-    def __init__(self, collection_name=None, timeout=1800):
+    def __init__(self, qdrant_host=6333, collection_name=None, timeout=1800):
         self.timeout = timeout
         self.collection_name = collection_name
         
         self.client = QdrantClient(
-            url="http://0.0.0.0:6333",
+            url=f"http://0.0.0.0:{qdrant_host}",
             port=None,
             prefer_grpc=True,
             timeout=self.timeout
@@ -73,7 +73,7 @@ class QDRANT:
                         binary=models.BinaryQuantizationConfig(always_ram=True),
                     )
                 ),
-                optimizers_config=models.OptimizersConfigDiff(default_segment_number=6, max_segment_size=20000000, indexing_threshold=1000),
+                optimizers_config=models.OptimizersConfigDiff(default_segment_number=16, max_segment_size=20000000, indexing_threshold=1000),
                 on_disk_payload=True,
                 shard_number=90,
                 hnsw_config=HnswConfigDiff(
@@ -536,7 +536,7 @@ class QDRANT:
             
             logger.info(f"Processed scene {query_idx+1} for temporal")
         if query_main!=0 and query_main+1!=queryLen:
-            sorted_list = sorted(SEARCH_RESULTS, key=lambda x: x[0]['score'] + x[-1]['score'] - x[query_main]['score'], reverse=True)
+            SEARCH_RESULTS = sorted(SEARCH_RESULTS, key=lambda x: x[0]['score'] + x[-1]['score'] - float(x[query_main]['score']), reverse=True)
         return SEARCH_RESULTS
 
     def _format_search_results(self,

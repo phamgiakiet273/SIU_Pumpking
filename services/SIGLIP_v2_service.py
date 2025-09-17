@@ -32,7 +32,7 @@ logger = get_logger()
 
 # Engine
 model = SIGLIP2()
-qdrant = QDRANT(SIGLIPV2Config().SIGLIP_V2_DATABASE_NAME)
+qdrant = QDRANT(SIGLIPV2Config().SIGLIP_V2_QDRANT_HOST, SIGLIPV2Config().SIGLIP_V2_DATABASE_NAME) #SIGLIPV2Config().SIGLIP_V2_QDRANT_HOST
 
 app = setup_app()
 
