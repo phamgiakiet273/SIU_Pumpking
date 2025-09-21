@@ -79,7 +79,7 @@ def setup_router(handler: SIGLIPV2BetaHandler) -> APIRouter:
     logger.info("adding routers...")
     router.include_router(
         siglip_router,
-        prefix="/siglip_v2_beta",
+        prefix="/siglip_beta",
         tags=["SIU_Pumpking"],
     )
     logger.info("routers setup successfully")

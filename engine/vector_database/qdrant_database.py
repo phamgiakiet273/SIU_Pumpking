@@ -30,18 +30,23 @@ from utils.logger import get_logger
 logger = get_logger()
 
 class QDRANT:
-    def __init__(self, qdrant_host=6333, collection_name=None, timeout=1800):
+    def __init__(self, QDRANT__URL: str = "http://0.0.0.0", 
+                 QDRANT_PORT: int = 7333, 
+                 QDRANT_GRPC_PORT: int = 7334, 
+                 collection_name: str = None, 
+                 timeout: int = 1800):
         self.timeout = timeout
         self.collection_name = collection_name
-        
+
         self.client = QdrantClient(
-            url=f"http://0.0.0.0:{qdrant_host}",
-            port=None,
+            url=f"{QDRANT__URL}:{QDRANT_PORT}",
+            grpc_port=QDRANT_GRPC_PORT,
             prefer_grpc=True,
             timeout=self.timeout
         )
+
         self.frame_names = self._prepare_data()
-        logger.info("QDRANT Connection Success")
+        logger.info(f"QDRANT Connection Success with QDRANT_PORT: {QDRANT_PORT}")
 
     def addDatabase(self, collection_name: str, 
                     feature_size: int, 
@@ -53,7 +58,7 @@ class QDRANT:
                     FPS_PATH: List[str],
                     SHOT_PATH: List[str],
                     create_collection: bool = True):
-        
+
         self.collection_name = collection_name
         self.size = feature_size
 

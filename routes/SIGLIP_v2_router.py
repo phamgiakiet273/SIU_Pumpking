@@ -34,7 +34,9 @@ def setup_router(handler: SIGLIPV2Handler) -> APIRouter:
     )
 
     siglip_router.add_api_route(
-        "/setup_database", endpoint=handler.setup_database_handler, methods=["GET"]
+        "/setup_database",
+        endpoint=handler.setup_database_handler,
+        methods=["GET"]
     )
 
     # # Preprocess text to feature
@@ -77,7 +79,7 @@ def setup_router(handler: SIGLIPV2Handler) -> APIRouter:
     logger.info("adding routers...")
     router.include_router(
         siglip_router,
-        prefix="/siglip_v2",
+        prefix="/siglip_alpha",
         tags=["SIU_Pumpking"],
     )
     logger.info("routers setup successfully")

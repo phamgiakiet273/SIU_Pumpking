@@ -38,89 +38,71 @@ def setup_router(handler: HubHandler) -> APIRouter:
         "/send_file/{file_path:path}",  # add path parameter
         endpoint=handler.send_file_handler,
         methods=["GET"],
-        name="send_file",
+        name="send_file"
     )
-
-    # ===============================================
+    
+    #===============================================
     # Receive query text -> service SIGLIP to find video/frame.
     hub_router.add_api_route(
-        "/siglip_v2_text_search",
+        "/siglip_alpha_text_search",
         endpoint=handler.siglip_v2_text_query_handler,
-        methods=["POST"],
+        methods=["POST"]
     )
 
     # Receive query image -> service SIGLIP to find video/frame.
     hub_router.add_api_route(
-        "/siglip_v2_image_search",
+        "/siglip_alpha_image_search",
         endpoint=handler.siglip_v2_image_query_handler,
-        methods=["POST"],
+        methods=["POST"]
     )
 
     # Nhận truy vấn là một chuỗi text (multi-segment), tìm kiếm các đoạn video liên quan theo thời gian diễn ra sự kiện trong query (temporal search).
     hub_router.add_api_route(
-        "/siglip_v2_temporal_search",
+        "/siglip_alpha_temporal_search",
         endpoint=handler.siglip_v2_temporal_query_handler,
-        methods=["POST"],
+        methods=["POST"]
     )
 
     # Get more results (scroll/pagination) for searched videos/frames
     hub_router.add_api_route(
-        "/siglip_v2_scroll", endpoint=handler.siglip_v2_scroll_handler, methods=["POST"]
-    )
-
-    # ===============================================
+        "/siglip_alpha_scroll",
+        endpoint=handler.siglip_v2_scroll_handler,
+        methods=["POST"]
+    )   
+    
+    #===============================================
     hub_router.add_api_route(
-        "/metaclip_text_search",
-        endpoint=handler.metaclip_text_query_handler,
-        methods=["POST"],
-    )
-
-    hub_router.add_api_route(
-        "/metaclip_image_search",
-        endpoint=handler.metaclip_image_query_handler,
-        methods=["POST"],
+        "/siglip_beta_text_search",
+        endpoint=handler.siglip_v2_beta_text_query_handler,
+        methods=["POST"]
     )
 
     hub_router.add_api_route(
-        "/metaclip_temporal_search",
-        endpoint=handler.metaclip_temporal_query_handler,
-        methods=["POST"],
+        "/siglip_beta_image_search",
+        endpoint=handler.siglip_v2_beta_image_query_handler,
+        methods=["POST"]
     )
 
     hub_router.add_api_route(
-        "/metaclip_scroll", endpoint=handler.metaclip_scroll_handler, methods=["POST"]
-    )
-    # ===============================================
-    hub_router.add_api_route(
-        "/metaclip_v2_text_search",
-        endpoint=handler.metaclip_v2_text_query_handler,
-        methods=["POST"],
+        "/siglip_beta_temporal_search",
+        endpoint=handler.siglip_v2_beta_temporal_query_handler,
+        methods=["POST"]
     )
 
     hub_router.add_api_route(
-        "/metaclip_v2_image_search",
-        endpoint=handler.metaclip_v2_image_query_handler,
-        methods=["POST"],
+        "/siglip_beta_scroll",
+        endpoint=handler.siglip_v2_beta_scroll_handler,
+        methods=["POST"]
     )
-
-    hub_router.add_api_route(
-        "/metaclip_v2_temporal_search",
-        endpoint=handler.metaclip_v2_temporal_query_handler,
-        methods=["POST"],
-    )
-
-    hub_router.add_api_route(
-        "/metaclip_v2_scroll",
-        endpoint=handler.metaclip_v2_scroll_handler,
-        methods=["POST"],
-    )
-    # ===============================================
+    #=============================================== 
 
     # Receive metadata video, rerank based on color.
     hub_router.add_api_route(
-        "/rerank_color", endpoint=handler.rerank_color_handler, methods=["POST"]
+        "/rerank_color",
+        endpoint=handler.rerank_color_handler,
+        methods=["POST"]
     )
-
+    
     hub_router.add_api_route(
         "/send_img/{full_path:path}",
         endpoint=handler.send_img_handler,
@@ -139,43 +121,43 @@ def setup_router(handler: HubHandler) -> APIRouter:
         endpoint=handler.send_video_handler,
         methods=["GET"],
     )
-
+    
     hub_router.add_api_route(
         "/translate",
         endpoint=handler.translate_handler,
         methods=["POST"],
     )
-
+    
     hub_router.add_api_route(
         "/submitDRES",
         endpoint=handler.submit_DRES_handler,
         methods=["POST"],
     )
-
+    
     hub_router.add_api_route(
         "/get_session_and_eval_id",
         endpoint=handler.get_sessionID_evalID_DRES_handler,
         methods=["GET"],
     )
-
+    
     hub_router.add_api_route(
         "/get_neighboring_frames",
         endpoint=handler.get_neighboring_frames_handler,
         methods=["POST"],
     )
-
+    
     hub_router.add_api_route(
         "/get_vector_of_frame",
         endpoint=handler.get_vector_of_frame_handler,
         methods=["POST"],
     )
-
+    
     hub_router.add_api_route(
         "/get_video_names_of_batch",
         endpoint=handler.get_video_names_of_batch_handler,
         methods=["POST"],
     )
-
+    
     # test request timeout
     # import asyncio
     # @router.get("/sleep")

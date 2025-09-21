@@ -1,10 +1,9 @@
 import dotenv
-
 dotenv.load_dotenv()
 import uvicorn
 import signal
 import os
-from fastapi.middleware.gzip import GZipMiddleware
+from fastapi.middleware.gzip import GZipMiddleware 
 
 from pathlib import Path
 import sys
@@ -32,18 +31,22 @@ logger = get_logger()
 
 # Engine
 model = SIGLIP2()
-qdrant = QDRANT(SIGLIPV2Config().SIGLIP_V2_QDRANT_HOST, SIGLIPV2Config().SIGLIP_V2_DATABASE_NAME) #SIGLIPV2Config().SIGLIP_V2_QDRANT_HOST
+qdrant = QDRANT(SIGLIPV2Config().SIGLIP_V2_QDRANT_URL,
+                SIGLIPV2Config().SIGLIP_V2_QDRANT_PORT,                
+                SIGLIPV2Config().SIGLIP_V2_QDRANT_GRPC_PORT,
+                SIGLIPV2Config().SIGLIP_V2_DATABASE_NAME)
 
 app = setup_app()
 
 # Handlers
-vector_retrieval_handler = SIGLIPV2Handler(qdrant_database=qdrant, model=model)
+vector_retrieval_handler = SIGLIPV2Handler(qdrant_database = qdrant,
+                                                        model = model)
 
 # Routes
-router = setup_router(handler=vector_retrieval_handler)
+router = setup_router(handler = vector_retrieval_handler)
 app.include_router(router)
 
-# app.add_middleware(TimeoutMiddleware, timeout=SIGLIPVectorRetrievalConfig().REQUEST_TIMEOUT)
+#app.add_middleware(TimeoutMiddleware, timeout=SIGLIPVectorRetrievalConfig().REQUEST_TIMEOUT)
 if os.getenv("ENABLE_GZIP", "True").lower() == "true":
     app.add_middleware(GZipMiddleware, minimum_size=0)  # compress response > 0 bytes
 
@@ -52,15 +55,13 @@ if __name__ == "__main__":
         app,
         host=SIGLIPV2Config().SIGLIP_V2_HOST,
         port=SIGLIPV2Config().SIGLIP_V2_PORT,
-        workers=SIGLIPV2Config().SIGLIP_V2_MAX_WORKERS,
-        timeout_keep_alive=SIGLIPV2Config().TIMEOUT_KEEP_ALIVE,
+        workers=SIGLIPV2Config().SIGLIP_V2_MAX_WORKERS, 
+        timeout_keep_alive=SIGLIPV2Config().TIMEOUT_KEEP_ALIVE
     )
-
-# Signal handling for graceful shutdown
+    
+# Signal handling for graceful shutdown   
 def handle_sigterm(*args):
     print("Received termination signal. Cleaning up...")
     sys.exit(0)
-
-
 signal.signal(signal.SIGINT, handle_sigterm)
 signal.signal(signal.SIGTERM, handle_sigterm)

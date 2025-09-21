@@ -10,7 +10,10 @@ class SIGLIPV2BetaConfig:
         self.SIGLIP_V2_PORT = int(os.getenv("SIGLIP_V2_B_PORT", "9189"))
         self.SIGLIP_V2_MAX_WORKERS = int(os.getenv("SIGLIP_V2_B_MAX_WORKERS", "1"))
         self.SIGLIP_V2_CUDA_VISIBLE_DEVICES = os.getenv("SIGLIP_V2_B_CUDA_VISIBLE_DEVICES", "2")
-        self.SIGLIP_V2_QDRANT_HOST = os.getenv("SIGLIP_V2_B_QDRANT_HOST", 6333)
+        
+        self.SIGLIP_V2_QDRANT_PORT = int(os.getenv("SIGLIP_V2_B_QDRANT_PORT"))
+        self.SIGLIP_V2_QDRANT_URL = os.getenv("SIGLIP_V2_B_QDRANT_URL")
+        self.SIGLIP_V2_QDRANT_GRPC_PORT = int(os.getenv("SIGLIP_V2_B_QDRANT_GRPC_PORT"))
 
         self.SIGLIP_V2_DATABASE_NAME = os.getenv("SIGLIP_V2_B_DATABASE_NAME")
         assert self.SIGLIP_V2_DATABASE_NAME, "Environment variable 'SIGLIP_V2_B_DATABASE_NAME' must be set"
