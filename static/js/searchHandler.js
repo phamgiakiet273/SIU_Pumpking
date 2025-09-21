@@ -20,24 +20,18 @@ function countSentences(text) {
 
 // Define API routes for each model and query type
 const ROUTES = {
-    META_V2: {
-        text: 'hub/metaclip_v2_text_search',
-        image: 'hub/metaclip_v2_image_search',
-        temporal: 'hub/metaclip_v2_temporal_search',
-        scroll: 'hub/metaclip_v2_scroll'
+    SIGLIP_ALPHA: {
+        text: 'hub/siglip_alpha_text_search',
+        image: 'hub/siglip_alpha_image_search',
+        temporal: 'hub/siglip_alpha_temporal_search',
+        scroll: 'hub/siglip_alpha_scroll'
     },
-    SIGLIP_V2: {
-        text: 'hub/siglip_v2_text_search',
-        image: 'hub/siglip_v2_image_search',
-        temporal: 'hub/siglip_v2_temporal_search',
-        scroll: 'hub/siglip_v2_scroll'
+    SIGLIP_BETA: {
+        text: 'hub/siglip_beta_text_search',
+        image: 'hub/siglip_beta_image_search',
+        temporal: 'hub/siglip_beta_temporal_search',
+        scroll: 'hub/siglip_beta_scroll'
     },
-    META: {
-        text: 'hub/metaclip_text_search',
-        image: 'hub/metaclip_image_search',
-        temporal: 'hub/metaclip_temporal_search',
-        scroll: 'hub/metaclip_scroll'
-    }
 };
 
 

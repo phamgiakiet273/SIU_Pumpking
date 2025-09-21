@@ -307,7 +307,7 @@ class HubHandler:
         
         #prepare url + json to send to SIGLIP service
         #url = f"http://{SIGLIPV2Config().SIGLIP_V2_HOST}:{SIGLIPV2Config().SIGLIP_V2_PORT}/siglip_v2/text_search"
-        url = f"{HubConfig().SIGLIP_V2_HOST_PUBLIC}/siglip_v2/text_search"
+        url = f"{HubConfig().SIGLIP_V2_HOST_PUBLIC}/siglip_alpha/text_search"
         
         payload = {
             "text": str(text),
@@ -352,7 +352,7 @@ class HubHandler:
     async def siglip_v2_image_query(self, query: ImageQuery) -> APIResponse:
         
         #url = f"http://{SIGLIPV2Config().SIGLIP_V2_HOST}:{SIGLIPV2Config().SIGLIP_V2_PORT}/siglip_v2/image_search"
-        url = f"{HubConfig().SIGLIP_V2_HOST_PUBLIC}/siglip_v2/image_search"
+        url = f"{HubConfig().SIGLIP_V2_HOST_PUBLIC}/siglip_alpha/image_search"
         
         json = {
             "image_data": query.image_data,
@@ -471,7 +471,7 @@ class HubHandler:
         skip_frames_list = json.loads(skip_frames)
         
         #url = f"http://{SIGLIPV2Config().SIGLIP_V2_HOST}:{SIGLIPV2Config().SIGLIP_V2_PORT}/siglip_v2/temporal_search"
-        url = f"{HubConfig().SIGLIP_V2_HOST_PUBLIC}/siglip_v2/temporal_search"
+        url = f"{HubConfig().SIGLIP_V2_HOST_PUBLIC}/siglip_alpha/temporal_search"
         
         payload = {
             "text": str(text),
@@ -528,7 +528,7 @@ class HubHandler:
     async def siglip_v2_scroll(self, query: ScrollQuery) -> APIResponse:
         
         #url = f"http://{SIGLIPV2Config().SIGLIP_V2_HOST}:{SIGLIPV2Config().SIGLIP_V2_PORT}/siglip_v2/scroll"
-        url = f"{HubConfig().SIGLIP_V2_HOST_PUBLIC}/siglip_v2/scroll"
+        url = f"{HubConfig().SIGLIP_V2_HOST_PUBLIC}/siglip_alpha/scroll"
         
         json = {
             "k": int(query.k),
@@ -607,27 +607,25 @@ class HubHandler:
         
 #==========================================================
 #==========================================================   
-#=====================METACLIP CODE========================
+#=====================SIGLIPv2 BETA CODE========================
 #==========================================================
 #==========================================================
-
-    async def metaclip_text_query_handler(self, text: str = Form(...),
+    async def siglip_v2_beta_text_query_handler(self, text: str = Form(...),
                                         k: int = Form(100),
                                         video_filter: Optional[str] = Form(None),
                                         s2t_filter: Optional[str] = Form(None),
                                         return_s2t: bool = Form(True), 
                                         return_object: bool = Form(True),
                                         frame_class_filter: Optional[str] = Form('[]'),
-                                        skip_frames: Optional[str] = Form('[{"video_name": "L27_V015", "frame_name": "05643", "related_start_frame": "0", "related_end_frame": "50000"}]'),
+                                        skip_frames: Optional[str] = Form('[]'),
                                         sort_to_news: bool = Form(True)) -> APIResponse:
         
         frame_class_filter = json.loads(frame_class_filter)
-        types = [type(x) for x in frame_class_filter]
-        logger.info(f"frame_class_filter: {frame_class_filter} | Element types: {types}")
-
         skip_frames_list = json.loads(skip_frames)
-
-        url = f"{HubConfig().METACLIP_HOST_PUBLIC}/metaclip/text_search"
+        
+        #prepare url + json to send to SIGLIP service
+        #url = f"http://{SIGLIPV2Config().SIGLIP_V2_HOST}:{SIGLIPV2Config().SIGLIP_V2_PORT}/siglip_v2/text_search"
+        url = f"{HubConfig().SIGLIP_V2_B_HOST_PUBLIC}/siglip_beta/text_search"
         
         payload = {
             "text": str(text),
@@ -642,8 +640,8 @@ class HubHandler:
         }
         
         async with httpx.AsyncClient(timeout=timeout) as client:
-            response = await client.post(url, json = payload)
-
+            response = await client.post(url, json=payload)
+            
         if response.status_code != 200:
             raise HTTPException(status_code=response.status_code, detail=f"SIGLIP text_search error: {response.text}")
         
@@ -669,9 +667,10 @@ class HubHandler:
             data=json_data,
         )
 
-    async def metaclip_image_query(self, query: ImageQuery) -> APIResponse:
+    async def siglip_v2_beta_image_query(self, query: ImageQuery) -> APIResponse:
         
-        url = f"{HubConfig().METACLIP_HOST_PUBLIC}/metaclip/image_search"
+        #url = f"http://{SIGLIPV2Config().SIGLIP_V2_HOST}:{SIGLIPV2Config().SIGLIP_V2_PORT}/siglip_v2/image_search"
+        url = f"{HubConfig().SIGLIP_V2_B_HOST_PUBLIC}/siglip_beta/image_search"
         
         json = {
             "image_data": query.image_data,
@@ -710,7 +709,7 @@ class HubHandler:
             data=json_data,
         )
         
-    async def metaclip_image_query_handler(self, image_path: str = Form(...),
+    async def siglip_v2_beta_image_query_handler(self, image_path: str = Form(...),
                                         k: int = Form(100),
                                         video_filter: Optional[str] = Form(None),
                                         s2t_filter: Optional[str] = Form(None),
@@ -724,20 +723,33 @@ class HubHandler:
         skip_frames_list = json.loads(skip_frames)
         
         try:
+            image_bytes = None
+
             if image_path.startswith("data:image/"):
                 # Extract base64 data
                 header, data = image_path.split(",", 1)
                 image_bytes = base64.b64decode(data)
-                img = Image.open(BytesIO(image_bytes))
-                
+
             elif image_path.startswith(('http://', 'https://')):
                 async with httpx.AsyncClient(timeout=timeout) as client:
                     response = await client.get(image_path)
                     response.raise_for_status()
-                img = Image.open(BytesIO(response.content))
-                
+                image_bytes = response.content
+
             else:
-                img = Image.open(image_path)
+                with open(image_path, "rb") as f:
+                    image_bytes = f.read()
+
+            # Debug: check raw bytes before opening with Pillow
+            logger.info(f"Image bytes length: {len(image_bytes)}")
+            logger.info(f"Detected format by imghdr: {imghdr.what(None, h=image_bytes)}")
+
+            # Save a copy of the failing image for inspection
+            with open("debug_failed_image.bin", "wb") as f:
+                f.write(image_bytes)
+
+            # Try to open
+            img = Image.open(BytesIO(image_bytes))
                 
             # Convert to RGB and encode
             if img.mode != 'RGB':
@@ -751,7 +763,7 @@ class HubHandler:
             logger.exception(f"Image loading failed: {e}")
             raise HTTPException(status_code=400, detail=f"Image loading failed: {e}")
         
-        return await self.metaclip_image_query(ImageQuery(image_data = image_data,
+        return await self.siglip_v2_beta_image_query(ImageQuery(image_data = image_data,
                                       k = k,
                                       video_filter = video_filter,
                                       s2t_filter = s2t_filter,
@@ -759,14 +771,13 @@ class HubHandler:
                                       return_object = return_object,
                                       frame_class_filter = frame_class_filter,
                                       skip_frames = skip_frames_list,
-                                      sort_to_news=sort_to_news))        
+                                      sort_to_news = sort_to_news))        
         
         
-    async def metaclip_temporal_query_handler(self, text: str = Form(...),
+    async def siglip_v2_beta_temporal_query_handler(self, text: str = Form(...),
                                         k: int = Form(100),
                                         video_filter: Optional[str] = Form(None),
                                         s2t_filter: Optional[str] = Form(None),
-                                        return_list: bool = Form(False),
                                         return_s2t: bool = Form(True), 
                                         return_object: bool = Form(True),
                                         frame_class_filter: Optional[str] = Form('[]'),
@@ -777,7 +788,8 @@ class HubHandler:
         frame_class_filter = json.loads(frame_class_filter)
         skip_frames_list = json.loads(skip_frames)
         
-        url = f"{HubConfig().METACLIP_HOST_PUBLIC}/metaclip/temporal_search"
+        #url = f"http://{SIGLIPV2Config().SIGLIP_V2_HOST}:{SIGLIPV2Config().SIGLIP_V2_PORT}/siglip_v2/temporal_search"
+        url = f"{HubConfig().SIGLIP_V2_B_HOST_PUBLIC}/siglip_beta/temporal_search"
         
         payload = {
             "text": str(text),
@@ -793,7 +805,7 @@ class HubHandler:
         }
         
         async with httpx.AsyncClient(timeout=timeout) as client:
-            response = await client.post(url, json=payload)
+            response = await client.post(url, json = payload)
 
         if response.status_code != 200:
             raise HTTPException(status_code=response.status_code, detail=f"SIGLIP temporal_search error: {response.text}")
@@ -831,9 +843,10 @@ class HubHandler:
             data=json_data,
         )
             
-    async def metaclip_scroll(self, query: ScrollQuery) -> APIResponse:
+    async def siglip_v2_beta_scroll(self, query: ScrollQuery) -> APIResponse:
         
-        url = f"{HubConfig().METACLIP_HOST_PUBLIC}/metaclip/scroll"
+        #url = f"http://{SIGLIPV2Config().SIGLIP_V2_HOST}:{SIGLIPV2Config().SIGLIP_V2_PORT}/siglip_v2/scroll"
+        url = f"{HubConfig().SIGLIP_V2_B_HOST_PUBLIC}/siglip_beta/scroll"
         
         json = {
             "k": int(query.k),
@@ -841,145 +854,6 @@ class HubHandler:
             "s2t_filter": None if query.s2t_filter is None else str(query.s2t_filter),
             "time_in": None if query.time_in is None else str(query.time_in),
             "time_out": None if query.time_out is None else str(query.time_out),
-            "return_s2t": query.return_s2t,
-            "return_object": query.return_object,
-            "frame_class_filter": query.frame_class_filter,
-            "skip_frames": query.skip_frames if query.skip_frames else [],
-            "sort_to_news": query.sort_to_news,
-        }
-        
-        async with httpx.AsyncClient(timeout=timeout) as client:
-            response = await client.post(url, json = json)
-            
-        if response.status_code != 200:
-            raise HTTPException(status_code=response.status_code, detail=f"SIGLIP scroll error: {response.text}")
-        
-        json_data = ujson.loads(response.text)
-        
-        for idx, record in enumerate(json_data["data"]):
-            record["index"] = idx
-            record["video_path"] = get_video_path(batch = record["idx_folder"],
-                                                  video_name = record["video_name"])
-            record["video_path"] = os.path.relpath(record["video_path"], AppConfig().DATASET_PATH_ORIGIN)
-            
-            record["frame_path"] = get_frame_path(batch = record["idx_folder"],
-                                                  video_name = record["video_name"],
-                                                  frame_name = record["keyframe_id"])
-            record["frame_path"] = os.path.relpath(record["frame_path"], AppConfig().DATASET_PATH_TEAM)
-
-        return APIResponse(
-            status=HTTPStatus.OK.value,
-            message="Running (Healthy)",
-            data=json_data,
-        )
-        
-    async def metaclip_scroll_handler(self, k: int = Form(100),
-                                    video_filter: Union[str] = Form(...),
-                                    s2t_filter: Optional[str] = Form(None),
-                                    time_in: Optional[str] = Form(None),
-                                    time_out: Optional[str] = Form(None),
-                                    return_s2t: bool = Form(True), 
-                                    return_object: bool = Form(True),
-                                    frame_class_filter: Optional[str] = Form('[]'),
-                                    skip_frames: Optional[str] = Form("[]"),
-                                    sort_to_news: bool = Form(True)) -> APIResponse:
-  
-        frame_class_filter = json.loads(frame_class_filter)
-        skip_frames_list = json.loads(skip_frames)
-  
-        try:
-            time_in = convert_time_to_frame(video_filter, time_in) if time_in else None
-        except Exception as e:
-            logger.error(f"Invalid time_out format: {e}")
-            raise HTTPException(status_code=400, detail=f"Invalid time_out format: {str(e)}")
-        try:
-            time_out = convert_time_to_frame(video_filter, time_out) if time_out else None
-        except Exception as e:
-            logger.error(f"Invalid time_out format: {e}")
-            raise HTTPException(status_code=400, detail=f"Invalid time_out format: {str(e)}")
-                    
-        return await self.metaclip_scroll(ScrollQuery(
-                                      k = k,
-                                      video_filter = video_filter,
-                                      s2t_filter = s2t_filter,
-                                      time_in = time_in,
-                                      time_out = time_out,
-                                      return_s2t = return_s2t, 
-                                      return_object = return_object,
-                                      frame_class_filter = frame_class_filter,
-                                      skip_frames = skip_frames_list,
-                                      sort_to_news=sort_to_news))
-        
-#==========================================================
-#==========================================================   
-#=====================METACLIPv2 CODE========================
-#==========================================================
-#==========================================================
-
-    async def metaclip_v2_text_query_handler(self, text: str = Form(...),
-                                        k: int = Form(100),
-                                        video_filter: Optional[str] = Form(None),
-                                        s2t_filter: Optional[str] = Form(None),
-                                        return_s2t: bool = Form(True), 
-                                        return_object: bool = Form(True),
-                                        frame_class_filter: Optional[str] = Form('[]'),
-                                        skip_frames: Optional[str] = Form('[{"video_name": "L27_V015", "frame_name": "05643", "related_start_frame": "0", "related_end_frame": "50000"}]'),
-                                        sort_to_news: bool = Form(True)) -> APIResponse:
-        
-        frame_class_filter = json.loads(frame_class_filter)
-        skip_frames_list = json.loads(skip_frames)
-
-        url = f"{HubConfig().METACLIP_V2_HOST_PUBLIC}/metaclip_v2/text_search"
-
-        payload = {
-            "text": str(text),
-            "k": int(k),
-            "video_filter": None if video_filter is None else str(video_filter),
-            "s2t_filter": None if s2t_filter is None else str(s2t_filter),
-            "return_s2t": return_s2t,
-            "return_object": return_object,
-            "frame_class_filter": frame_class_filter,
-            "skip_frames": skip_frames_list if skip_frames_list else [],
-            "sort_to_news": sort_to_news
-        }
-        
-        async with httpx.AsyncClient(timeout=timeout) as client:
-            response = await client.post(url, json = payload)
-
-        if response.status_code != 200:
-            raise HTTPException(status_code=response.status_code, detail=f"SIGLIP text_search error: {response.text}")
-        
-        json_data = ujson.loads(response.text)
-
-        # Process/Normalize the response data b4 sending to client (easier for frontend to keep track and use)
-        for idx, record in enumerate(json_data["data"]):
-            record["index"] = idx
-            record["video_path"] = get_video_path(batch = record["idx_folder"],
-                                                  video_name = record["video_name"])
-            record["video_path"] = os.path.relpath(record["video_path"], AppConfig().DATASET_PATH_ORIGIN)
-            
-            record["frame_path"] = get_frame_path(batch = record["idx_folder"],
-                                                  video_name = record["video_name"],
-                                                  frame_name = record["keyframe_id"])
-            record["frame_path"] = os.path.relpath(record["frame_path"], AppConfig().DATASET_PATH_TEAM)
-            # replace the frame_path with low resolution version
-            #record["frame_path"] = record["frame_path"].replace(SPLIT_NAME, SPLIT_NAME_LOW_RES)
-
-        return APIResponse(
-            status=HTTPStatus.OK.value,
-            message="Running (Healthy)",
-            data=json_data,
-        )
-
-    async def metaclip_v2_image_query(self, query: ImageQuery) -> APIResponse:
-
-        url = f"{HubConfig().METACLIP_V2_HOST_PUBLIC}/metaclip_v2/image_search"
-
-        json = {
-            "image_data": query.image_data,
-            "k": int(query.k),
-            "video_filter": None if query.video_filter is None else str(query.video_filter),
-            "s2t_filter": None if query.s2t_filter is None else str(query.s2t_filter),
             "return_s2t": query.return_s2t,
             "return_object": query.return_object,
             "frame_class_filter": query.frame_class_filter,
@@ -991,169 +865,6 @@ class HubHandler:
             response = await client.post(url, json = json)
             
         if response.status_code != 200:
-            raise HTTPException(status_code=response.status_code, detail=f"SIGLIP image_search error: {response.text}")
-        
-        json_data = ujson.loads(response.text)
-
-        for idx, record in enumerate(json_data["data"]):
-            record["index"] = idx
-            record["video_path"] = get_video_path(batch = record["idx_folder"],
-                                                  video_name = record["video_name"])
-            record["video_path"] = os.path.relpath(record["video_path"], AppConfig().DATASET_PATH_ORIGIN)
-            
-            record["frame_path"] = get_frame_path(batch = record["idx_folder"],
-                                                  video_name = record["video_name"],
-                                                  frame_name = record["keyframe_id"])
-            record["frame_path"] = os.path.relpath(record["frame_path"], AppConfig().DATASET_PATH_TEAM)
-
-        return APIResponse(
-            status=HTTPStatus.OK.value,
-            message="Running (Healthy)",
-            data=json_data,
-        )
-        
-    async def metaclip_v2_image_query_handler(self, image_path: str = Form(...),
-                                        k: int = Form(100),
-                                        video_filter: Optional[str] = Form(None),
-                                        s2t_filter: Optional[str] = Form(None),
-                                        return_s2t: bool = Form(True), 
-                                        return_object: bool = Form(True),
-                                        frame_class_filter: Optional[str] = Form('[]'),
-                                        skip_frames: Optional[str] = Form("[]"),
-                                        sort_to_news: bool = Form(True)) -> APIResponse:
-        
-        frame_class_filter = json.loads(frame_class_filter)
-        skip_frames_list = json.loads(skip_frames)
-        
-        try:
-            if image_path.startswith("data:image/"):
-                # Extract base64 data
-                header, data = image_path.split(",", 1)
-                image_bytes = base64.b64decode(data)
-                img = Image.open(BytesIO(image_bytes))
-                
-            elif image_path.startswith(('http://', 'https://')):
-                async with httpx.AsyncClient(timeout=timeout) as client:
-                    response = await client.get(image_path)
-                    response.raise_for_status()
-                img = Image.open(BytesIO(response.content))
-                
-            else:
-                img = Image.open(image_path)
-                
-            # Convert to RGB and encode
-            if img.mode != 'RGB':
-                img = img.convert('RGB')
-                
-            buffered = BytesIO()
-            img.save(buffered, format="JPEG")
-            image_data = base64.b64encode(buffered.getvalue()).decode('utf-8')
-        
-        except Exception as e:
-            logger.exception(f"Image loading failed: {e}")
-            raise HTTPException(status_code=400, detail=f"Image loading failed: {e}")
-        
-        return await self.metaclip_v2_image_query(ImageQuery(image_data = image_data,
-                                      k = k,
-                                      video_filter = video_filter,
-                                      s2t_filter = s2t_filter,
-                                      return_s2t = return_s2t, 
-                                      return_object = return_object,
-                                      frame_class_filter = frame_class_filter,
-                                      skip_frames = skip_frames_list,
-                                      sort_to_news=sort_to_news))        
-        
-        
-    async def metaclip_v2_temporal_query_handler(self, text: str = Form(...),
-                                        k: int = Form(100),
-                                        video_filter: Optional[str] = Form(None),
-                                        s2t_filter: Optional[str] = Form(None),
-                                        return_list: bool = Form(False),
-                                        return_s2t: bool = Form(True), 
-                                        return_object: bool = Form(True),
-                                        frame_class_filter: Optional[str] = Form('[]'),
-                                        skip_frames: Optional[str] = Form("[]"),
-                                        sort_to_news: bool = Form(True),
-                                        main_event_index: int = Form(0)) -> APIResponse:
-        
-        frame_class_filter = json.loads(frame_class_filter)
-        skip_frames_list = json.loads(skip_frames)
-
-        url = f"{HubConfig().METACLIP_V2_HOST_PUBLIC}/metaclip_v2/temporal_search"
-
-        payload = {
-            "text": str(text),
-            "k": int(k),
-            "video_filter": None if video_filter is None else str(video_filter),
-            "s2t_filter": None if s2t_filter is None else str(s2t_filter),
-            "return_s2t": return_s2t,
-            "return_object": return_object,
-            "frame_class_filter": frame_class_filter,
-            "skip_frames": skip_frames_list if skip_frames_list else [],
-            "sort_to_news": sort_to_news,
-            "main_event_index": main_event_index,
-        }
-        
-        async with httpx.AsyncClient(timeout=timeout) as client:
-            response = await client.post(url, json=payload)
-
-        if response.status_code != 200:
-            raise HTTPException(status_code=response.status_code, detail=f"SIGLIP temporal_search error: {response.text}")
-        
-        json_data = ujson.loads(response.text)
-        
-        # Check if data is list of list of dicts
-        if json_data["data"] and isinstance(json_data["data"][0], dict):
-            # temporal mode: list[dict]
-            for idx, record in enumerate(json_data["data"]):
-                record["index"] = idx
-                record["video_path"] = get_video_path(batch=record["idx_folder"],
-                                                    video_name=record["video_name"])
-                record["video_path"] = os.path.relpath(record["video_path"], AppConfig().DATASET_PATH_ORIGIN)
-                record["frame_path"] = get_frame_path(batch=record["idx_folder"],
-                                                    video_name=record["video_name"],
-                                                    frame_name=record["keyframe_id"])
-                record["frame_path"] = os.path.relpath(record["frame_path"], AppConfig().DATASET_PATH_TEAM)
-        elif json_data["data"] and isinstance(json_data["data"][0], list):
-            # text mode: list[list[dict]]
-            for sent_results in json_data["data"]:
-                for idx, record in enumerate(sent_results):
-                    record["index"] = idx
-                    record["video_path"] = get_video_path(batch=record["idx_folder"],
-                                                        video_name=record["video_name"])
-                    record["video_path"] = os.path.relpath(record["video_path"], AppConfig().DATASET_PATH_ORIGIN)
-                    record["frame_path"] = get_frame_path(batch=record["idx_folder"],
-                                                        video_name=record["video_name"],
-                                                        frame_name=record["keyframe_id"])
-                    record["frame_path"] = os.path.relpath(record["frame_path"], AppConfig().DATASET_PATH_TEAM)
-
-        return APIResponse(
-            status=HTTPStatus.OK.value,
-            message="Running (Healthy)",
-            data=json_data,
-        )
-            
-    async def metaclip_v2_scroll(self, query: ScrollQuery) -> APIResponse:
-        
-        url = f"{HubConfig().METACLIP_V2_HOST_PUBLIC}/metaclip_v2/scroll"
-        
-        json = {
-            "k": int(query.k),
-            "video_filter": str(query.video_filter),
-            "s2t_filter": None if query.s2t_filter is None else str(query.s2t_filter),
-            "time_in": None if query.time_in is None else str(query.time_in),
-            "time_out": None if query.time_out is None else str(query.time_out),
-            "return_s2t": query.return_s2t,
-            "return_object": query.return_object,
-            "frame_class_filter": query.frame_class_filter,
-            "skip_frames": query.skip_frames if query.skip_frames else [],
-            "sort_to_news": query.sort_to_news,
-        }
-        
-        async with httpx.AsyncClient(timeout=timeout) as client:
-            response = await client.post(url, json = json)
-            
-        if response.status_code != 200:
             raise HTTPException(status_code=response.status_code, detail=f"SIGLIP scroll error: {response.text}")
         
         json_data = ujson.loads(response.text)
@@ -1175,7 +886,7 @@ class HubHandler:
             data=json_data,
         )
         
-    async def metaclip_v2_scroll_handler(self, k: int = Form(100),
+    async def siglip_v2_beta_scroll_handler(self, k: int = Form(100),
                                     video_filter: Union[str] = Form(...),
                                     s2t_filter: Optional[str] = Form(None),
                                     time_in: Optional[str] = Form(None),
@@ -1185,10 +896,10 @@ class HubHandler:
                                     frame_class_filter: Optional[str] = Form('[]'),
                                     skip_frames: Optional[str] = Form("[]"),
                                     sort_to_news: bool = Form(True)) -> APIResponse:
-  
+        
         frame_class_filter = json.loads(frame_class_filter)
         skip_frames_list = json.loads(skip_frames)
-  
+        
         try:
             time_in = convert_time_to_frame(video_filter, time_in) if time_in else None
         except Exception as e:
@@ -1200,7 +911,7 @@ class HubHandler:
             logger.error(f"Invalid time_out format: {e}")
             raise HTTPException(status_code=400, detail=f"Invalid time_out format: {str(e)}")
                     
-        return await self.metaclip_v2_scroll(ScrollQuery(
+        return await self.siglip_v2_beta_scroll(ScrollQuery(
                                       k = k,
                                       video_filter = video_filter,
                                       s2t_filter = s2t_filter,
@@ -1210,4 +921,4 @@ class HubHandler:
                                       return_object = return_object,
                                       frame_class_filter = frame_class_filter,
                                       skip_frames = skip_frames_list,
-                                      sort_to_news=sort_to_news))
+                                      sort_to_news = sort_to_news))

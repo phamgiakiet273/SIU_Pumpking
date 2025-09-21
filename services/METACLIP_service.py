@@ -32,7 +32,7 @@ logger = get_logger()
 
 # Engine
 model = METACLIP()
-qdrant = QDRANT(METACLIPConfig().METACLIP_DATABASE_NAME)
+qdrant = QDRANT(METACLIPConfig().METACLIP_QDRANT_HOST, METACLIPConfig().METACLIP_DATABASE_NAME) # METACLIPConfig().METACLIP_QDRANT_HOST
 
 app = setup_app()
 

@@ -17,9 +17,9 @@ for parent in current_path.parents:
 else:
     raise RuntimeError("Could not find 'SIU_Pumpking' in the path hierarchy.")
 
-from configs.SIGLIP_v2_configs import SIGLIPV2Config
-from handlers.SIGLIP_v2_handler import SIGLIPV2Handler
-from routes.SIGLIP_v2_router import setup_router
+from configs.SIGLIP_v2_B_configs import SIGLIPV2BetaConfig
+from handlers.SIGLIP_v2_B_handler import SIGLIPV2BetaHandler
+from routes.SIGLIP_v2_B_router import setup_router
 from utils.logger import get_logger
 from apis.api import setup_app, TimeoutMiddleware
 
@@ -31,15 +31,15 @@ logger = get_logger()
 
 # Engine
 model = SIGLIP2()
-qdrant = QDRANT(SIGLIPV2Config().SIGLIP_V2_QDRANT_URL,
-                SIGLIPV2Config().SIGLIP_V2_QDRANT_PORT,                
-                SIGLIPV2Config().SIGLIP_V2_QDRANT_GRPC_PORT,
-                SIGLIPV2Config().SIGLIP_V2_DATABASE_NAME)
+qdrant = QDRANT(SIGLIPV2BetaConfig().SIGLIP_V2_QDRANT_URL,
+                SIGLIPV2BetaConfig().SIGLIP_V2_QDRANT_PORT,                
+                SIGLIPV2BetaConfig().SIGLIP_V2_QDRANT_GRPC_PORT,
+                SIGLIPV2BetaConfig().SIGLIP_V2_DATABASE_NAME)
 
 app = setup_app()
 
 # Handlers
-vector_retrieval_handler = SIGLIPV2Handler(qdrant_database = qdrant,
+vector_retrieval_handler = SIGLIPV2BetaHandler(qdrant_database = qdrant,
                                                         model = model)
 
 # Routes
@@ -53,10 +53,10 @@ if os.getenv("ENABLE_GZIP", "True").lower() == "true":
 if __name__ == "__main__":
     uvicorn.run(
         app,
-        host=SIGLIPV2Config().SIGLIP_V2_HOST,
-        port=SIGLIPV2Config().SIGLIP_V2_PORT,
-        workers=SIGLIPV2Config().SIGLIP_V2_MAX_WORKERS, 
-        timeout_keep_alive=SIGLIPV2Config().TIMEOUT_KEEP_ALIVE
+        host=SIGLIPV2BetaConfig().SIGLIP_V2_HOST,
+        port=SIGLIPV2BetaConfig().SIGLIP_V2_PORT,
+        workers=SIGLIPV2BetaConfig().SIGLIP_V2_MAX_WORKERS, 
+        timeout_keep_alive=SIGLIPV2BetaConfig().TIMEOUT_KEEP_ALIVE
     )
     
 # Signal handling for graceful shutdown   

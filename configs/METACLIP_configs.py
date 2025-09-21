@@ -13,6 +13,7 @@ class METACLIPConfig:
         self.METACLIP_CUDA_VISIBLE_DEVICES = os.getenv(
             "METACLIP_CUDA_VISIBLE_DEVICES", "2"
         )
+        self.METACLIP_QDRANT_HOST = os.getenv("METACLIP_QDRANT_HOST", 6333)
 
         self.METACLIP_DATABASE_NAME = os.getenv("METACLIP_DATABASE_NAME")
         assert (

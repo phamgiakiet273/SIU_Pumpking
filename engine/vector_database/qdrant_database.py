@@ -30,18 +30,23 @@ from utils.logger import get_logger
 logger = get_logger()
 
 class QDRANT:
-    def __init__(self, collection_name=None, timeout=1800):
+    def __init__(self, QDRANT__URL: str = "http://0.0.0.0", 
+                 QDRANT_PORT: int = 7333, 
+                 QDRANT_GRPC_PORT: int = 7334, 
+                 collection_name: str = None, 
+                 timeout: int = 1800):
         self.timeout = timeout
         self.collection_name = collection_name
-        
+
         self.client = QdrantClient(
-            url="http://0.0.0.0:6333",
-            port=None,
+            url=f"{QDRANT__URL}:{QDRANT_PORT}",
+            grpc_port=QDRANT_GRPC_PORT,
             prefer_grpc=True,
             timeout=self.timeout
         )
+
         self.frame_names = self._prepare_data()
-        logger.info("QDRANT Connection Success")
+        logger.info(f"QDRANT Connection Success with QDRANT_PORT: {QDRANT_PORT}")
 
     def addDatabase(self, collection_name: str, 
                     feature_size: int, 
@@ -53,7 +58,7 @@ class QDRANT:
                     FPS_PATH: List[str],
                     SHOT_PATH: List[str],
                     create_collection: bool = True):
-        
+
         self.collection_name = collection_name
         self.size = feature_size
 
@@ -73,7 +78,7 @@ class QDRANT:
                         binary=models.BinaryQuantizationConfig(always_ram=True),
                     )
                 ),
-                optimizers_config=models.OptimizersConfigDiff(default_segment_number=6, max_segment_size=20000000, indexing_threshold=1000),
+                optimizers_config=models.OptimizersConfigDiff(default_segment_number=16, max_segment_size=20000000, indexing_threshold=1000),
                 on_disk_payload=True,
                 shard_number=90,
                 hnsw_config=HnswConfigDiff(
@@ -536,7 +541,7 @@ class QDRANT:
             
             logger.info(f"Processed scene {query_idx+1} for temporal")
         if query_main!=0 and query_main+1!=queryLen:
-            sorted_list = sorted(SEARCH_RESULTS, key=lambda x: x[0]['score'] + x[-1]['score'] - x[query_main]['score'], reverse=True)
+            SEARCH_RESULTS = sorted(SEARCH_RESULTS, key=lambda x: x[0]['score'] + x[-1]['score'] - float(x[query_main]['score']), reverse=True)
         return SEARCH_RESULTS
 
     def _format_search_results(self,

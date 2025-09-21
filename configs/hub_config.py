@@ -22,8 +22,8 @@ class HubConfig:
         ))
         
         self.SIGLIP_V2_HOST_PUBLIC = os.getenv("SIGLIP_V2_HOST_PUBLIC", "https://api.siu.edu.vn/siu_pumpking_9")
-        self.METACLIP_HOST_PUBLIC = os.getenv("METACLIP_HOST_PUBLIC", "https://api.siu.edu.vn/siu_pumpking_10")
-        self.METACLIP_V2_HOST_PUBLIC = os.getenv("METACLIP_V2_HOST_PUBLIC", "https://api.siu.edu.vn/siu_pumpking_3")
+        self.SIGLIP_V2_B_HOST_PUBLIC = os.getenv("SIGLIP_V2_B_HOST_PUBLIC", "https://api.siu.edu.vn/siu_pumpking_10")
+        
         self.RERANK_HOST_PUBLIC = os.getenv("RERANK_HOST_PUBLIC", "https://api.siu.edu.vn/siu_pumpking_6")
         self.UTIL_HOST_PUBLIC = os.getenv("UTIL_HOST_PUBLIC", "https://api.siu.edu.vn/siu_pumpking_5")
         self.SUBMISSION_HOST_PUBLIC = os.getenv("SUBMISSION_HOST_PUBLIC", "https://api.siu.edu.vn/siu_pumpking_4")
@@ -32,5 +32,3 @@ class HubConfig:
         assert self.HUB_HOST, "HUB_HOST must be set"
         assert self.HUB_PORT, "HUB_PORT must be set"
         assert self.HUB_MAX_WORKERS, "HUB_MAX_WORKERS must be set"
-        
-        
