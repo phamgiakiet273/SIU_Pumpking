@@ -49,7 +49,7 @@ if os.getenv("ENABLE_GZIP", "True").lower() == "true":
 if os.getenv("NGINX_IMAGE_HOST", "").startswith("http://localhost"):
     local_img_path = os.getenv(
         "IMAGE_LOCAL_PATH",
-        r"C:/Users/F14_TOMCAT/Downloads/Project/0_low_res_autoshot_only",
+        r"D:\AIC_data",
     )
     # mount at /img so send_img_handler redirects to e.g. http://localhost:9181/img/<path>
     app.mount("/img", StaticFiles(directory=local_img_path), name="local_img")
