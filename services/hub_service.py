@@ -53,6 +53,14 @@ if os.getenv("NGINX_IMAGE_HOST", "").startswith("http://localhost"):
     )
     # mount at /img so send_img_handler redirects to e.g. http://localhost:9181/img/<path>
     app.mount("/img", StaticFiles(directory=local_img_path), name="local_img")
+    
+if os.getenv("NGINX_VIDEO_HOST", "").startswith("http://localhost"):
+    local_video_path = os.getenv(
+        "VIDEO_LOCAL_PATH",
+        r"D:\AIC_data",
+    )
+    # mount at /video so send_video_handler redirects to e.g. http://localhost:5501/video/<path>
+    app.mount("/video", StaticFiles(directory=local_video_path), name="local_video")
 
 if __name__ == "__main__":
     uvicorn.run(
