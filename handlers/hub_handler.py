@@ -64,7 +64,7 @@ class HubHandler:
         
         sample img input path: 0/frames/autoshot/Keyframes_L26/keyframes/L26_V264/06356.avif
         """
-        full_path = full_path.replace(SPLIT_NAME, SPLIT_NAME_LOW_RES)
+        #full_path = full_path.replace(SPLIT_NAME, SPLIT_NAME_LOW_RES)
         target = f"{NGINXConfig().NGINX_IMAGE_HOST}/{full_path}"
         logger.info(f"send_img_handler path: {target}")
         # 307 preserves method, use 302 if you prefer
@@ -72,7 +72,7 @@ class HubHandler:
     
     async def send_img_original_handler(self, full_path: str):
         full_path = full_path.replace(SPLIT_NAME_LOW_RES, SPLIT_NAME)
-        full_path = full_path.replace('.avif', '.jpg')
+        #full_path = full_path.replace('.avif', '.jpg')
         target = f"{NGINXConfig().NGINX_IMAGE_HOST}/{full_path}"
         logger.info(f"send_img_handler path: {target}")
         return RedirectResponse(url=target, status_code=307)
