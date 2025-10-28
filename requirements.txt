@@ -10,3 +10,9 @@ httpx
 loguru
 python-multipart
 pre-commit
+numpy
+qdrant_client
+tqdm
+torch
+transformers
+torchvision
