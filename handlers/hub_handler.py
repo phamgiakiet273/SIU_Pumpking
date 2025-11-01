@@ -34,6 +34,8 @@ from configs.nginx_config import NGINXConfig
 
 from handlers.submission_handler import SubmissionHandler
 
+from asyncio import create_task, sleep
+
 SPLIT_NAME = os.getenv("SPLIT_NAME", "autoshot")
 SPLIT_NAME_LOW_RES = os.getenv("SPLIT_NAME_LOW_RES", "low_res_autoshot")
 timeout = HubConfig().REQUEST_TIMEOUT
@@ -41,10 +43,22 @@ timeout = HubConfig().REQUEST_TIMEOUT
 logger = get_logger()
 
 class HubHandler:
-    def __init__(
-        self
-    ) -> None:
-        pass
+    def __init__(self) -> None:
+        self.session_id = None  # Global variable for session_id
+        self.eval_id = None     # Global variable for eval_id
+        create_task(self.update_session_and_eval_ids())  # Start the background task
+
+    async def update_session_and_eval_ids(self):
+        """Background task to update session_id and eval_id every 10 seconds."""
+        while True:
+            try:
+                session_id, eval_id = await self.get_sessionID_evalID_DRES_handler()
+                self.session_id = session_id
+                self.eval_id = eval_id
+                logger.info(f"Updated session_id: {self.session_id}, eval_id: {self.eval_id}")
+            except Exception as e:
+                logger.error(f"Failed to update session_id and eval_id: {e}")
+            await sleep(10)  # Wait for 10 seconds before the next update
 
     async def ping_handler(self) -> APIResponse:
         logger.debug("ping_handler invoked")
@@ -181,7 +195,7 @@ class HubHandler:
                             ) -> APIResponse:
         
         #url = f"http://{SubmissionConfig().SUBMISSION_HOST}:{SubmissionConfig().SUBMISSION_PORT}/submission/submit"
-        session_id, eval_id = await self.get_sessionID_evalID_DRES_handler()
+        session_id, eval_id = self.session_id, self.eval_id
         
         url = f"{HubConfig().SUBMISSION_HOST_PUBLIC}/submission/submit_kis"
         json_data = {
@@ -211,7 +225,7 @@ class HubHandler:
                             ) -> APIResponse:
         
         #url = f"http://{SubmissionConfig().SUBMISSION_HOST}:{SubmissionConfig().SUBMISSION_PORT}/submission/submit"
-        session_id, eval_id = await self.get_sessionID_evalID_DRES_handler()
+        session_id, eval_id = self.session_id, self.eval_id
         
         url = f"{HubConfig().SUBMISSION_HOST_PUBLIC}/submission/submit_qa"
         json_data = {
@@ -240,7 +254,7 @@ class HubHandler:
                             ) -> APIResponse:
         
         #url = f"http://{SubmissionConfig().SUBMISSION_HOST}:{SubmissionConfig().SUBMISSION_PORT}/submission/submit"
-        session_id, eval_id = await self.get_sessionID_evalID_DRES_handler()
+        session_id, eval_id = self.session_id, self.eval_id
         
         url = f"{HubConfig().SUBMISSION_HOST_PUBLIC}/submission/submit_trake"
         json_data = {
