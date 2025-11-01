@@ -28,24 +28,46 @@ def setup_router(handler: SubmissionHandler) -> APIRouter:
 
     # Health check
     submission_router.add_api_route(
-        "/ping", endpoint=handler.ping_handler, methods=["GET"]
+        "/ping",
+        endpoint=handler.ping_handler,
+        methods=["GET"]
+    )
+    
+    submission_router.add_api_route(
+        "/get_session_id",
+        endpoint=handler.get_session_id_handler,
+        methods=["GET"]
     )
 
     submission_router.add_api_route(
-        "/get_session_id", endpoint=handler.get_session_id_handler, methods=["GET"]
-    )
-
-    submission_router.add_api_route(
-        "/get_eval_id", endpoint=handler.get_eval_id_handler, methods=["GET"]
+        "/get_eval_id",
+        endpoint=handler.get_eval_id_handler,
+        methods=["GET"]
     )
 
     # DRES submission
     submission_router.add_api_route(
-        "/submit", endpoint=handler.submit_handler, methods=["POST"]
+        "/submit_kis",
+        endpoint=handler.submit_kis_handler,
+        methods=["POST"]
     )
-
+    
     submission_router.add_api_route(
-        "/relogin", endpoint=handler.relogin, methods=["GET"]
+        "/submit_qa",
+        endpoint=handler.submit_qa_handler,
+        methods=["POST"]
+    )
+    
+    submission_router.add_api_route(
+        "/submit_trake",
+        endpoint=handler.submit_trake_handler,
+        methods=["POST"]
+    )
+    
+    submission_router.add_api_route(
+        "/relogin",
+        endpoint=handler.relogin,
+        methods=["GET"]
     )
 
     logger.info("Util router setup successfully")

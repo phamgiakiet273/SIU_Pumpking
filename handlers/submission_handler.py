@@ -2,7 +2,7 @@ from fastapi import HTTPException
 from http import HTTPStatus
 from configs.submission import SubmissionConfig
 from schema.api import APIResponse
-from schema.submission import SubmitRequest
+from schema.submission import SubmitKISRequest, SubmitQARequest, SubmitTRAKERequest
 from utils.logger import get_logger
 import requests
 import os
@@ -12,7 +12,6 @@ from fastapi import Form
 
 
 logger = get_logger()
-
 
 class SubmissionHandler:
     def __init__(self):
@@ -30,12 +29,12 @@ class SubmissionHandler:
             message="Running (Healthy)",
             data="ping",
         )
-
+        
     def _login(self):
         try:
             resp = requests.post(
                 f"{self.base_url}/api/v2/login",
-                json={"username": self.username, "password": self.password},
+                json={"username": self.username, "password": self.password}
             )
             if resp.status_code == 200:
                 self.session_id = resp.json()["sessionId"]
@@ -48,8 +47,8 @@ class SubmissionHandler:
         except Exception as e:
             logger.error(f"Exception during auto-login: {e}")
             self.session_id = None
-            return False
-
+            return False    
+        
     async def get_session_id_handler(self):
         if not self.session_id:
             if not self._login():
@@ -57,21 +56,19 @@ class SubmissionHandler:
         return APIResponse(
             status=HTTPStatus.OK.value,
             message="Session ID fetched",
-            data={"session_id": self.session_id},
-        )
-
+            data={"session_id": self.session_id}
+        )    
+ 
     async def get_eval_id_handler(self):
         if not self.session_id:
             if not self._login():
                 raise HTTPException(status_code=500, detail="Login failed")
         resp = requests.get(
             f"{self.base_url}/api/v2/client/evaluation/list",
-            params={"session": self.session_id},
+            params={"session": self.session_id}
         )
         if resp.status_code != 200:
-            raise HTTPException(
-                status_code=resp.status_code, detail="Failed to fetch evaluations"
-            )
+            raise HTTPException(status_code=resp.status_code, detail="Failed to fetch evaluations")
         evaluations = resp.json()
         active_eval = next((e for e in evaluations if e["status"] == "ACTIVE"), None)
         if not active_eval:
@@ -80,10 +77,10 @@ class SubmissionHandler:
         return APIResponse(
             status=HTTPStatus.OK.value,
             message="Active evaluation ID fetched",
-            data={"eval_id": self.eval_id},
+            data={"eval_id": self.eval_id}
         )
-
-    async def submit_handler(self, request: SubmitRequest) -> APIResponse:
+      
+    async def submit_kis_handler(self, request: SubmitKISRequest) -> APIResponse:
         payload = {
             "answerSets": [
                 {
@@ -91,7 +88,7 @@ class SubmissionHandler:
                         {
                             "mediaItemName": request.mediaItemName,
                             "start": request.start,
-                            "end": request.end,
+                            "end": request.end
                         }
                     ]
                 }
@@ -100,16 +97,86 @@ class SubmissionHandler:
         resp = requests.post(
             f"{self.base_url}/api/v2/submit/{request.eval_id}",
             json=payload,
-            params={"session": request.session_id},
+            params={"session": request.session_id}
         )
         if resp.status_code == 200:
             result = resp.json()
             return APIResponse(
                 status=HTTPStatus.OK.value,
-                message="Submit successful"
-                if result.get("status")
-                else "Submit failed",
-                data=result,
+                message="Submit successful" if result.get("status") else "Submit failed",
+                data=result
+            )
+        else:
+            raise HTTPException(status_code=resp.status_code, detail=resp.text)
+        
+    async def submit_qa_handler(self, request: SubmitQARequest) -> APIResponse:
+        payload = {
+            "answerSets": [
+                {
+                    "answers": [
+                        {
+                            "text": f"QA-{request.answer}-{request.video_id}-{request.time}"
+                        }
+                    ]
+                }
+            ]
+        }
+        logger.info(f"\n\nQA-{request.answer}-{request.video_id}-{request.time}\n\n")
+        
+        resp = requests.post(
+            f"{self.base_url}/api/v2/submit/{request.eval_id}",
+            json=payload,
+            params={"session": request.session_id}
+        )
+        if resp.status_code == 200:
+            result = resp.json()
+            return APIResponse(
+                status=HTTPStatus.OK.value,
+                message="Submit successful" if result.get("status") else "Submit failed",
+                data=result
+            )
+        else:
+            raise HTTPException(status_code=resp.status_code, detail=resp.text)
+        
+    async def submit_trake_handler(self, request: SubmitTRAKERequest) -> APIResponse:
+        # 1. Get the comma-separated string from the request.!
+        input_string = request.frame_ids
+
+        # 2. Split the string by commas, strip whitespace from each part,
+        #    and filter out any empty strings (e.g., from "a,,b").
+        elements = [e.strip() for e in input_string.split(',') if e.strip()]
+
+        # 3. Join the processed elements with a hyphen.
+        #    This will result in "0123-9132-5555"
+        joined_elements = "-".join(elements)
+
+        # 4. Construct the final text string dynamically.
+        final_text = f"TR-{request.video_id}-{joined_elements}"
+        logger.info(f"\n\nTRAKE: {final_text}\n\n")
+
+        payload = {
+            "answerSets": [
+                {
+                    "answers": [
+                        {
+                            "text": final_text
+                        }
+                    ]
+                }
+            ]
+        }
+        
+        resp = requests.post(
+            f"{self.base_url}/api/v2/submit/{request.eval_id}",
+            json=payload,
+            params={"session": request.session_id}
+        )
+        if resp.status_code == 200:
+            result = resp.json()
+            return APIResponse(
+                status=HTTPStatus.OK.value,
+                message="Submit successful" if result.get("status") else "Submit failed",
+                data=result
             )
         else:
             raise HTTPException(status_code=resp.status_code, detail=resp.text)
@@ -120,11 +187,12 @@ class SubmissionHandler:
             return APIResponse(
                 status=HTTPStatus.OK.value,
                 message="Re-login successful",
-                data={"session_id": self.session_id},
+                data={"session_id": self.session_id}
             )
         else:
-            raise HTTPException(status_code=500, detail="Re-login failed")
-
+            raise HTTPException(status_code=500, detail="Re-login failed")  
+      
+        
     # async def submit_handler(self, request: SubmitRequest) -> APIResponse:
     #     logger.info(f"submit_handler invoked: {request}")
     #     BASE_URL = os.getenv("SUBMIT_BASE_URL", "http://127.0.0.1:8591")
