@@ -30,12 +30,19 @@ from routes.hub_router import setup_router
 from utils.logger import get_logger
 from apis.hub import setup_app, TimeoutMiddleware
 
+from handlers.hub_handler import HubHandler
+
 logger = get_logger()
 
 app = setup_app()
 
 # Handlers
 hub_handler = HubHandler()
+
+@app.on_event("startup")
+async def startup_event():
+    # Start the background task during application startup
+    await hub_handler.start_background_task()
 
 # Routes
 router = setup_router(handler=hub_handler)

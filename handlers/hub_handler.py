@@ -46,7 +46,10 @@ class HubHandler:
     def __init__(self) -> None:
         self.session_id = None  # Global variable for session_id
         self.eval_id = None     # Global variable for eval_id
-        create_task(self.update_session_and_eval_ids())  # Start the background task
+
+    async def start_background_task(self):
+        """Start the background task to update session_id and eval_id."""
+        create_task(self.update_session_and_eval_ids())
 
     async def update_session_and_eval_ids(self):
         """Background task to update session_id and eval_id every 10 seconds."""
