@@ -80,7 +80,7 @@ class SIGLIPV2Handler:
     #     return APIResponse(status=HTTPStatus.OK.value, message="Success", data=feat.tolist())
 
     async def scroll_handler(self, req: QdrantRequest) -> APIResponse:
-        logger.info(f"scroll called with k={req.k}, video_filter={req.video_filter}, s2t_filter = {req.s2t_filter}, time_in={req.time_in}, time_out={req.time_out}, skip_frames={req.skip_frames}")
+        logger.info(f"scroll called with k={req.k}, video_filter={req.video_filter}, s2t_filter = {req.s2t_filter}, time_in={req.time_in}, time_out={req.time_out}, feature={req.utility_feature}")
         result = self.qdrant.scroll_video(
             k=req.k,
             s2t_filter=req.s2t_filter,
@@ -91,6 +91,7 @@ class SIGLIPV2Handler:
             return_object=req.return_object,
             frame_class_filter=req.frame_class_filter,
             skip_frames=req.skip_frames,
+            feature=req.utility_feature # utility switch for get shot, get duplicate, get unique
         )
         logger.info("Scroll video retrieval completed")
         return APIResponse(status=HTTPStatus.OK.value, message="Success", data=result)
@@ -155,7 +156,7 @@ class SIGLIPV2Handler:
         #logger.info(f"FEATS[0] Type: {type(feats[0])}")
 
         result = self.qdrant.search_temporal(
-            queryList=feats, 
+            queryList=feats,
             k=req.k,
             video_filter=req.video_filter,
             s2t_filter=req.s2t_filter,

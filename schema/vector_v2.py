@@ -8,11 +8,12 @@ class QdrantRequest(BaseModel):
     s2t_filter: Optional[str] = None
     time_in: Optional[str] = None
     time_out: Optional[str] = None
-    return_s2t: bool = True
+    return_s2t: bool = True 
     return_object: bool = True
     frame_class_filter: Optional[List[int]] = None
     skip_frames: List[Dict[str, str]] = Field(default_factory=list)
-    sort_to_news: bool = True 
+    sort_to_news: bool = True
+    utility_feature: Optional[str] = "shot"
 
 class RetrievalRequest(BaseModel):
     image_data: Optional[str] = None #base64
@@ -20,7 +21,7 @@ class RetrievalRequest(BaseModel):
     k: int
     video_filter: Optional[Union[str, List[str]]] = None
     s2t_filter: Optional[str] = None
-    return_s2t: bool = True
+    return_s2t: bool = True 
     return_object: bool = True
     frame_class_filter: Optional[List[int]] = None
     skip_frames: List[Dict[str, str]] = Field(default_factory=list)
