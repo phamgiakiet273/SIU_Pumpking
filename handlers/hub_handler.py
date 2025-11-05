@@ -170,8 +170,15 @@ class HubHandler:
         base_url = f"{HubConfig().SUBMISSION_HOST_PUBLIC}/submission"
         
         # EXPERIMENT: auto relogin in case session expired
-        submission_handler = SubmissionHandler()
-        await submission_handler.relogin()
+        async with httpx.AsyncClient(timeout=timeout) as client:
+            relogin_response = await client.get(f"{base_url}/relogin")
+            if relogin_response.status_code != 200:
+                raise HTTPException(
+                    status_code=relogin_response.status_code,
+                    detail=f"Re-login failed: {relogin_response.text}"
+                )
+            # relogin_data = relogin_response.json()
+            # logger.info(f"Re-login successful: {relogin_data}")
         
         async with httpx.AsyncClient(timeout=timeout) as client:
             # Lấy session_id
