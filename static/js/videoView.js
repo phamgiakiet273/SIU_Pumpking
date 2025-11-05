@@ -1,7 +1,7 @@
 // videoView.js
 
 // Import the function we want to call
-import { fillSubmissionForm } from './submitHandler.js';
+import { submitToTKIS, openQAModal, openTrakeModal } from './submissionButtons.js';
 
 // Create video modal structure
 function createVideoModal() {
@@ -72,18 +72,48 @@ function createVideoModal() {
                 <span id="video-timestamp"></span>
             </div>
 
+            <!-- UPDATED: Only three submission buttons -->
             <div class="modal-actions" style="text-align: center; margin-top: 10px; margin-bottom: 10px;">
-                <button id="choose-frame-btn" style="
-                    padding: 10px 20px;
-                    font-size: 16px;
-                    font-weight: bold;
-                    color: white;
-                    background-color: #40E0D0; /* Same as search button */
-                    border: none;
-                    border-radius: 5px;
-                    cursor: pointer;
-                    transition: background-color 0.3s;
-                ">Choose this frame</button>
+                <div style="display: flex; gap: 10px; justify-content: center;">
+                    <button id="video-tkis-btn" style="
+                        padding: 10px 20px;
+                        font-size: 16px;
+                        font-weight: bold;
+                        color: white;
+                        background-color: #003b6d;
+                        border: none;
+                        border-radius: 5px;
+                        cursor: pointer;
+                        transition: opacity 0.3s;
+                        flex: 1;
+                    ">Submit to TV</button>
+                    
+                    <button id="video-qa-btn" style="
+                        padding: 10px 20px;
+                        font-size: 16px;
+                        font-weight: bold;
+                        color: white;
+                        background-color: #28a745;
+                        border: none;
+                        border-radius: 5px;
+                        cursor: pointer;
+                        transition: opacity 0.3s;
+                        flex: 1;
+                    ">Submit to QA</button>
+                    
+                    <button id="video-trake-btn" style="
+                        padding: 10px 20px;
+                        font-size: 16px;
+                        font-weight: bold;
+                        color: white;
+                        background-color: #dc3545;
+                        border: none;
+                        border-radius: 5px;
+                        cursor: pointer;
+                        transition: opacity 0.3s;
+                        flex: 1;
+                    ">Submit to TR</button>
+                </div>
             </div>
         </div>
     </div>
@@ -106,32 +136,69 @@ function createVideoModal() {
         }
     });
 
-    // ================== THIS IS THE CORRECTED PART ==================
-    // Add event listener for our new button
-    document.getElementById('choose-frame-btn').addEventListener('click', function() {
-        // Get the video element to read its CURRENT state
+    // Event listeners for submission buttons
+    document.getElementById('video-tkis-btn').addEventListener('click', function() {
         const video = document.getElementById('modal-video');
-        const currentTime = video.currentTime; // Get current time in seconds
-
-        // Get the static data that doesn't change from the button's dataset
+        const currentTime = video.currentTime;
         const videoName = this.dataset.videoName;
         const fps = parseFloat(this.dataset.fps);
 
         if (videoName && !isNaN(fps)) {
-            // Calculate the current frame ID based on the video's current time
             const currentFrameId = Math.round(currentTime * fps);
-
-            // Call the imported function with the NEW, DYNAMIC data
-            // We pass the FPS so fillSubmissionForm can correctly calculate the time in milliseconds
-            fillSubmissionForm(videoName, currentFrameId.toString(), fps);
+            const frameInfo = {
+                videoName: videoName,
+                frameId: currentFrameId.toString().padStart(5, '0') + '.jpg',
+                fps: fps,
+                frameNumber: currentFrameId,
+                timeMs: Math.round(currentTime * 1000)
+            };
             
-            // Close the modal after selection
             closeVideoModal();
-        } else {
-            console.error("Could not submit from video modal: data missing or invalid FPS.");
+            submitToTKIS(frameInfo);
         }
     });
-    // =================================================================
+
+    document.getElementById('video-qa-btn').addEventListener('click', function() {
+        const video = document.getElementById('modal-video');
+        const currentTime = video.currentTime;
+        const videoName = this.dataset.videoName;
+        const fps = parseFloat(this.dataset.fps);
+
+        if (videoName && !isNaN(fps)) {
+            const currentFrameId = Math.round(currentTime * fps);
+            const frameInfo = {
+                videoName: videoName,
+                frameId: currentFrameId.toString().padStart(5, '0') + '.jpg',
+                fps: fps,
+                frameNumber: currentFrameId,
+                timeMs: Math.round(currentTime * 1000)
+            };
+            
+            closeVideoModal();
+            openQAModal(frameInfo);
+        }
+    });
+
+    document.getElementById('video-trake-btn').addEventListener('click', function() {
+        const video = document.getElementById('modal-video');
+        const currentTime = video.currentTime;
+        const videoName = this.dataset.videoName;
+        const fps = parseFloat(this.dataset.fps);
+
+        if (videoName && !isNaN(fps)) {
+            const currentFrameId = Math.round(currentTime * fps);
+            const frameInfo = {
+                videoName: videoName,
+                frameId: currentFrameId.toString().padStart(5, '0') + '.jpg',
+                fps: fps,
+                frameNumber: currentFrameId,
+                timeMs: Math.round(currentTime * 1000)
+            };
+            
+            closeVideoModal();
+            openTrakeModal(frameInfo);
+        }
+    });
 }
 
 // Close video modal and stop playback
@@ -160,7 +227,9 @@ function showVideoModal(record) {
     const spinner = document.getElementById('video-spinner');
     const filename = document.getElementById('video-filename');
     const timestamp = document.getElementById('video-timestamp');
-    const chooseBtn = document.getElementById('choose-frame-btn');
+    const tkisBtn = document.getElementById('video-tkis-btn');
+    const qaBtn = document.getElementById('video-qa-btn');
+    const trakeBtn = document.getElementById('video-trake-btn');
 
     spinner.style.display = 'block';
     modal.style.display = 'block';
@@ -179,12 +248,13 @@ function showVideoModal(record) {
     
     timestamp.textContent = `Start: ${formatTime(startTime)}`;
     
-    // Store the necessary data on the button itself.
-    // Note we no longer need to store frameId here, but it doesn't hurt.
-    chooseBtn.dataset.videoName = record.video_name;
-    chooseBtn.dataset.fps = fps;
-    // We are removing the frameId from the dataset to avoid confusion, as it's no longer used.
-    // chooseBtn.dataset.frameId = record.keyframe_id; // This is no longer needed
+    // Store the necessary data on all buttons
+    tkisBtn.dataset.videoName = record.video_name;
+    tkisBtn.dataset.fps = fps;
+    qaBtn.dataset.videoName = record.video_name;
+    qaBtn.dataset.fps = fps;
+    trakeBtn.dataset.videoName = record.video_name;
+    trakeBtn.dataset.fps = fps;
 
     const relativePath = record.video_path;
     const videoSrc = `hub/send_video/${encodeURIComponent(relativePath)}#t=${startTime}`;

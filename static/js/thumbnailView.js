@@ -262,7 +262,7 @@ function updateModalContent(frame) {
     
     // Set image source
     const encodedPath = encodeURIComponent(frame.frame_path);
-    image.src = `hub/send_img_original/${encodedPath}`; // image.src = `https://api.siu.edu.vn/siu_pumpking_1/hub/send_img_original/${encodedPath}`;
+    image.src = `https://api.siu.edu.vn/siu_pumpking_1/hub/send_img_original/${encodedPath}`; // image.src = `https://api.siu.edu.vn/siu_pumpking_1/hub/send_img_original/${encodedPath}`;
     
     // Parse object data (if available)
     let objects = [];
@@ -447,7 +447,7 @@ function createNeighborPreview(framePath, isCurrent = false) {
     `;
     
     const img = document.createElement('img');
-    img.src = `hub/send_img_original/${encodeURIComponent(framePath)}`; // img.src = `https://api.siu.edu.vn/siu_pumpking_1/hub/send_img_original/${encodeURIComponent(framePath)}`;
+    img.src = `https://api.siu.edu.vn/siu_pumpking_1/hub/send_img_original/${encodeURIComponent(framePath)}`; // img.src = `https://api.siu.edu.vn/siu_pumpking_1/hub/send_img_original/${encodeURIComponent(framePath)}`;
     img.style.cssText = `
         width: 100%;
         height: 100%;

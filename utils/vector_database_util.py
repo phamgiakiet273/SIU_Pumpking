@@ -19,7 +19,7 @@ else:
 def merge_scores(list_res_A, list_res_B):
     idx_results = {}
     # Iterate over list_res_B
-    for record_B in list_res_B:
+    for idx_B, record_B in enumerate(list_res_B):
         max_temp_score = 0.0
         video_name = record_B['video_name']
         keyframe_id = record_B['keyframe_id']
@@ -27,14 +27,14 @@ def merge_scores(list_res_A, list_res_B):
         for idx_A, record_A in enumerate(list_res_A):
             # Check if video_name matches and keyframe_id difference is less than 1000
             if (record_A[-1]['video_name'] == record_B['video_name'] and 
-                int(record_B['keyframe_id']) - int(record_A[-1]['keyframe_id']) >= 0 and
+                int(record_B['keyframe_id']) - int(record_A[-1]['keyframe_id']) >= 1 and
                 int(record_B['keyframe_id']) - int(record_A[-1]['keyframe_id']) <= 1000):
                 if float(record_A[-1]['score'])>max_temp_score:
                     max_temp_score = float(record_A[-1]['score'])
                     idx_results[(video_name, keyframe_id)] = idx_A
         
         # Update the score in B
-        record_B['score'] = float(record_B['score']) + max_temp_score
+        list_res_B[idx_B]['score'] = float(list_res_B[idx_B]['score']) + max_temp_score
     
     #resort the score
     sorted_list = sorted(list_res_B, key=lambda x: x['score'], reverse=True)
@@ -57,6 +57,46 @@ def merge_scores(list_res_A, list_res_B):
     
     return results
 
+def merge_scores_reverse(list_res_A, list_res_B):
+    idx_results = {}
+    # Iterate over list_res_A
+    for idx_A, record_A in enumerate(list_res_A):
+        max_temp_score = 0.0
+        video_name = record_A['video_name']
+        keyframe_id = record_A['keyframe_id']
+        # Iterate over list_res_A to find matching records
+        for idx_B, record_B in enumerate(list_res_B):
+            # Check if video_name matches and keyframe_id difference is less than 1000
+            if (record_A['video_name'] == record_B[0]['video_name'] and 
+                int(record_B[0]['keyframe_id']) - int(record_A['keyframe_id']) >= 1 and
+                int(record_B[0]['keyframe_id']) - int(record_A['keyframe_id']) <= 1000):
+                if float(record_B[0]['score'])>max_temp_score:
+                    max_temp_score = float(record_B[0]['score'])
+                    idx_results[(video_name, keyframe_id)] = idx_B
+        
+        # Update the score in B
+        list_res_A[idx_A]['score'] = float(record_A['score']) + max_temp_score
+    
+    #resort the score
+    sorted_list = sorted(list_res_A, key=lambda x: x['score'], reverse=True)
+    results = []
+    for record_A in sorted_list:
+        video_name = record_A['video_name']
+        keyframe_id = record_A['keyframe_id']
+        if (video_name, keyframe_id) not in idx_results:
+            continue
+        idx_B = idx_results[(video_name, keyframe_id)]
+        record_B = list_res_B[idx_B]
+        results.append([record_A] + record_B)
+
+    max_dict = {}
+    for item in results:
+        key = str(item[1]["video_name"]) + "_" + str(item[1]["keyframe_id"])
+        if key not in max_dict or item[0]["score"] > max_dict[key][0]["score"]:
+            max_dict[key] = item
+    results = list(max_dict.values())
+    
+    return results
 
 def preprocess_object_dict(object_dict):
     """
