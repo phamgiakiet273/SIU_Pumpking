@@ -66,7 +66,7 @@ class SIGLIPV2BetaHandler:
         self.qdrant.search(dummy_query, 3, "", "", "")
         logger.info("Dummy query finished, ready to use!")
         
-        return APIResponse(status=HTTPStatus.OK.value, message="Success", data={f"Time taken: {time.time()-st}"})
+        return APIResponse(status=HTTPStatus.OK.value, message="Success", data={f"Time taken: {time.time()-st}"}) 
 
 
     # async def preprocess_handler(self, req: RetrievalRequest) -> APIResponse:
@@ -91,7 +91,6 @@ class SIGLIPV2BetaHandler:
             return_object=req.return_object,
             frame_class_filter=req.frame_class_filter,
             skip_frames=req.skip_frames,
-            is_unique=req.is_unique
         )
         logger.info("Scroll video retrieval completed")
         return APIResponse(status=HTTPStatus.OK.value, message="Success", data=result)
@@ -114,7 +113,6 @@ class SIGLIPV2BetaHandler:
             frame_class_filter=req.frame_class_filter,
             skip_frames=req.skip_frames,
             sort_to_news=req.sort_to_news,
-            is_unique=req.is_unique
         )
         logger.info(f"Text search completed with query {str(req.text)}")
         return APIResponse(status=HTTPStatus.OK.value, message="Success", data=result)
@@ -139,7 +137,6 @@ class SIGLIPV2BetaHandler:
             frame_class_filter=req.frame_class_filter,
             skip_frames=req.skip_frames,
             sort_to_news=req.sort_to_news,
-            is_unique=req.is_unique
         )
         logger.info("Image search completed")
         return APIResponse(status=HTTPStatus.OK.value, message="Success", data=result)
@@ -167,7 +164,6 @@ class SIGLIPV2BetaHandler:
             frame_class_filter=req.frame_class_filter,
             skip_frames=req.skip_frames,
             query_main=req.main_event_index,
-            is_unique=req.is_unique
         )
         logger.info(f"Temporal search completed with query {str(segments)}")
         return APIResponse(status=HTTPStatus.OK.value, message="Success", data=result)
