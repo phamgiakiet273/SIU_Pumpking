@@ -1,14 +1,11 @@
 import dotenv
 import os
-
 dotenv.load_dotenv()
 import uvicorn
 import signal
 from fastapi.staticfiles import StaticFiles
-
-# dotenv + uvicorn + fastapi + flask + ujson + requests + pillow-avif-plugin + Pillow + httpx + loguru + python-multipart
 from fastapi import FastAPI
-from fastapi.middleware.gzip import GZipMiddleware
+from fastapi.middleware.gzip import GZipMiddleware 
 
 from pathlib import Path
 import sys
@@ -16,7 +13,7 @@ import sys
 current_path = Path(__file__).resolve()
 for parent in current_path.parents:
     if parent.name == "SIU_Pumpking":
-        # print(f"Adding {parent} to sys.path")
+        #print(f"Adding {parent} to sys.path")
         sys.path.append(str(parent))
         break
 else:
@@ -30,8 +27,6 @@ from routes.hub_router import setup_router
 from utils.logger import get_logger
 from apis.hub import setup_app, TimeoutMiddleware
 
-from handlers.hub_handler import HubHandler
-
 logger = get_logger()
 
 app = setup_app()
@@ -39,16 +34,11 @@ app = setup_app()
 # Handlers
 hub_handler = HubHandler()
 
-@app.on_event("startup")
-async def startup_event():
-    # Start the background task during application startup
-    await hub_handler.start_background_task()
-
 # Routes
-router = setup_router(handler=hub_handler)
+router = setup_router(handler = hub_handler)
 app.include_router(router)
 
-# app.add_middleware(TimeoutMiddleware, timeout=HubConfig().REQUEST_TIMEOUT)
+#app.add_middleware(TimeoutMiddleware, timeout=HubConfig().REQUEST_TIMEOUT)
 if os.getenv("ENABLE_GZIP", "True").lower() == "true":
     app.add_middleware(GZipMiddleware, minimum_size=0)  # compress response > 0 bytes
 
@@ -60,14 +50,6 @@ if os.getenv("NGINX_IMAGE_HOST", "").startswith("http://localhost"):
     )
     # mount at /img so send_img_handler redirects to e.g. http://localhost:9181/img/<path>
     app.mount("/img", StaticFiles(directory=local_img_path), name="local_img")
-    
-if os.getenv("NGINX_VIDEO_HOST", "").startswith("http://localhost"):
-    local_video_path = os.getenv(
-        "VIDEO_LOCAL_PATH",
-        r"D:\AIC_data",
-    )
-    # mount at /video so send_video_handler redirects to e.g. http://localhost:5501/video/<path>
-    app.mount("/video", StaticFiles(directory=local_video_path), name="local_video")
 
 if __name__ == "__main__":
     uvicorn.run(

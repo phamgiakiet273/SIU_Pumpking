@@ -9,7 +9,7 @@ import os
 
 from typing import Optional
 from fastapi import Form
-
+import threading
 
 logger = get_logger()
 
@@ -20,6 +20,7 @@ class SubmissionHandler:
         self.username = config.SUBMIT_USERNAME
         self.password = config.SUBMIT_PASSWORD
         self.session_id = None
+        self.trigger = True
         self._login()  # Auto login on initialization
 
     async def ping_handler(self) -> APIResponse:
@@ -29,7 +30,11 @@ class SubmissionHandler:
             message="Running (Healthy)",
             data="ping",
         )
-        
+
+    def _reset_trigger(self):
+        """Reset the trigger to True after 10 seconds."""
+        self.trigger = True
+
     def _login(self):
         try:
             resp = requests.post(
@@ -53,6 +58,7 @@ class SubmissionHandler:
         if not self.session_id:
             if not self._login():
                 raise HTTPException(status_code=500, detail="Login failed")
+        logger.info(f"\nActive session ID: {self.session_id}")
         return APIResponse(
             status=HTTPStatus.OK.value,
             message="Session ID fetched",
@@ -74,6 +80,7 @@ class SubmissionHandler:
         if not active_eval:
             raise HTTPException(status_code=404, detail="No active evaluation found")
         self.eval_id = active_eval["id"]
+        logger.info(f"\nActive evaluation ID: {self.eval_id}")
         return APIResponse(
             status=HTTPStatus.OK.value,
             message="Active evaluation ID fetched",
@@ -184,6 +191,10 @@ class SubmissionHandler:
     async def relogin(self):
         ok = self._login()
         if ok:
+            # if self.trigger:  # Only log if trigger is True
+            #     logger.info(f"Updated session_id: {self.session_id}, eval_id: {self.eval_id}")
+            # self.trigger = False  # Set trigger to False
+            # threading.Timer(20, self._reset_trigger).start()  # Reset trigger after 10 seconds
             return APIResponse(
                 status=HTTPStatus.OK.value,
                 message="Re-login successful",
