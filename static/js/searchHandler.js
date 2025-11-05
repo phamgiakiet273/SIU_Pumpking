@@ -652,11 +652,11 @@ export function loadSearchContext(context) {
     // document.getElementById('prev-model').textContent = `(${context.model})`;
 }
 
-export async function performImageSearch(imageDataUrl) {
 
-    
+export async function performImageSearch(imageDataUrl) {
     try {
         showLoadingOverlay();
+        
         // Switch to image search
         const imageRadio = document.querySelector('input[name="query-type"][value="image"]');
 
@@ -667,11 +667,9 @@ export async function performImageSearch(imageDataUrl) {
             const replacementRadio = document.querySelector(`input[name="model"][value="${normalized}"]`);
             if (replacementRadio) {
                 replacementRadio.checked = true;
-                // Fire change event so other listeners update state
                 replacementRadio.dispatchEvent(new Event('change'));
             }
         }
-
 
         if (imageRadio) {
             imageRadio.checked = true;
@@ -700,7 +698,6 @@ export async function performImageSearch(imageDataUrl) {
         
     } catch (error) {
         alert('Image search error: ' + error.message);
-    } finally {
         hideLoadingOverlay();
     }
 }

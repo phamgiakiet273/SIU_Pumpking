@@ -1,6 +1,7 @@
 // static/js/thumbnailView.js
 
 import { fillSubmissionForm } from './submitHandler.js';
+import { submitToTKIS, openQAModal, openTrakeModal } from './submissionButtons.js';
 
 // Generate unique color for each object type
 function stringToColor(str) {
@@ -87,22 +88,52 @@ function createModal() {
                     <h2 style="color: #40E0D0; border-bottom: 2px solid #40E0D0; padding-bottom: 10px; flex-shrink: 0;">Thumbnail Details</h2>
                     <div id="modal-info" style="overflow-y: auto; max-height: 500px; color: #eee; flex-grow: 1; margin-top: 15px;"></div>
                     
-                    <!-- NEW: Action button container at the bottom of the info panel -->
+                    <!-- UPDATED: Action buttons container -->
                     <div class="modal-actions" style="margin-top: 20px; padding-top: 15px; border-top: 1px solid #333; flex-shrink: 0;">
-                        <button id="modal-submit-btn" style="
-                            background-color: #40E0D0;
-                            color: #003b6d;
-                            border: none;
-                            padding: 10px 20px;
-                            border-radius: 5px;
-                            cursor: pointer;
-                            font-weight: bold;
-                            font-size: 1.1rem;
-                            width: 100%;
-                            transition: background-color 0.2s;
-                        ">
-                            Submit this Frame
-                        </button>
+                        <div style="display: flex; flex-direction: column; gap: 10px;">
+                            
+                            <!-- NEW: Additional submission buttons -->
+                            <div style="display: flex; gap: 5px; margin-top: 10px;">
+                                <button id="modal-tkis-btn" style="
+                                    flex: 1;
+                                    background-color: #003b6d;
+                                    color: white;
+                                    border: none;
+                                    padding: 8px 12px;
+                                    border-radius: 4px;
+                                    cursor: pointer;
+                                    font-weight: bold;
+                                    font-size: 0.9rem;
+                                    transition: opacity 0.2s;
+                                ">TV</button>
+                                
+                                <button id="modal-qa-btn" style="
+                                    flex: 1;
+                                    background-color: #28a745;
+                                    color: white;
+                                    border: none;
+                                    padding: 8px 12px;
+                                    border-radius: 4px;
+                                    cursor: pointer;
+                                    font-weight: bold;
+                                    font-size: 0.9rem;
+                                    transition: opacity 0.2s;
+                                ">QA</button>
+                                
+                                <button id="modal-trake-btn" style="
+                                    flex: 1;
+                                    background-color: #dc3545;
+                                    color: white;
+                                    border: none;
+                                    padding: 8px 12px;
+                                    border-radius: 4px;
+                                    cursor: pointer;
+                                    font-weight: bold;
+                                    font-size: 0.9rem;
+                                    transition: opacity 0.2s;
+                                ">TR</button>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -124,26 +155,53 @@ function createModal() {
     document.getElementById('prev-frame').addEventListener('click', () => navigateFrames(-1));
     document.getElementById('next-frame').addEventListener('click', () => navigateFrames(1));
 
-    // NEW: Add event listener for the modal's submit button
-    document.getElementById('modal-submit-btn').addEventListener('click', () => {
-        // 1. Get the current frame's data from the global state
+    // NEW: Event listeners for additional submission buttons
+    document.getElementById('modal-tkis-btn').addEventListener('click', () => {
         const currentFrame = window.framesList[window.currentFrameIndex];
-        if (!currentFrame) {
-            console.error("No current frame data available to submit.");
-            alert("Could not submit frame: data not found.");
-            return;
-        }
-
-        const videoName = currentFrame.video_name;
-        const frameId = currentFrame.keyframe_id;
-        const fps = currentFrame.fps;
-
-        // 2. Close the modal
+        if (!currentFrame) return;
+        
+        const frameInfo = {
+            videoName: currentFrame.video_name,
+            frameId: currentFrame.keyframe_id,
+            fps: currentFrame.fps,
+            frameNumber: parseInt(currentFrame.keyframe_id),
+            timeMs: Math.round((parseInt(currentFrame.keyframe_id) / currentFrame.fps) * 1000)
+        };
+        
         closeModal();
+        submitToTKIS(frameInfo);
+    });
 
-        // 3. Call the imported function to fill the submission form.
-        // This function also handles switching to the correct tab.
-        fillSubmissionForm(videoName, frameId, fps);
+    document.getElementById('modal-qa-btn').addEventListener('click', () => {
+        const currentFrame = window.framesList[window.currentFrameIndex];
+        if (!currentFrame) return;
+        
+        const frameInfo = {
+            videoName: currentFrame.video_name,
+            frameId: currentFrame.keyframe_id,
+            fps: currentFrame.fps,
+            frameNumber: parseInt(currentFrame.keyframe_id),
+            timeMs: Math.round((parseInt(currentFrame.keyframe_id) / currentFrame.fps) * 1000)
+        };
+        
+        closeModal();
+        openQAModal(frameInfo);
+    });
+
+    document.getElementById('modal-trake-btn').addEventListener('click', () => {
+        const currentFrame = window.framesList[window.currentFrameIndex];
+        if (!currentFrame) return;
+        
+        const frameInfo = {
+            videoName: currentFrame.video_name,
+            frameId: currentFrame.keyframe_id,
+            fps: currentFrame.fps,
+            frameNumber: parseInt(currentFrame.keyframe_id),
+            timeMs: Math.round((parseInt(currentFrame.keyframe_id) / currentFrame.fps) * 1000)
+        };
+        
+        closeModal();
+        openTrakeModal(frameInfo);
     });
 }
 
@@ -204,7 +262,7 @@ function updateModalContent(frame) {
     
     // Set image source
     const encodedPath = encodeURIComponent(frame.frame_path);
-    image.src = `https://api.siu.edu.vn/siu_pumpking_1/hub/send_img_original/${encodedPath}`;
+    image.src = `hub/send_img_original/${encodedPath}`; // image.src = `https://api.siu.edu.vn/siu_pumpking_1/hub/send_img_original/${encodedPath}`;
     
     // Parse object data (if available)
     let objects = [];
@@ -389,7 +447,7 @@ function createNeighborPreview(framePath, isCurrent = false) {
     `;
     
     const img = document.createElement('img');
-    img.src = `https://api.siu.edu.vn/siu_pumpking_1/hub/send_img_original/${encodeURIComponent(framePath)}`;
+    img.src = `hub/send_img_original/${encodeURIComponent(framePath)}`; // img.src = `https://api.siu.edu.vn/siu_pumpking_1/hub/send_img_original/${encodeURIComponent(framePath)}`;
     img.style.cssText = `
         width: 100%;
         height: 100%;

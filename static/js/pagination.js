@@ -5,6 +5,7 @@ import { initS2THover } from './s2tHover.js'
 import { initThumbnailView } from './thumbnailView.js';
 import { initVideoView } from './videoView.js'
 import { performScrollSearch, performImageSearch } from './searchHandler.js'
+import { addSubmissionButtons } from './submissionButtons.js';
 
 // State variables
 let currentPage = 1;
@@ -256,9 +257,7 @@ function createThumbnailElement(rec) {
         if (imgElement) {
             // Convert the image to a data URL
             try {
-                const response = await fetch(imgElement.src.replace("send_img", "send_img_original"));
-                // const response = await fetch(imgElement.src.replace(".jpg", ".avif"));
-
+                const response = await fetch(imgElement.src.replace("send_img","send_img_original"));
                 const url = response.url;
                 const index = url.indexOf("/img");
 
@@ -279,6 +278,10 @@ function createThumbnailElement(rec) {
         }
     });
     thumbDiv.appendChild(imageSearchBtn);
+
+    setTimeout(() => {
+        addSubmissionButtons();
+    }, 0);
 
     return tpl;
 }
