@@ -46,6 +46,8 @@ class QDRANT:
         )
 
         self.frame_names = self._prepare_data()
+        self.img_dups = self._prepare_dup()
+        self.img_uniques = self._prepare_unique()
         logger.info(f"QDRANT Connection Success with QDRANT_PORT: {QDRANT_PORT}")
 
     def addDatabase(self, collection_name: str, 
@@ -108,12 +110,10 @@ class QDRANT:
             dict_s2t = dict_s2t | dict_s2t_append
         logger.info("STT Dict Loaded")        
         
-        # dict_obj = {}
-        # with open(OBJECT_PATH, encoding='utf-8-sig') as json_file:
-        #     dict_obj = ujson.load(json_file)
-        # logger.info("Object Dict Loaded")        
-        # dict_obj = preprocess_object_dict(dict_obj)
-        # logger.info("Object Dict Preprocessed")  
+        dict_unique = {}
+        with open("/workspace/nhihtc/perfect/AIC2025/img_similarity/check_unique.json", encoding='utf-8-sig') as json_file:
+            dict_unique = ujson.load(json_file)
+        logger.info("UNIQUE Dict Loaded")   
         
         dict_shot = {}
         for dict_shot_path in SHOT_PATH:
@@ -154,6 +154,7 @@ class QDRANT:
                 # pull these out once per file
                 fps = dict_fps[video_name]
                 s2t_map = dict_s2t[video_name + ".mp4"] if (video_name + ".mp4") in dict_s2t else []
+                unique = dict_unique[video_name]
                 # s2t_map = ""
                 # get_objs = dict_obj.get
                 shot = dict_shot[video_name]
@@ -170,10 +171,10 @@ class QDRANT:
                             "frame_name": frm,
                             "fps": fps,
                             "s2t": s2t_map[frame_list[idx]] if s2t_map!="" else [],
-                            # "object": get_objs((video_name, int(frm)), []),
+                            "is_unique": not unique[str(frm)],
                             "frame_class": shot[frame_list[idx]][0],
                             "related_start_frame": shot[frame_list[idx]][1],
-                            "related_end_frame": shot[frame_list[idx]][2]
+                            "related_end_frame": shot[frame_list[idx]][2],
                             # frame_class: (int / string)
                             # 0 là đoạn có MC
                             # 1 là đoạn tóm tắt
@@ -241,61 +242,32 @@ class QDRANT:
         
         return operation_info
 
-    # cho video name, cho start time (00:00), cho end time (01:00) -> tất cả các frame nằm trong khoảng thời gian đó của video đó
     def scroll_video(self, k, 
                      video_filter: str, 
                      time_in: str = None, 
                      time_out: str = None, 
                      s2t_filter: str = None,
-                    #  frame_class_filter: bool = True, 
+                     feature: str = "shot",
                      frame_class_filter: list = [],
                      skip_frames: list = [],
                      return_s2t: bool = True, # True mặc định là return bth, False là ko return field "s2t" trong cái result ở dưới
-                     return_object: bool = True): # giống cái s2t ở trên, lần này là vs field "object"
+                     return_object: bool = True):
+        if feature=="shot":
+            id_list = sorted(self._get_frames(video_filter, time_in, time_out))
+        elif feature=="dup":
+            id_list = self.img_dups[video_filter][time_in.lstrip('0')]
+        elif feature=="unique":
+            id_list = self.img_uniques[video_filter][time_in.lstrip('0')]
         
-        id_list = sorted(self._get_frames(video_filter, time_in, time_out))
-        must_field = [models.HasIdCondition(has_id=id_list)]
-        
-        if s2t_filter not in (None,""):
-            must_field.append(
-                models.FieldCondition(
-                key="s2t",
-                match=models.MatchText(text=s2t_filter),
-                )
-            )
-        
-        mustnot_field = []
-        if frame_class_filter:
-            must_field.append(
-                models.FieldCondition(
-                    key="frame_class",
-                    match=models.MatchAny(any=frame_class_filter),
-                ),
-            )
-            
-        idCondition = set()
-        for frame in skip_frames:
-            video_name = frame["video_name"]
-            frame_name = frame["frame_name"]
-            related_start_frame = frame["related_start_frame"]
-            related_end_frame = frame["related_end_frame"]
-            
-            idCondition |= set(self._get_frames(video_name, related_start_frame, related_end_frame))
-        mustnot_field.append(models.HasIdCondition(has_id=list(idCondition)))
-        
-        FILTER_RESULTS = models.Filter(must=must_field, must_not=mustnot_field)
-        
-        SCROLL_RESULT = self.client.scroll(
+        SCROLL_RESULT = self.client.retrieve(
             collection_name=self.collection_name,
-            scroll_filter=FILTER_RESULTS,
+            ids=id_list,
             with_payload=True,
             with_vectors=False,
-            limit=int(k)
         )
-        
         return_result = self._format_search_results(SCROLL_RESULT, use_query=False, return_s2t=return_s2t, return_object=return_object)
-        
-        logger.info("Processed scene 1 for temporal")
+    
+        logger.info("Processed retrieval")
         return return_result
 
     def search(self, 
@@ -568,6 +540,7 @@ class QDRANT:
                         frame_class = str(field[1]['frame_class'])
                         related_start_frame = str(field[1]['related_start_frame'])
                         related_end_frame = str(field[1]['related_end_frame'])
+                        is_unique = field[1]['is_unique']
                         if return_s2t:
                             s2t = str(field[1]['s2t'])
                         if return_object:
@@ -581,6 +554,7 @@ class QDRANT:
                     "fps": fps,
                     "score": score,
                     "frame_class":frame_class,
+                    "is_unique":is_unique,
                     "related_start_frame":related_start_frame,
                     "related_end_frame": related_end_frame,
                 }
@@ -591,7 +565,7 @@ class QDRANT:
                 return_result.append(result)
             
         else:
-            for item in SEARCH_RESULTS[0]:
+            for item in SEARCH_RESULTS:
                 for idx, field in enumerate(item):
                     if idx == 0:
                         key = str(field[1])
@@ -603,6 +577,7 @@ class QDRANT:
                         frame_class = str(field[1]['frame_class'])
                         related_start_frame = str(field[1]['related_start_frame'])
                         related_end_frame = str(field[1]['related_end_frame'])
+                        is_unique = field[1]['is_unique']
                         if return_s2t:
                             s2t = str(field[1]['s2t'])
                         if return_object:
@@ -616,6 +591,7 @@ class QDRANT:
                     "fps": fps,
                     "score": 0.273,
                     "frame_class":frame_class,
+                    "is_unique":is_unique,
                     "related_start_frame":related_start_frame,
                     "related_end_frame": related_end_frame,
                 }
@@ -678,3 +654,24 @@ class QDRANT:
         first_idx = frame_video[first_frame]
         last_idx = frame_video[last_frame]
         return list_values[first_idx-idx:last_idx-idx+1]
+    def _prepare_dup(self, folfer_path="/workspace/nhihtc/perfect/AIC2025/img_similarity/duplicate1"):
+        img_dup = {}
+        json_names = os.listdir(folfer_path)
+        for json_name in json_names:
+            video_name, _ = os.path.splitext(json_name)
+            json_path = os.path.join(folfer_path, json_name)
+            with open(json_path, encoding='utf-8-sig') as json_file:
+                img_dup_append = ujson.load(json_file)
+            img_dup[video_name] = img_dup_append
+        return img_dup
+    
+    def _prepare_unique(self, folfer_path="/workspace/nhihtc/perfect/AIC2025/img_similarity/unique1"):
+        img_unique = {}
+        json_names = os.listdir(folfer_path)
+        for json_name in json_names:
+            video_name, _ = os.path.splitext(json_name)
+            json_path = os.path.join(folfer_path, json_name)
+            with open(json_path, encoding='utf-8-sig') as json_file:
+                img_unique_append = ujson.load(json_file)
+            img_unique[video_name] = img_unique_append
+        return img_unique

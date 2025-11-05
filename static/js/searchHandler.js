@@ -423,11 +423,10 @@ function renderThumbnails(results = [], container) {
     window.currentVideos = results;
 }
 
-export async function performScrollSearch(record) {
+export async function performScrollSearch(record, utilityFeature = 'shot') {
     showLoadingOverlay();
     
     try {
-
         // Get current model
         const model = document.querySelector('input[name="model"]:checked').value;
         let activeModel = model;
@@ -458,10 +457,21 @@ export async function performScrollSearch(record) {
         
         // Convert frames to time (mm:ss)
         const fps = parseFloat(record.fps);
-        const startFrame = parseInt(record.related_start_frame);
-        const endFrame = parseInt(record.related_end_frame);
-        const startTime = frameToTime(startFrame, fps);
-        const endTime = frameToTime(endFrame, fps);
+        
+        // Determine time parameters based on utility feature
+        let startTime, endTime;
+        if (utilityFeature === 'dup' || utilityFeature === 'unique') {
+            // For dup and unique, time_in = time_out = frame_id
+            const frameId = parseInt(record.keyframe_id);
+            startTime = frameId;
+            endTime = startTime;
+        } else {
+            // For shot, use the original related frames
+            const startFrame = parseInt(record.related_start_frame);
+            const endFrame = parseInt(record.related_end_frame);
+            startTime = startFrame;
+            endTime = endFrame;
+        }
         
         // Set parameters
         fd.set('k', 2000); // Large enough to get all frames in segment
@@ -471,6 +481,7 @@ export async function performScrollSearch(record) {
         fd.set('frame_class_filter', JSON.stringify(frameClassValues));
         fd.set('time_in', startTime);
         fd.set('time_out', endTime);
+        fd.set('utility_feature', utilityFeature); // Add utility feature
         
         // Build full URL
         const fullUrl = buildUrl(url);

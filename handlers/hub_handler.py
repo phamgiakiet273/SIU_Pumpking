@@ -170,8 +170,15 @@ class HubHandler:
         base_url = f"{HubConfig().SUBMISSION_HOST_PUBLIC}/submission"
         
         # EXPERIMENT: auto relogin in case session expired
-        submission_handler = SubmissionHandler()
-        await submission_handler.relogin()
+        async with httpx.AsyncClient(timeout=timeout) as client:
+            relogin_response = await client.get(f"{base_url}/relogin")
+            if relogin_response.status_code != 200:
+                raise HTTPException(
+                    status_code=relogin_response.status_code,
+                    detail=f"Re-login failed: {relogin_response.text}"
+                )
+            # relogin_data = relogin_response.json()
+            # logger.info(f"Re-login successful: {relogin_data}")
         
         async with httpx.AsyncClient(timeout=timeout) as client:
             # Lấy session_id
@@ -619,7 +626,7 @@ class HubHandler:
             "frame_class_filter": query.frame_class_filter,
             "skip_frames": query.skip_frames if query.skip_frames else [],
             "sort_to_news": query.sort_to_news,
-            
+            "utility_feature": query.utility_feature
         }
         
         async with httpx.AsyncClient(timeout=timeout) as client:
@@ -656,21 +663,22 @@ class HubHandler:
                                     return_object: bool = Form(True),
                                     frame_class_filter: Optional[str] = Form('[]'),
                                     skip_frames: Optional[str] = Form("[]"),
-                                    sort_to_news: bool = Form(True)) -> APIResponse:
+                                    sort_to_news: bool = Form(True),
+                                    utility_feature: str = Form("shot")) -> APIResponse:
         
         frame_class_filter = json.loads(frame_class_filter)
         skip_frames_list = json.loads(skip_frames)
         
-        try:
-            time_in = convert_time_to_frame(video_filter, time_in) if time_in else None
-        except Exception as e:
-            logger.error(f"Invalid time_out format: {e}")
-            raise HTTPException(status_code=400, detail=f"Invalid time_out format: {str(e)}")
-        try:
-            time_out = convert_time_to_frame(video_filter, time_out) if time_out else None
-        except Exception as e:
-            logger.error(f"Invalid time_out format: {e}")
-            raise HTTPException(status_code=400, detail=f"Invalid time_out format: {str(e)}")
+        # try:
+        #     time_in = convert_time_to_frame(video_filter, time_in) if time_in else None
+        # except Exception as e:
+        #     logger.error(f"Invalid time_out format: {e}")
+        #     raise HTTPException(status_code=400, detail=f"Invalid time_out format: {str(e)}")
+        # try:
+        #     time_out = convert_time_to_frame(video_filter, time_out) if time_out else None
+        # except Exception as e:
+        #     logger.error(f"Invalid time_out format: {e}")
+        #     raise HTTPException(status_code=400, detail=f"Invalid time_out format: {str(e)}")
                     
         return await self.siglip_v2_scroll(ScrollQuery(
                                       k = k,
@@ -682,7 +690,8 @@ class HubHandler:
                                       return_object = return_object,
                                       frame_class_filter = frame_class_filter,
                                       skip_frames = skip_frames_list,
-                                      sort_to_news = sort_to_news))
+                                      sort_to_news = sort_to_news,
+                                      utility_feature = utility_feature))
         
 #==========================================================
 #==========================================================   
@@ -942,7 +951,7 @@ class HubHandler:
             "frame_class_filter": query.frame_class_filter,
             "skip_frames": query.skip_frames if query.skip_frames else [],
             "sort_to_news": query.sort_to_news,
-            
+            "utility_feature": query.utility_feature
         }
         
         async with httpx.AsyncClient(timeout=timeout) as client:
@@ -979,21 +988,11 @@ class HubHandler:
                                     return_object: bool = Form(True),
                                     frame_class_filter: Optional[str] = Form('[]'),
                                     skip_frames: Optional[str] = Form("[]"),
-                                    sort_to_news: bool = Form(True)) -> APIResponse:
+                                    sort_to_news: bool = Form(True),
+                                    utility_feature: str = Form("shot")) -> APIResponse:
         
         frame_class_filter = json.loads(frame_class_filter)
         skip_frames_list = json.loads(skip_frames)
-        
-        try:
-            time_in = convert_time_to_frame(video_filter, time_in) if time_in else None
-        except Exception as e:
-            logger.error(f"Invalid time_out format: {e}")
-            raise HTTPException(status_code=400, detail=f"Invalid time_out format: {str(e)}")
-        try:
-            time_out = convert_time_to_frame(video_filter, time_out) if time_out else None
-        except Exception as e:
-            logger.error(f"Invalid time_out format: {e}")
-            raise HTTPException(status_code=400, detail=f"Invalid time_out format: {str(e)}")
                     
         return await self.siglip_v2_beta_scroll(ScrollQuery(
                                       k = k,
@@ -1006,4 +1005,5 @@ class HubHandler:
                                       frame_class_filter = frame_class_filter,
                                       skip_frames = skip_frames_list,
                                       sort_to_news = sort_to_news,
+                                      utility_feature = utility_feature
                                       ))

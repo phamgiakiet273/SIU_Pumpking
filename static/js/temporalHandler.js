@@ -66,18 +66,18 @@ export function displayTemporalResults(videoRowsList) {
                         <div class="half previous" id="previous-${scene.index}"></div>
                         <div class="half after"    id="after-${scene.index}"></div>
                         <a class="video_id text-overlay-top"
-                           data-imageid="${scene.video_name}"
-                           target="${scene.index}">${scene.video_name.replace(/\.mp4$/, '')}</a>
+                        data-imageid="${scene.video_name}"
+                        target="${scene.index}">${scene.video_name.replace(/\.mp4$/, '')}</a>
                         <img src="hub/send_img/${encodedPath}"
                             id="${scene.index}"
                             class="lazy-image"
                             loading="lazy"
                             style="width: var(--thumbnail-width);
-                                   height: var(--thumbnail-height);" />
+                                height: var(--thumbnail-height);" />
                         <a class="image_id text-overlay-bottom"
-                           style="left: 0; bottom: 1.5rem;"
-                           id="frame_name-${scene.index}"
-                           target="${scene.index}">${scene.keyframe_id}</a>
+                        style="left: 0; bottom: 1.5rem;"
+                        id="frame_name-${scene.index}"
+                        target="${scene.index}">${scene.keyframe_id}</a>
                     </div>
                     <div style="align-items: center; display: flex; justify-content: center;">
                         <div style="position: absolute; bottom: 0; width: 40px; height: 1.5rem; z-index: 100; justify-self: center;"
@@ -88,7 +88,7 @@ export function displayTemporalResults(videoRowsList) {
 
                 // Add exclude button
                 const excludeBtn = document.createElement('button');
-                excludeBtn.type = 'button';  // <--- Add this line
+                excludeBtn.type = 'button';
                 excludeBtn.className = 'exclude-btn';
                 excludeBtn.innerHTML = '&times;';
                 excludeBtn.addEventListener('click', (e) => {
@@ -101,44 +101,64 @@ export function displayTemporalResults(videoRowsList) {
                 const thumbDiv = thumbnail.querySelector('div[style="position: relative;"]');
                 thumbDiv.appendChild(excludeBtn);
 
-                // Add get news button
+                // Add get news button (shot utility)
                 const getNewsBtn = document.createElement('button');
                 getNewsBtn.type = 'button';
                 getNewsBtn.className = 'get-news-btn';
                 getNewsBtn.innerHTML = '📰';
                 getNewsBtn.addEventListener('click', (e) => {
                     e.stopPropagation();
-                    performScrollSearch(scene);
+                    performScrollSearch(scene, 'shot'); // Add utility_feature='shot'
                 });
                 thumbDiv.appendChild(getNewsBtn);
 
-                // Add image search button
+                // Add image search button (now becomes dup utility)
                 const imageSearchBtn = document.createElement('button');
                 imageSearchBtn.type = 'button';
                 imageSearchBtn.className = 'image-search-btn';
                 imageSearchBtn.innerHTML = '🖼️';
-                imageSearchBtn.title = 'Search with this image';
-                imageSearchBtn.addEventListener('click', async (e) => {
+                imageSearchBtn.title = 'Find similar frames (dup)';
+                imageSearchBtn.addEventListener('click', (e) => {
                     e.stopPropagation();
-                    
-                    // Get the image element
-                    const thumbnail = e.currentTarget.closest('.thumbnail');
-                    const imgElement = thumbnail.querySelector('img');
-
-                    if (imgElement) {
-                        // Convert the image to a data URL
-                        try {
-                            const response = await fetch(imgElement.src.replace("send_img","send_img_original"));
-                            const blob = await response.blob();
-                            const dataUrl = await blobToDataURL(blob);
-                            performImageSearch(dataUrl);
-                        } catch (error) {
-                            console.error('Error converting image to data URL:', error);
-                            alert('Failed to prepare image for search');
-                        }
-                    }
+                    performScrollSearch(scene, 'dup'); // Changed to dup utility
                 });
                 thumbDiv.appendChild(imageSearchBtn);
+
+                // Add uniqueness button
+                const uniquenessBtn = document.createElement('button');
+                uniquenessBtn.type = 'button';
+                uniquenessBtn.className = 'uniqueness-btn';
+                uniquenessBtn.title = scene.is_unique ? 'Unique frame' : 'Find unique version';
+                
+                // Set button style based on is_unique
+                if (scene.is_unique) {
+                    uniquenessBtn.style.backgroundColor = 'rgba(0, 255, 0, 0.3)'; // Green transparent
+                    uniquenessBtn.innerHTML = '✓';
+                } else {
+                    uniquenessBtn.style.backgroundColor = 'rgba(255, 0, 0, 0.3)'; // Red transparent
+                    uniquenessBtn.innerHTML = '✗';
+                    uniquenessBtn.addEventListener('click', (e) => {
+                        e.stopPropagation();
+                        performScrollSearch(scene, 'unique'); // unique utility
+                    });
+                }
+                
+                // Style the button
+                uniquenessBtn.style.position = 'absolute';
+                uniquenessBtn.style.bottom = '25px';
+                uniquenessBtn.style.right = '5px';
+                uniquenessBtn.style.width = '20px';
+                uniquenessBtn.style.height = '20px';
+                uniquenessBtn.style.border = 'none';
+                uniquenessBtn.style.borderRadius = '4px';
+                uniquenessBtn.style.cursor = scene.is_unique ? 'default' : 'pointer';
+                uniquenessBtn.style.display = 'flex';
+                uniquenessBtn.style.alignItems = 'center';
+                uniquenessBtn.style.justifyContent = 'center';
+                uniquenessBtn.style.fontSize = '12px';
+                uniquenessBtn.style.color = 'white';
+                
+                thumbDiv.appendChild(uniquenessBtn);
 
                 setTimeout(() => {
                     addSubmissionButtons();
