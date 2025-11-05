@@ -33,31 +33,36 @@ Follow the steps below to set up and run the project:
 - You can save the `images` folder anywhere on your machine.
 - Copy the full **Linux path** of the folder (example below):
 
-    */mnt/c/Users/F14_TOMCAT/Downloads/Project/AIC_data/0_low_res_autoshot_only*
+    */mnt/c/Users/F14_TOMCAT/Downloads/Project/AIC_data/*
 
-- Do the same for 3 fps files (1 for each batch), example command:
-    ```
-    scp ai_intern@14.224.156.113:/dataset/AIC_2025/SIU_Pumpking/0/fps/video_fps_0.json C:\Users\F14_TOMCAT\Downloads\Project\AIC_data
-    ```
 
 ------------------------------------------------------------
-## 4. Set IMAGE_LOCAL_PATH and FPS_PATH in .env file
+## 4. Set IMAGE_LOCAL_PATH in .env file
 
 - Contact the repository owner to get the `.env` file.
 - Open the `.env` file and set `IMAGE_LOCAL_PATH` to the full path INCLUDING the image folder name.
 
   Example:
-    > IMAGE_LOCAL_PATH="/mnt/c/Users/F14_TOMCAT/Downloads/Project/AIC_data/0_low_res_autoshot_only"
+    > IMAGE_LOCAL_PATH="/mnt/c/Users/F14_TOMCAT/Downloads/Project/AIC_data/"
 
-- Finally, set the FPS_PATH to where the 3 downloaded files are located
+NOTE: make sure inside AIC_data are 2 folder name `0` and `1` (for 2 batches)
+Example full path:
+    > "C:\Users\F14_TOMCAT\Downloads\Project\AIC_data\0\frames\low_res_autoshot\Keyframes_L25\keyframes\L25_V088\43358.avif"
+Example full img folder path:
 
-  Example:
-    > FPS_PATH = ['/mnt/c/Users/F14_TOMCAT/Downloads/Project/AIC_data/video_fps_0.json', '/mnt/c/Users/F14_TOMCAT/Downloads/Project/AIC_data/video_fps_1.json']
-
+C:\Users\F14_TOMCAT\Downloads\Project\AIC_data\
+├── 0\frames\low_res_autoshot
+    └──Keyframes_L21
+    └──Keyframes_L22
+    └──...
+└── 1\frames\low_res_autoshot
+    └──Keyframes_K06
+    └──Keyframes_K07
+    └──...
 ------------------------
 ## 5. Run the Project
 
 - Run the command below to start the service, then go to **http://127.0.0.1:5501**:
 ```
-    python services/hub_service.py
+    uvicorn services.hub_service:app --host 127.0.0.1 --port 5501
 ```
