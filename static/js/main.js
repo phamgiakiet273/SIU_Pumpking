@@ -23,6 +23,8 @@ import { initSettingsPanel } from './settingPanel.js'
 import { initFilterPanel, fetchVideoNames, addExcludedFrame } from './filterPanel.js';
 import { initDownloadResult } from './downloadResult.js'
 
+import { addSubmissionButtons } from './submissionButtons.js';
+
 // Add at the top
 let API_PREFIX = ''; // let API_PREFIX = '';
 
@@ -87,4 +89,6 @@ document.addEventListener('DOMContentLoaded', () => {
     //     // Hide loading overlay
     //     hideLoadingOverlay();
     // }
+
+    addSubmissionButtons();
 });

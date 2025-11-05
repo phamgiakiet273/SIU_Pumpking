@@ -1,5 +1,7 @@
 // static/js/paginationTemporal.js
 
+import { addSubmissionButtons } from './submissionButtons.js';
+
 // --- State Variables ---
 let currentPage = 1;
 let resultsPerPage = 50; // This will be updated from the slider

@@ -34,6 +34,8 @@ from configs.nginx_config import NGINXConfig
 
 from handlers.submission_handler import SubmissionHandler
 
+from asyncio import create_task, sleep
+
 SPLIT_NAME = os.getenv("SPLIT_NAME", "autoshot")
 SPLIT_NAME_LOW_RES = os.getenv("SPLIT_NAME_LOW_RES", "low_res_autoshot")
 timeout = HubConfig().REQUEST_TIMEOUT
@@ -64,26 +66,31 @@ class HubHandler:
         
         sample img input path: 0/frames/autoshot/Keyframes_L26/keyframes/L26_V264/06356.avif
         """
-        #full_path = full_path.replace(SPLIT_NAME, SPLIT_NAME_LOW_RES)
+        full_path = full_path.replace(SPLIT_NAME, SPLIT_NAME_LOW_RES)
         target = f"{NGINXConfig().NGINX_IMAGE_HOST}/{full_path}"
         logger.info(f"send_img_handler path: {target}")
-        # 307 preserves method, use 302 if you prefer
         return RedirectResponse(url=target, status_code=307)
     
     async def send_img_original_handler(self, full_path: str):
         full_path = full_path.replace(SPLIT_NAME_LOW_RES, SPLIT_NAME)
-        #full_path = full_path.replace('.avif', '.jpg')
+        full_path = full_path.replace('.avif', '.jpg')
         target = f"{NGINXConfig().NGINX_IMAGE_HOST}/{full_path}"
-        logger.info(f"send_img_handler path: {target}")
+        logger.info(f"send_ORIGINAL_img_handler path: {target}")
         return RedirectResponse(url=target, status_code=307)
 
     async def send_video_handler(self, full_path: str):
         f"""
         Redirect /send_video/<full_path> → nginx at http://localhost:{NGINXConfig().NGINX_VIDEO_PORT}/video/<full_path>
         """
+        #full_path = full_path.replace(SPLIT_NAME_LOW_RES, SPLIT_NAME)
         target = f"{NGINXConfig().NGINX_VIDEO_HOST}/{full_path}"
-        print(target)
+        logger.info(f"send_video_handler path: {target}")
         return RedirectResponse(url=target, status_code=307)
+    
+    # async def send_video_original_handler(self, full_path: str):
+    #     target = f"{NGINXConfig().NGINX_VIDEO_HOST}/{full_path}"
+    #     logger.info(f"send_video_original_handler path: {target}")
+    #     return RedirectResponse(url=target, status_code=307)
     
     async def rerank_color(self, video_metadata_list: List[VideoMetadata]) -> APIResponse:
         # Convert Pydantic models to dictionaries
@@ -147,7 +154,7 @@ class HubHandler:
             data=json_data.get("data")
         )
        
-    async def get_sessionID_evalID_DRES_handler(self) -> APIResponse:
+    async def get_sessionID_evalID_DRES_handler(self) -> tuple:
         base_url = f"{HubConfig().SUBMISSION_HOST_PUBLIC}/submission"
         
         # EXPERIMENT: auto relogin in case session expired
@@ -167,22 +174,19 @@ class HubHandler:
                 raise HTTPException(status_code=resp2.status_code, detail=f"Error get_eval_id: {resp2.text}")
             eval_id = resp2.json()["data"]["eval_id"]
 
-        return APIResponse(
-            status=HTTPStatus.OK.value,
-            message="Fetched session_id and eval_id",
-            data={"session_id": session_id, "eval_id": eval_id}
-        )
+        return session_id, eval_id
         
-    async def submit_DRES_handler(self, 
-                                session_id: str = Form("XKHV_3XH6U-ZdlgyYrh0-YLSAkRmqCjH"),
-                                eval_id: str = Form("5d447f6c-472e-4df4-b569-d72325506d3c"),
+    async def submit_KIS_handler(self, 
                                 mediaItemName: str = Form("L11_V018"),
                                 start: int = Form(359960),
                                 end: int = Form(359960)
                             ) -> APIResponse:
         
         #url = f"http://{SubmissionConfig().SUBMISSION_HOST}:{SubmissionConfig().SUBMISSION_PORT}/submission/submit"
-        url = f"{HubConfig().SUBMISSION_HOST_PUBLIC}/submission/submit"
+        session_id, eval_id = await self.get_sessionID_evalID_DRES_handler()
+        logger.info(f"\n\nsession_id: {session_id}, eval_id: {eval_id}\n\n")
+        
+        url = f"{HubConfig().SUBMISSION_HOST_PUBLIC}/submission/submit_kis"
         json_data = {
             "session_id": session_id,
             "eval_id": eval_id,
@@ -202,6 +206,66 @@ class HubHandler:
             message=json_resp.get("message", "Submit result"),
             data=json_resp.get("data")
         ) 
+        
+    async def submit_QA_handler(self, 
+                                answer: str = Form("?"),
+                                video_id: str = Form("L11_V018"),
+                                time: str = Form("359960"),
+                            ) -> APIResponse:
+        
+        #url = f"http://{SubmissionConfig().SUBMISSION_HOST}:{SubmissionConfig().SUBMISSION_PORT}/submission/submit"
+        session_id, eval_id = await self.get_sessionID_evalID_DRES_handler()
+        logger.info(f"\n\nsession_id: {session_id}, eval_id: {eval_id}\n\n")
+        
+        url = f"{HubConfig().SUBMISSION_HOST_PUBLIC}/submission/submit_qa"
+        json_data = {
+            "session_id": session_id,
+            "eval_id": eval_id,
+            "answer": answer,
+            "video_id": video_id,
+            "time": time
+        }
+        async with httpx.AsyncClient(timeout=timeout) as client:
+            response = await client.post(url, json=json_data)
+            
+        if response.status_code != 200:
+            raise HTTPException(status_code=response.status_code, detail=f"Submit error: {response.text}")
+        
+        json_resp = response.json()
+        return APIResponse(
+            status=json_resp.get("status", HTTPStatus.OK.value),
+            message=json_resp.get("message", "Submit result"),
+            data=json_resp.get("data")
+        )
+        
+    async def submit_TRAKE_handler(self, 
+                                video_id: str = Form("L11_V018"),
+                                frame_ids: str = Form("?")
+                            ) -> APIResponse:
+        
+        #url = f"http://{SubmissionConfig().SUBMISSION_HOST}:{SubmissionConfig().SUBMISSION_PORT}/submission/submit"
+        session_id, eval_id = await self.get_sessionID_evalID_DRES_handler()
+        logger.info(f"\n\nsession_id: {session_id}, eval_id: {eval_id}\n\n")
+        
+        url = f"{HubConfig().SUBMISSION_HOST_PUBLIC}/submission/submit_trake"
+        json_data = {
+            "session_id": session_id,
+            "eval_id": eval_id,
+            "video_id": video_id,
+            "frame_ids": frame_ids
+        }
+        async with httpx.AsyncClient(timeout=timeout) as client:
+            response = await client.post(url, json=json_data)
+            
+        if response.status_code != 200:
+            raise HTTPException(status_code=response.status_code, detail=f"Submit error: {response.text}")
+        
+        json_resp = response.json()
+        return APIResponse(
+            status=json_resp.get("status", HTTPStatus.OK.value),
+            message=json_resp.get("message", "Submit result"),
+            data=json_resp.get("data")
+        )
 
     async def get_neighboring_frames_handler(self,
                                              frame_num: str = Form("12977"),
@@ -300,7 +364,8 @@ class HubHandler:
                                         return_object: bool = Form(True),
                                         frame_class_filter: Optional[str] = Form('[]'),
                                         skip_frames: Optional[str] = Form('[]'),
-                                        sort_to_news: bool = Form(True)) -> APIResponse:
+                                        sort_to_news: bool = Form(True),
+                                        is_unique: bool = Form(True)) -> APIResponse:
         
         frame_class_filter = json.loads(frame_class_filter)
         skip_frames_list = json.loads(skip_frames)
@@ -318,7 +383,8 @@ class HubHandler:
             "return_object": return_object,
             "frame_class_filter": frame_class_filter,
             "skip_frames": skip_frames_list if skip_frames_list else [],
-            "sort_to_news": sort_to_news
+            "sort_to_news": sort_to_news,
+            "is_unique": is_unique
         }
         
         async with httpx.AsyncClient(timeout=timeout) as client:
@@ -363,7 +429,8 @@ class HubHandler:
             "return_object": query.return_object,
             "frame_class_filter": query.frame_class_filter,
             "skip_frames": query.skip_frames if query.skip_frames else [],
-            "sort_to_news": query.sort_to_news
+            "sort_to_news": query.sort_to_news,
+            "is_unique": query.is_unique
         }
         
         async with httpx.AsyncClient(timeout=timeout) as client:
@@ -399,7 +466,8 @@ class HubHandler:
                                         return_object: bool = Form(True),
                                         frame_class_filter: Optional[str] = Form('[]'),
                                         skip_frames: Optional[str] = Form("[]"),
-                                        sort_to_news: bool = Form(True)) -> APIResponse:
+                                        sort_to_news: bool = Form(True),
+                                        is_unique: bool = Form(True)) -> APIResponse:
         
         frame_class_filter = json.loads(frame_class_filter)
         skip_frames_list = json.loads(skip_frames)
@@ -453,7 +521,8 @@ class HubHandler:
                                       return_object = return_object,
                                       frame_class_filter = frame_class_filter,
                                       skip_frames = skip_frames_list,
-                                      sort_to_news = sort_to_news))        
+                                      sort_to_news = sort_to_news,
+                                      is_unique = is_unique))        
         
         
     async def siglip_v2_temporal_query_handler(self, text: str = Form(...),
@@ -465,7 +534,8 @@ class HubHandler:
                                         frame_class_filter: Optional[str] = Form('[]'),
                                         skip_frames: Optional[str] = Form("[]"),
                                         sort_to_news: bool = Form(True),
-                                        main_event_index: int = Form(0)) -> APIResponse:
+                                        main_event_index: int = Form(0),
+                                        is_unique: bool = Form(True)) -> APIResponse:
         
         frame_class_filter = json.loads(frame_class_filter)
         skip_frames_list = json.loads(skip_frames)
@@ -484,6 +554,7 @@ class HubHandler:
             "skip_frames": skip_frames_list if skip_frames_list else [],
             "sort_to_news": sort_to_news,
             "main_event_index": main_event_index,
+            "is_unique": is_unique
         }
         
         async with httpx.AsyncClient(timeout=timeout) as client:
@@ -540,7 +611,8 @@ class HubHandler:
             "return_object": query.return_object,
             "frame_class_filter": query.frame_class_filter,
             "skip_frames": query.skip_frames if query.skip_frames else [],
-            "sort_to_news": query.sort_to_news
+            "sort_to_news": query.sort_to_news,
+            "is_unique": query.is_unique
         }
         
         async with httpx.AsyncClient(timeout=timeout) as client:
@@ -577,7 +649,8 @@ class HubHandler:
                                     return_object: bool = Form(True),
                                     frame_class_filter: Optional[str] = Form('[]'),
                                     skip_frames: Optional[str] = Form("[]"),
-                                    sort_to_news: bool = Form(True)) -> APIResponse:
+                                    sort_to_news: bool = Form(True),
+                                    is_unique: bool = Form(True)) -> APIResponse:
         
         frame_class_filter = json.loads(frame_class_filter)
         skip_frames_list = json.loads(skip_frames)
@@ -603,7 +676,8 @@ class HubHandler:
                                       return_object = return_object,
                                       frame_class_filter = frame_class_filter,
                                       skip_frames = skip_frames_list,
-                                      sort_to_news = sort_to_news))
+                                      sort_to_news = sort_to_news,
+                                      is_unique = is_unique))
         
 #==========================================================
 #==========================================================   
@@ -618,7 +692,8 @@ class HubHandler:
                                         return_object: bool = Form(True),
                                         frame_class_filter: Optional[str] = Form('[]'),
                                         skip_frames: Optional[str] = Form('[]'),
-                                        sort_to_news: bool = Form(True)) -> APIResponse:
+                                        sort_to_news: bool = Form(True),
+                                        is_unique: bool = Form(True)) -> APIResponse:
         
         frame_class_filter = json.loads(frame_class_filter)
         skip_frames_list = json.loads(skip_frames)
@@ -636,7 +711,8 @@ class HubHandler:
             "return_object": return_object,
             "frame_class_filter": frame_class_filter,
             "skip_frames": skip_frames_list if skip_frames_list else [],
-            "sort_to_news": sort_to_news
+            "sort_to_news": sort_to_news,
+            "is_unique": is_unique
         }
         
         async with httpx.AsyncClient(timeout=timeout) as client:
@@ -681,7 +757,8 @@ class HubHandler:
             "return_object": query.return_object,
             "frame_class_filter": query.frame_class_filter,
             "skip_frames": query.skip_frames if query.skip_frames else [],
-            "sort_to_news": query.sort_to_news
+            "sort_to_news": query.sort_to_news,
+            "is_unique": query.is_unique
         }
         
         async with httpx.AsyncClient(timeout=timeout) as client:
@@ -717,7 +794,8 @@ class HubHandler:
                                         return_object: bool = Form(True),
                                         frame_class_filter: Optional[str] = Form('[]'),
                                         skip_frames: Optional[str] = Form("[]"),
-                                        sort_to_news: bool = Form(True)) -> APIResponse:
+                                        sort_to_news: bool = Form(True),
+                                        is_unique: bool = Form(True)) -> APIResponse:
         
         frame_class_filter = json.loads(frame_class_filter)
         skip_frames_list = json.loads(skip_frames)
@@ -771,7 +849,8 @@ class HubHandler:
                                       return_object = return_object,
                                       frame_class_filter = frame_class_filter,
                                       skip_frames = skip_frames_list,
-                                      sort_to_news = sort_to_news))        
+                                      sort_to_news = sort_to_news,
+                                      is_unique = is_unique))        
         
         
     async def siglip_v2_beta_temporal_query_handler(self, text: str = Form(...),
@@ -783,7 +862,8 @@ class HubHandler:
                                         frame_class_filter: Optional[str] = Form('[]'),
                                         skip_frames: Optional[str] = Form("[]"),
                                         sort_to_news: bool = Form(True),
-                                        main_event_index: int = Form(0)) -> APIResponse:
+                                        main_event_index: int = Form(0),
+                                        is_unique: bool = Form(True)) -> APIResponse:
         
         frame_class_filter = json.loads(frame_class_filter)
         skip_frames_list = json.loads(skip_frames)
@@ -802,6 +882,7 @@ class HubHandler:
             "skip_frames": skip_frames_list if skip_frames_list else [],
             "sort_to_news": sort_to_news,
             "main_event_index": main_event_index,
+            "is_unique": is_unique
         }
         
         async with httpx.AsyncClient(timeout=timeout) as client:
@@ -858,7 +939,8 @@ class HubHandler:
             "return_object": query.return_object,
             "frame_class_filter": query.frame_class_filter,
             "skip_frames": query.skip_frames if query.skip_frames else [],
-            "sort_to_news": query.sort_to_news
+            "sort_to_news": query.sort_to_news,
+            "is_unique": query.is_unique
         }
         
         async with httpx.AsyncClient(timeout=timeout) as client:
@@ -895,7 +977,8 @@ class HubHandler:
                                     return_object: bool = Form(True),
                                     frame_class_filter: Optional[str] = Form('[]'),
                                     skip_frames: Optional[str] = Form("[]"),
-                                    sort_to_news: bool = Form(True)) -> APIResponse:
+                                    sort_to_news: bool = Form(True),
+                                    is_unique: bool = Form(True)) -> APIResponse:
         
         frame_class_filter = json.loads(frame_class_filter)
         skip_frames_list = json.loads(skip_frames)
@@ -921,4 +1004,5 @@ class HubHandler:
                                       return_object = return_object,
                                       frame_class_filter = frame_class_filter,
                                       skip_frames = skip_frames_list,
-                                      sort_to_news = sort_to_news))
+                                      sort_to_news = sort_to_news,
+                                      is_unique = is_unique))

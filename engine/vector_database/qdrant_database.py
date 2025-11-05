@@ -108,12 +108,12 @@ class QDRANT:
             dict_s2t = dict_s2t | dict_s2t_append
         logger.info("STT Dict Loaded")        
         
-        dict_obj = {}
-        with open(OBJECT_PATH, encoding='utf-8-sig') as json_file:
-            dict_obj = ujson.load(json_file)
-        logger.info("Object Dict Loaded")        
-        dict_obj = preprocess_object_dict(dict_obj)
-        logger.info("Object Dict Preprocessed")  
+        # dict_obj = {}
+        # with open(OBJECT_PATH, encoding='utf-8-sig') as json_file:
+        #     dict_obj = ujson.load(json_file)
+        # logger.info("Object Dict Loaded")        
+        # dict_obj = preprocess_object_dict(dict_obj)
+        # logger.info("Object Dict Preprocessed")  
         
         dict_shot = {}
         for dict_shot_path in SHOT_PATH:
@@ -154,8 +154,9 @@ class QDRANT:
                 # pull these out once per file
                 fps = dict_fps[video_name]
                 s2t_map = dict_s2t[video_name + ".mp4"] if (video_name + ".mp4") in dict_s2t else []
-                get_objs = dict_obj.get
-                shot = dict_shot[video_name] if video_name in dict_shot else ""
+                # s2t_map = ""
+                # get_objs = dict_obj.get
+                shot = dict_shot[video_name]
                 base_id = struct_id
 
                 # build all PointStructs in one go
@@ -168,16 +169,16 @@ class QDRANT:
                             "video_name": video_name + ".mp4",
                             "frame_name": frm,
                             "fps": fps,
-                            "s2t": s2t_map[frame_list[idx]],
-                            "object": get_objs((video_name, int(frm)), []),
-                            "frame_class": shot[frame_list[idx]][0] if shot!="" else 2,
-                            "related_start_frame": shot[frame_list[idx]][1] if shot!="" else 0,
-                            "related_end_frame": shot[frame_list[idx]][2]  if shot!="" else 50000
+                            "s2t": s2t_map[frame_list[idx]] if s2t_map!="" else [],
+                            # "object": get_objs((video_name, int(frm)), []),
+                            "frame_class": shot[frame_list[idx]][0],
+                            "related_start_frame": shot[frame_list[idx]][1],
+                            "related_end_frame": shot[frame_list[idx]][2]
                             # frame_class: (int / string)
                             # 0 là đoạn có MC
                             # 1 là đoạn tóm tắt
                             # 2 là đoạn chính
-                            
+                            # 3 là đoạn trùng lặp
                         },
                     )
                     for idx, (vec, frm) in enumerate(zip(vectors, frame_nums))
@@ -475,7 +476,7 @@ class QDRANT:
         SEARCH_RESULTS = [[result] for result in return_result]
         PREVIOUS_SEARCH_RESULTS = SEARCH_RESULTS
         
-        logger.info(f"Processed scene {query_main+1} for temporal")
+        logger.info(f"Processed scene {query_main+1} for temporal with length: {len(PREVIOUS_SEARCH_RESULTS)}")
         
         for query_idx in range(queryLen-1,-1,-1):
             if query_idx >= query_main:
@@ -503,11 +504,12 @@ class QDRANT:
             
             return_result = self._format_search_results(SEARCH_RESULTS, return_s2t=return_s2t, return_object=return_object)
             
+            
             SEARCH_RESULTS = return_result
             SEARCH_RESULTS = merge_scores_reverse(SEARCH_RESULTS, PREVIOUS_SEARCH_RESULTS)
             PREVIOUS_SEARCH_RESULTS = SEARCH_RESULTS
             
-            logger.info(f"Processed scene {query_idx+1} for temporal")
+            logger.info(f"Processed scene {query_idx+1} for temporal with length: {len(PREVIOUS_SEARCH_RESULTS)}")
         
         for query_idx, query in enumerate(queryList):
             if query_idx <= query_main:
@@ -539,7 +541,7 @@ class QDRANT:
             SEARCH_RESULTS = merge_scores(PREVIOUS_SEARCH_RESULTS, SEARCH_RESULTS)
             PREVIOUS_SEARCH_RESULTS = SEARCH_RESULTS
             
-            logger.info(f"Processed scene {query_idx+1} for temporal")
+            logger.info(f"Processed scene {query_idx+1} for temporal with length: {len(PREVIOUS_SEARCH_RESULTS)}")
         if query_main!=0 and query_main+1!=queryLen:
             SEARCH_RESULTS = sorted(SEARCH_RESULTS, key=lambda x: x[0]['score'] + x[-1]['score'] - float(x[query_main]['score']), reverse=True)
         return SEARCH_RESULTS
@@ -569,7 +571,7 @@ class QDRANT:
                         if return_s2t:
                             s2t = str(field[1]['s2t'])
                         if return_object:
-                            obj = str(field[1]['object'])
+                            obj = ""
                         
                 result = {
                     "key": key,
@@ -604,7 +606,7 @@ class QDRANT:
                         if return_s2t:
                             s2t = str(field[1]['s2t'])
                         if return_object:
-                            obj = str(field[1]['object'])
+                            obj = ""
                         
                 result = {
                     "key": key,
@@ -622,7 +624,10 @@ class QDRANT:
                 if return_object:
                     result["object"] = obj
                 return_result.append(result)
-            
+                
+        import json
+        with open("/workspace/nhihtc/perfect/AIC2025/debug/result.json", 'w', encoding='utf-8') as f:
+            json.dump(return_result, f, ensure_ascii=False, indent=4)
         return return_result
     def _prepare_data(self, folder_path='/dataset/AIC_2025/SIU_Pumpking/*'):
         frame_names = {}

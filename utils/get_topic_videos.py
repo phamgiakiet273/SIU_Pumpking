@@ -4,7 +4,8 @@ import re
 # --- Cấu hình chủ đề bằng khoảng xuyên prefix ---
 TOPIC_RANGES = {
     "ThoiSu": [
-        ("L21", 1, "L22", 31),   # L20_V001 đến L23_V034
+        ("L21", 1, "L22", 31),   # L21_V001 → L22_V031
+        ("K01", 1, "K20", 31),   # K01_V001 → K20_V099
     ],
     "DuaXeDap": [
         ("L23", 1, "L23", 25),  # L23_V035 đến L25_V030
@@ -76,7 +77,7 @@ def load_all_videos(root="/dataset/AIC_2025/original_dataset"):
 
 # --- Test ---
 if __name__ == "__main__":
-    test = ["L28_V001", "L28_V012", "L24_V015", "L25_V025", "L26_V499", "L30_V080"]
+    test = ["L28_V001", "L28_V012", "L24_V015", "L25_V025", "L26_V499", "L30_V080","K20_V31" ]
     for v in test:
         print(v, "->", get_topic_from_video(v)) 
     all_videos = load_all_videos("/dataset/AIC_2025/original_dataset")

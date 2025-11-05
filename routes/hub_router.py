@@ -122,6 +122,12 @@ def setup_router(handler: HubHandler) -> APIRouter:
         methods=["GET"],
     )
     
+    # hub_router.add_api_route(
+    #     "/send_video_original/{full_path:path}",
+    #     endpoint=handler.send_video_original_handler,
+    #     methods=["GET"],
+    # )
+    
     hub_router.add_api_route(
         "/translate",
         endpoint=handler.translate_handler,
@@ -129,8 +135,20 @@ def setup_router(handler: HubHandler) -> APIRouter:
     )
     
     hub_router.add_api_route(
-        "/submitDRES",
-        endpoint=handler.submit_DRES_handler,
+        "/submit_KIS",
+        endpoint=handler.submit_KIS_handler,
+        methods=["POST"],
+    )
+    
+    hub_router.add_api_route(
+        "/submit_QA",
+        endpoint=handler.submit_QA_handler,
+        methods=["POST"],
+    )
+    
+    hub_router.add_api_route(
+        "/submit_TRAKE",
+        endpoint=handler.submit_TRAKE_handler,
         methods=["POST"],
     )
     

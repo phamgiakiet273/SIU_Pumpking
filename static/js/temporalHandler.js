@@ -1,6 +1,7 @@
 // static/js/temporalHandler.js
 
 import { performScrollSearch, performImageSearch } from './searchHandler.js'
+import { addSubmissionButtons } from './submissionButtons.js';
 
 export function displayTemporalResults(videoRowsList) {
     const videosContainer = document.getElementById('videos');
@@ -138,6 +139,10 @@ export function displayTemporalResults(videoRowsList) {
                     }
                 });
                 thumbDiv.appendChild(imageSearchBtn);
+
+                setTimeout(() => {
+                    addSubmissionButtons();
+                }, 0);
 
                 sceneCell.appendChild(thumbnail);
                 uniqueIndex++;
