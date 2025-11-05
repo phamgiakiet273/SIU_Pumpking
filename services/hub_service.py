@@ -49,6 +49,7 @@ if os.getenv("NGINX_IMAGE_HOST", "").startswith("http://localhost"):
         r"D:\AIC_data",
     )
     # mount at /img so send_img_handler redirects to e.g. http://localhost:9181/img/<path>
+    print(f"StaticFiles mounted at: {local_img_path}")
     app.mount("/img", StaticFiles(directory=local_img_path), name="local_img")
 
 if __name__ == "__main__":
