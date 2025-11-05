@@ -41,7 +41,8 @@ body {
     box-sizing: border-box;
 }
 
-.main-content button:not(.exclude-btn):not(.select-btn):not(.remove-btn):not(.get-news-btn):not(.tab-button):not(.download-section):not(.image-search-btn):not(.temporal-event button):not(.submission-button),
+.main-content button:not(.exclude-btn):not(.select-btn):not(.remove-btn):not(.get-news-btn):not(.tab-button):not(.download-section):not(.image-search-btn):not(.temporal-event button):not(.submission-button):not(
+.uniqueness-btn),
 audio,
 #choosingFrameBtn {
     padding: 0.6rem 1rem;
@@ -1324,4 +1325,14 @@ textarea.autogrow {
 
 #global-loading-overlay {
     z-index: 10001 !important; /* Higher than modal z-index of 10000 */
+}
+
+.uniqueness-btn {
+    bottom: 10px;
+    transition: all 0.2s ease;
+}
+
+.uniqueness-btn:hover:not([style*="rgba(0, 255, 0"]) {
+    background-color: rgba(255, 0, 0, 0.5) !important;
+    transform: scale(1.1);
 }

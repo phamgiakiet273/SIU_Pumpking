@@ -217,7 +217,7 @@ function createThumbnailElement(rec) {
 
     // Add exclude button
     const excludeBtn = document.createElement('button');
-    excludeBtn.type = 'button';  // <--- Add this line
+    excludeBtn.type = 'button';
     excludeBtn.className = 'exclude-btn';
     excludeBtn.innerHTML = '&times;';
     excludeBtn.addEventListener('click', (e) => {
@@ -230,54 +230,64 @@ function createThumbnailElement(rec) {
     const thumbDiv = tpl.querySelector('div[style="position: relative;"]');
     thumbDiv.appendChild(excludeBtn);
     
-    // Add get news button
+    // Add get news button (shot utility)
     const getNewsBtn = document.createElement('button');
     getNewsBtn.type = 'button';
     getNewsBtn.className = 'get-news-btn';
     getNewsBtn.innerHTML = '📰';
     getNewsBtn.addEventListener('click', (e) => {
         e.stopPropagation();
-        performScrollSearch(rec);
+        performScrollSearch(rec, 'shot'); // Add utility_feature='shot'
     });
     thumbDiv.appendChild(getNewsBtn);
 
-    // Add image search button
+    // Add image search button (now becomes dup utility)
     const imageSearchBtn = document.createElement('button');
     imageSearchBtn.type = 'button';
     imageSearchBtn.className = 'image-search-btn';
     imageSearchBtn.innerHTML = '🖼️';
-    imageSearchBtn.title = 'Search with this image';
-    imageSearchBtn.addEventListener('click', async (e) => {
+    imageSearchBtn.title = 'Find similar frames (dup)';
+    imageSearchBtn.addEventListener('click', (e) => {
         e.stopPropagation();
-        
-        // Get the image element
-        const thumbnail = e.currentTarget.closest('.thumbnail');
-        const imgElement = thumbnail.querySelector('img');
-
-        if (imgElement) {
-            // Convert the image to a data URL
-            try {
-                const response = await fetch(imgElement.src.replace("send_img","send_img_original"));
-                const url = response.url;
-                const index = url.indexOf("/img");
-
-                if (index !== -1) {
-                    // Skip "/img" entirely by adding 4 (length of "/img")
-                    const trimmedUrl = url.substring(index + 4);
-                    console.log("Trimmed URL (without /img):", trimmedUrl);
-
-                    // Update image source with your API endpoint
-                    const newUrl = `https://api.siu.edu.vn/siu_pumpking_1/hub/send_img_original/${encodeURIComponent(trimmedUrl)}`;
-                    imgElement.src = newUrl;
-                    performImageSearch(newUrl);
-                }
-            } catch (error) {
-                console.error('Error converting image to data URL:', error);
-                alert('Failed to prepare image for search');
-            }
-        }
+        performScrollSearch(rec, 'dup'); // Changed to dup utility
     });
     thumbDiv.appendChild(imageSearchBtn);
+
+    // Add uniqueness button
+    const uniquenessBtn = document.createElement('button');
+    uniquenessBtn.type = 'button';
+    uniquenessBtn.className = 'uniqueness-btn';
+    uniquenessBtn.title = rec.is_unique ? 'Unique frame' : 'Find unique version';
+    
+    // Set button style based on is_unique
+    if (rec.is_unique) {
+        uniquenessBtn.style.backgroundColor = 'rgba(0, 255, 0, 0.3)'; // Green transparent
+        uniquenessBtn.innerHTML = '✓';
+    } else {
+        uniquenessBtn.style.backgroundColor = 'rgba(255, 0, 0, 0.3)'; // Red transparent
+        uniquenessBtn.innerHTML = '✗';
+        uniquenessBtn.addEventListener('click', (e) => {
+            e.stopPropagation();
+            performScrollSearch(rec, 'unique'); // unique utility
+        });
+    }
+    
+    // Style the button
+    uniquenessBtn.style.position = 'absolute';
+    uniquenessBtn.style.bottom = '25px';
+    uniquenessBtn.style.right = '5px';
+    uniquenessBtn.style.width = '20px';
+    uniquenessBtn.style.height = '20px';
+    uniquenessBtn.style.border = 'none';
+    uniquenessBtn.style.borderRadius = '4px';
+    uniquenessBtn.style.cursor = rec.is_unique ? 'default' : 'pointer';
+    uniquenessBtn.style.display = 'flex';
+    uniquenessBtn.style.alignItems = 'center';
+    uniquenessBtn.style.justifyContent = 'center';
+    uniquenessBtn.style.fontSize = '12px';
+    uniquenessBtn.style.color = 'white';
+    
+    thumbDiv.appendChild(uniquenessBtn);
 
     setTimeout(() => {
         addSubmissionButtons();
