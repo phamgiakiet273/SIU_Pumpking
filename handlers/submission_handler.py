@@ -6,6 +6,7 @@ from schema.submission import SubmitKISRequest, SubmitQARequest, SubmitTRAKERequ
 from utils.logger import get_logger
 import requests
 import os
+import json
 
 from typing import Optional
 from fastapi import Form
@@ -20,7 +21,6 @@ class SubmissionHandler:
         self.username = config.SUBMIT_USERNAME
         self.password = config.SUBMIT_PASSWORD
         self.session_id = None
-        self.trigger = True
         self._login()  # Auto login on initialization
 
     async def ping_handler(self) -> APIResponse:
@@ -30,10 +30,6 @@ class SubmissionHandler:
             message="Running (Healthy)",
             data="ping",
         )
-
-    def _reset_trigger(self):
-        """Reset the trigger to True after 10 seconds."""
-        self.trigger = True
 
     def _login(self):
         try:
@@ -58,7 +54,7 @@ class SubmissionHandler:
         if not self.session_id:
             if not self._login():
                 raise HTTPException(status_code=500, detail="Login failed")
-        logger.info(f"\nActive session ID: {self.session_id}")
+        logger.info(f"\nActive SESSION ID: {self.session_id}")
         return APIResponse(
             status=HTTPStatus.OK.value,
             message="Session ID fetched",
@@ -80,7 +76,7 @@ class SubmissionHandler:
         if not active_eval:
             raise HTTPException(status_code=404, detail="No active evaluation found")
         self.eval_id = active_eval["id"]
-        logger.info(f"\nActive evaluation ID: {self.eval_id}")
+        logger.info(f"\nActive EVAL ID: {self.eval_id}")
         return APIResponse(
             status=HTTPStatus.OK.value,
             message="Active evaluation ID fetched",
@@ -101,6 +97,7 @@ class SubmissionHandler:
                 }
             ]
         }
+        logger.info(f"\n\nKIS-{request.mediaItemName}-{request.start}-{request.end}\n")
         resp = requests.post(
             f"{self.base_url}/api/v2/submit/{request.eval_id}",
             json=payload,
@@ -114,7 +111,30 @@ class SubmissionHandler:
                 data=result
             )
         else:
-            raise HTTPException(status_code=resp.status_code, detail=resp.text)
+            error_message = resp.text
+        
+            try:
+                # 1. Parse the outer error response
+                error_data = resp.json()
+                
+                # 2. Get the 'detail' field, which is a JSON *string*
+                detail_str = error_data.get("detail")
+                
+                if detail_str and isinstance(detail_str, str):
+                    # 3. Parse the inner JSON string
+                    inner_data = json.loads(detail_str)
+                    
+                    # 4. Get the 'description' field you want
+                    specific_description = inner_data.get("description")
+                    
+                    if specific_description:
+                        error_message = specific_description
+                        logger.error(f"Error message: {error_message}")
+                        
+            except Exception as e:
+                logger.warning(f"Could not parse detailed error from response: {e}")
+                
+            raise HTTPException(status_code=resp.status_code, detail=error_message)
         
     async def submit_qa_handler(self, request: SubmitQARequest) -> APIResponse:
         payload = {
@@ -128,7 +148,7 @@ class SubmissionHandler:
                 }
             ]
         }
-        logger.info(f"\n\nQA-{request.answer}-{request.video_id}-{request.time}\n\n")
+        logger.info(f"\n\nQA-{request.answer}-{request.video_id}-{request.time}\n")
         
         resp = requests.post(
             f"{self.base_url}/api/v2/submit/{request.eval_id}",
@@ -143,7 +163,20 @@ class SubmissionHandler:
                 data=result
             )
         else:
-            raise HTTPException(status_code=resp.status_code, detail=resp.text)
+            error_message = resp.text
+            try:
+                error_data = resp.json()
+                detail_str = error_data.get("detail")         
+                if detail_str and isinstance(detail_str, str):
+                    inner_data = json.loads(detail_str)
+                    specific_description = inner_data.get("description")         
+                    if specific_description:
+                        error_message = specific_description
+                        logger.error(f"Error message: {error_message}")                      
+            except Exception as e:
+                logger.warning(f"Could not parse detailed error from response: {e}")
+                
+            raise HTTPException(status_code=resp.status_code, detail=error_message)
         
     async def submit_trake_handler(self, request: SubmitTRAKERequest) -> APIResponse:
         # 1. Get the comma-separated string from the request.!
@@ -159,7 +192,7 @@ class SubmissionHandler:
 
         # 4. Construct the final text string dynamically.
         final_text = f"TR-{request.video_id}-{joined_elements}"
-        logger.info(f"\n\nTRAKE: {final_text}\n\n")
+        logger.info(f"\n\nTRAKE: {final_text}\n")
 
         payload = {
             "answerSets": [
@@ -186,7 +219,20 @@ class SubmissionHandler:
                 data=result
             )
         else:
-            raise HTTPException(status_code=resp.status_code, detail=resp.text)
+            error_message = resp.text
+            try:
+                error_data = resp.json()
+                detail_str = error_data.get("detail")         
+                if detail_str and isinstance(detail_str, str):
+                    inner_data = json.loads(detail_str)
+                    specific_description = inner_data.get("description")         
+                    if specific_description:
+                        error_message = specific_description
+                        logger.error(f"Error message: {error_message}")                      
+            except Exception as e:
+                logger.warning(f"Could not parse detailed error from response: {e}")
+                
+            raise HTTPException(status_code=resp.status_code, detail=error_message)
 
     async def relogin(self):
         ok = self._login()
@@ -267,3 +313,4 @@ class SubmissionHandler:
     #     else:
     #         logger.error(f"Error submitting: {submit_resp.status_code} {submit_resp.text}")
     #         raise HTTPException(status_code=submit_resp.status_code, detail=submit_resp.text)
+        

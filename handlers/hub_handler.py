@@ -196,9 +196,9 @@ class HubHandler:
         return session_id, eval_id
         
     async def submit_KIS_handler(self, 
-                                mediaItemName: str = Form("L11_V018"),
-                                start: int = Form(359960),
-                                end: int = Form(359960)
+                                mediaItemName: str = Form("K19_V006"),
+                                start: int = Form(1046169),
+                                end: int = Form(1046169)
                             ) -> APIResponse:
         
         #url = f"http://{SubmissionConfig().SUBMISSION_HOST}:{SubmissionConfig().SUBMISSION_PORT}/submission/submit"
@@ -217,7 +217,22 @@ class HubHandler:
             response = await client.post(url, json=json_data)
             
         if response.status_code != 200:
-            raise HTTPException(status_code=response.status_code, detail=f"Submit error: {response.text}")
+            # --- REFACTORED PART ---
+            # The first API (submit_kis_handler) already raised an HTTPException.
+            # We'll try to parse its JSON response to get the 'detail' field.
+            error_message = response.text # Default fallback
+            try:
+                error_data = response.json()
+                # The 'detail' field from the HTTPException is what we want
+                specific_detail = error_data.get("detail") 
+                if specific_detail:
+                    error_message = specific_detail
+                    logger.error(f"Submit KIS error detail: {error_message}")
+            except Exception:
+                # Not a JSON response, just use the raw text
+                pass
+                
+            raise HTTPException(status_code=response.status_code, detail=error_message)
         
         json_resp = response.json()
         return APIResponse(
@@ -248,7 +263,17 @@ class HubHandler:
             response = await client.post(url, json=json_data)
             
         if response.status_code != 200:
-            raise HTTPException(status_code=response.status_code, detail=f"Submit error: {response.text}")
+            error_message = response.text # Default fallback
+            try:
+                error_data = response.json()
+                specific_detail = error_data.get("detail") 
+                if specific_detail:
+                    error_message = specific_detail
+                    logger.error(f"Submit QA error detail: {error_message}")
+            except Exception:
+                pass
+                
+            raise HTTPException(status_code=response.status_code, detail=error_message)
         
         json_resp = response.json()
         return APIResponse(
@@ -277,7 +302,17 @@ class HubHandler:
             response = await client.post(url, json=json_data)
             
         if response.status_code != 200:
-            raise HTTPException(status_code=response.status_code, detail=f"Submit error: {response.text}")
+            error_message = response.text # Default fallback
+            try:
+                error_data = response.json()
+                specific_detail = error_data.get("detail") 
+                if specific_detail:
+                    error_message = specific_detail
+                    logger.error(f"Submit TRAKE error detail: {error_message}")
+            except Exception:
+                pass
+                
+            raise HTTPException(status_code=response.status_code, detail=error_message)
         
         json_resp = response.json()
         return APIResponse(
@@ -951,7 +986,7 @@ class HubHandler:
             "frame_class_filter": query.frame_class_filter,
             "skip_frames": query.skip_frames if query.skip_frames else [],
             "sort_to_news": query.sort_to_news,
-            "utility_feature": query.utility_feature
+            "utility_feature": query.utility_feature 
         }
         
         async with httpx.AsyncClient(timeout=timeout) as client:
@@ -1005,5 +1040,4 @@ class HubHandler:
                                       frame_class_filter = frame_class_filter,
                                       skip_frames = skip_frames_list,
                                       sort_to_news = sort_to_news,
-                                      utility_feature = utility_feature
-                                      ))
+                                      utility_feature=utility_feature))

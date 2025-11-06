@@ -41,7 +41,7 @@ async function submitToTKIS(frameInfo) {
         showLoadingOverlay();
         
         const formData = new FormData();
-        formData.append('mediaItemName', frameInfo.videoName);
+        formData.append('mediaItemName', frameInfo.videoName.replace(".mp4",""));
         formData.append('start', frameInfo.timeMs.toString());
         formData.append('end', frameInfo.timeMs.toString());
         
@@ -52,11 +52,36 @@ async function submitToTKIS(frameInfo) {
         
         const result = await response.json();
         
-        if (result.status === 200) {
-            alert('TKIS submission successful!');
+        // Enhanced response handling
+        let message = 'Submission completed';
+        
+        if (result.detail) {
+            // Handle Type 1 response: {"detail": "{\"status\":false,\"description\":\"...\"}"}
+            try {
+                const detailObj = JSON.parse(result.detail);
+                message = `TKIS: ${detailObj.description || result.detail}`;
+            } catch (e) {
+                message = `TKIS: ${result.detail}`;
+            }
+        } else if (result.data) {
+            // Handle Type 2/3 responses with data field
+            message = `TKIS: ${result.data.description || result.data.message || 'Unknown response'}`;
+            
+            // Add submission result if available
+            if (result.data.submission) {
+                message = `TKIS Submission: ${result.data.submission}\n${result.data.description}`;
+            }
+        } else if (result.message) {
+            // Handle other message formats
+            message = `TKIS: ${result.message}`;
+        } else if (result.status === 200) {
+            message = 'TKIS submission successful!';
         } else {
-            alert('TKIS submission failed: ' + result.message);
+            message = `TKIS: ${JSON.stringify(result)}`;
         }
+        
+        alert(message);
+        
     } catch (error) {
         console.error('TKIS submission error:', error);
         alert('TKIS submission error: ' + error.message);
@@ -64,6 +89,7 @@ async function submitToTKIS(frameInfo) {
         hideLoadingOverlay();
     }
 }
+
 
 // QA Submission
 function openQAModal(frameInfo) {
@@ -157,13 +183,14 @@ function openQAModal(frameInfo) {
     document.addEventListener('keydown', closeHandler);
 }
 
+// QA Submission
 async function submitToQA(answer, frameInfo) {
     try {
         showLoadingOverlay();
         
         const formData = new FormData();
         formData.append('answer', answer);
-        formData.append('video_id', frameInfo.videoName);
+        formData.append('video_id', frameInfo.videoName.replace(".mp4",""));
         formData.append('time', frameInfo.timeMs.toString());
         
         const response = await fetch('hub/submit_QA', {
@@ -173,11 +200,36 @@ async function submitToQA(answer, frameInfo) {
         
         const result = await response.json();
         
-        if (result.status === 200) {
-            alert('QA submission successful!');
+        // Enhanced response handling for QA
+        let message = 'QA submission completed';
+        
+        if (result.detail) {
+            // Handle Type 1 response
+            try {
+                const detailObj = JSON.parse(result.detail);
+                message = `QA: ${detailObj.description || result.detail}`;
+            } catch (e) {
+                message = `QA: ${result.detail}`;
+            }
+        } else if (result.data) {
+            // Handle Type 2/3 responses with data field
+            message = `QA: ${result.data.description || result.data.message || 'Unknown response'}`;
+            
+            // Add submission result if available
+            if (result.data.submission) {
+                const statusIcon = result.data.submission === 'CORRECT' ? '✅' : '❌';
+                message = `${statusIcon} QA Submission: ${result.data.submission}\n${result.data.description}`;
+            }
+        } else if (result.message) {
+            message = `QA: ${result.message}`;
+        } else if (result.status === 200) {
+            message = 'QA submission successful!';
         } else {
-            alert('QA submission failed: ' + result.message);
+            message = `QA: ${JSON.stringify(result)}`;
         }
+        
+        alert(message);
+        
     } catch (error) {
         console.error('QA submission error:', error);
         alert('QA submission error: ' + error.message);
@@ -185,8 +237,6 @@ async function submitToQA(answer, frameInfo) {
         hideLoadingOverlay();
     }
 }
-
-// In submissionButtons.js - update the openTrakeModal function
 
 // TRAKE Interface
 function openTrakeModal(frameInfo) {
@@ -593,12 +643,13 @@ function openTrakeModal(frameInfo) {
     updateTrakeDisplay();
 }
 
+// TRAKE Submission
 async function submitToTrake(videoName, frameIds) {
     try {
         showLoadingOverlay();
         
         const formData = new FormData();
-        formData.append('video_id', videoName);
+        formData.append('video_id', videoName.replace(".mp4",""));
         formData.append('frame_ids', frameIds.join(','));
         
         const response = await fetch('hub/submit_TRAKE', {
@@ -608,14 +659,42 @@ async function submitToTrake(videoName, frameIds) {
         
         const result = await response.json();
         
-        if (result.status === 200) {
-            alert(`TRAKE submission successful! Submitted ${frameIds.length} frames.`);
-            // Close modal
+        // Enhanced response handling for TRAKE
+        let message = `TRAKE submission completed for ${frameIds.length} frames`;
+        
+        if (result.detail) {
+            // Handle Type 1 response
+            try {
+                const detailObj = JSON.parse(result.detail);
+                message = `TRAKE: ${detailObj.description || result.detail}`;
+            } catch (e) {
+                message = `TRAKE: ${result.detail}`;
+            }
+        } else if (result.data) {
+            // Handle Type 2/3 responses with data field
+            message = `TRAKE: ${result.data.description || result.data.message || 'Unknown response'}`;
+            
+            // Add submission result if available
+            if (result.data.submission) {
+                const statusIcon = result.data.submission === 'CORRECT' ? '✅' : '❌';
+                message = `${statusIcon} TRAKE Submission: ${result.data.submission}\n${result.data.description}`;
+            }
+        } else if (result.message) {
+            message = `TRAKE: ${result.message}`;
+        } else if (result.status === 200) {
+            message = `TRAKE submission successful! Submitted ${frameIds.length} frames.`;
+        } else {
+            message = `TRAKE: ${JSON.stringify(result)}`;
+        }
+        
+        alert(message);
+        
+        // Close modal only on successful submission
+        if (result.status === 200 || (result.data && result.data.status)) {
             const modal = document.querySelector('div[style*="z-index: 10000"]');
             if (modal) document.body.removeChild(modal);
-        } else {
-            alert('TRAKE submission failed: ' + result.message);
         }
+        
     } catch (error) {
         console.error('TRAKE submission error:', error);
         alert('TRAKE submission error: ' + error.message);
