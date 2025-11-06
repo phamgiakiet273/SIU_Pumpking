@@ -188,7 +188,7 @@ class SubmissionHandler:
 
         # 3. Join the processed elements with a hyphen.
         #    This will result in "0123-9132-5555"
-        joined_elements = "-".join(elements)
+        joined_elements = ",".join(elements)
 
         # 4. Construct the final text string dynamically.
         final_text = f"TR-{request.video_id}-{joined_elements}"
