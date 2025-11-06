@@ -41,7 +41,7 @@ async function submitToTKIS(frameInfo) {
         showLoadingOverlay();
         
         const formData = new FormData();
-        formData.append('mediaItemName', frameInfo.videoName);
+        formData.append('mediaItemName', frameInfo.videoName.replace(".mp4",""));
         formData.append('start', frameInfo.timeMs.toString());
         formData.append('end', frameInfo.timeMs.toString());
         
@@ -52,11 +52,36 @@ async function submitToTKIS(frameInfo) {
         
         const result = await response.json();
         
-        if (result.status === 200) {
-            alert('TKIS submission successful!');
+        // Enhanced response handling
+        let message = 'Submission completed';
+        
+        if (result.detail) {
+            // Handle Type 1 response: {"detail": "{\"status\":false,\"description\":\"...\"}"}
+            try {
+                const detailObj = JSON.parse(result.detail);
+                message = `TKIS: ${detailObj.description || result.detail}`;
+            } catch (e) {
+                message = `TKIS: ${result.detail}`;
+            }
+        } else if (result.data) {
+            // Handle Type 2/3 responses with data field
+            message = `TKIS: ${result.data.description || result.data.message || 'Unknown response'}`;
+            
+            // Add submission result if available
+            if (result.data.submission) {
+                message = `TKIS Submission: ${result.data.submission}\n${result.data.description}`;
+            }
+        } else if (result.message) {
+            // Handle other message formats
+            message = `TKIS: ${result.message}`;
+        } else if (result.status === 200) {
+            message = 'TKIS submission successful!';
         } else {
-            alert('TKIS submission failed: ' + result.message);
+            message = `TKIS: ${JSON.stringify(result)}`;
         }
+        
+        alert(message);
+        
     } catch (error) {
         console.error('TKIS submission error:', error);
         alert('TKIS submission error: ' + error.message);
@@ -64,6 +89,7 @@ async function submitToTKIS(frameInfo) {
         hideLoadingOverlay();
     }
 }
+
 
 // QA Submission
 function openQAModal(frameInfo) {
@@ -144,7 +170,7 @@ function openQAModal(frameInfo) {
         }
         
         await submitToQA(answer, frameInfo);
-        document.body.removeChild(modal);
+        // document.body.removeChild(modal);
     });
     
     // Close on escape
@@ -157,13 +183,14 @@ function openQAModal(frameInfo) {
     document.addEventListener('keydown', closeHandler);
 }
 
+// QA Submission
 async function submitToQA(answer, frameInfo) {
     try {
         showLoadingOverlay();
         
         const formData = new FormData();
         formData.append('answer', answer);
-        formData.append('video_id', frameInfo.videoName);
+        formData.append('video_id', frameInfo.videoName.replace(".mp4",""));
         formData.append('time', frameInfo.timeMs.toString());
         
         const response = await fetch('hub/submit_QA', {
@@ -173,11 +200,36 @@ async function submitToQA(answer, frameInfo) {
         
         const result = await response.json();
         
-        if (result.status === 200) {
-            alert('QA submission successful!');
+        // Enhanced response handling for QA
+        let message = 'QA submission completed';
+        
+        if (result.detail) {
+            // Handle Type 1 response
+            try {
+                const detailObj = JSON.parse(result.detail);
+                message = `QA: ${detailObj.description || result.detail}`;
+            } catch (e) {
+                message = `QA: ${result.detail}`;
+            }
+        } else if (result.data) {
+            // Handle Type 2/3 responses with data field
+            message = `QA: ${result.data.description || result.data.message || 'Unknown response'}`;
+            
+            // Add submission result if available
+            if (result.data.submission) {
+                const statusIcon = result.data.submission === 'CORRECT' ? '✅' : '❌';
+                message = `${statusIcon} QA Submission: ${result.data.submission}\n${result.data.description}`;
+            }
+        } else if (result.message) {
+            message = `QA: ${result.message}`;
+        } else if (result.status === 200) {
+            message = 'QA submission successful!';
         } else {
-            alert('QA submission failed: ' + result.message);
+            message = `QA: ${JSON.stringify(result)}`;
         }
+        
+        alert(message);
+        
     } catch (error) {
         console.error('QA submission error:', error);
         alert('QA submission error: ' + error.message);
@@ -185,8 +237,6 @@ async function submitToQA(answer, frameInfo) {
         hideLoadingOverlay();
     }
 }
-
-// In submissionButtons.js - update the openTrakeModal function
 
 // TRAKE Interface
 function openTrakeModal(frameInfo) {
@@ -203,6 +253,9 @@ function openTrakeModal(frameInfo) {
         align-items: center;
         z-index: 10000;
     `;
+    
+    // Make modal focusable and focus it immediately
+    modal.tabIndex = -1;
     
     const modalContent = document.createElement('div');
     modalContent.style.cssText = `
@@ -236,6 +289,7 @@ function openTrakeModal(frameInfo) {
             align-items: center;
             justify-content: center;
         ">×</button>
+        
         <!-- Video Player Section -->
         <div style="margin-bottom: 20px; text-align: center;">
             <div class="video-container" style="position: relative; padding-top: 56.25%; background: #000;">
@@ -259,11 +313,49 @@ function openTrakeModal(frameInfo) {
                     display: none;
                 ">Loading video...</div>
             </div>
+            
+            <!-- Current Frame and Navigation Info -->
+            <div id="trake-frame-info" style="margin: 10px 0; font-size: 1rem; color: #40E0D0; display: flex; justify-content: center; align-items: center; gap: 15px;">
+                <span><strong>Current Frame:</strong> <span id="trake-current-frame">${frameInfo.frameId}</span></span>
+                <span style="color: #ccc;">|</span>
+                <span>Use <strong>← →</strong> arrows to navigate 1 second</span>
+                <span style="color: #ccc;">|</span>
+                <span><strong>Space</strong> to play/pause</span>
+            </div>
+            
             <div style="margin-top: 10px;">
                 <button id="trake-mark-btn" type="button" style="padding: 8px 16px; background: #40E0D0; color: white; border: none; border-radius: 4px; cursor: pointer; margin: 5px;">Mark Current Frame (M)</button>
-                <button id="trake-play-pause" type="button" style="padding: 8px 16px; background: #003b6d; color: white; border: none; border-radius: 4px; cursor: pointer; margin: 5px;">Pause</button>
+                <button id="trake-play-pause" type="button" style="padding: 8px 16px; background: #003b6d; color: white; border: none; border-radius: 4px; cursor: pointer; margin: 5px;">Play</button>
+                <button id="trake-prev-second" type="button" style="padding: 8px 16px; background: #666; color: white; border: none; border-radius: 4px; cursor: pointer; margin: 5px;">← 1s</button>
+                <button id="trake-next-second" type="button" style="padding: 8px 16px; background: #666; color: white; border: none; border-radius: 4px; cursor: pointer; margin: 5px;">→ 1s</button>
             </div>
             <div id="trake-current-time" style="margin-top: 10px; font-size: 1rem; color: #40E0D0;"></div>
+        </div>
+
+        <!-- Manual Frame/Time Input Section -->
+        <div style="margin-bottom: 20px; padding: 15px; border: 1px solid #555; border-radius: 5px; background: #222;">
+            <h4 style="color: #40E0D0; margin-top: 0; margin-bottom: 10px;">Jump to Frame or Time</h4>
+            <div style="display: flex; gap: 10px; align-items: center; flex-wrap: wrap;">
+                <div style="display: flex; align-items: center; gap: 5px;">
+                    <label style="color: #ccc;">Frame:</label>
+                    <input type="number" id="trake-frame-input" placeholder="Frame number" 
+                           style="padding: 5px; background: #444; color: white; border: 1px solid #555; border-radius: 3px; width: 100px;">
+                </div>
+                <span style="color: #ccc;">or</span>
+                <div style="display: flex; align-items: center; gap: 5px;">
+                    <label style="color: #ccc;">Time:</label>
+                    <input type="text" id="trake-time-input" placeholder="mm:ss" 
+                           style="padding: 5px; background: #444; color: white; border: 1px solid #555; border-radius: 3px; width: 80px;">
+                </div>
+                <button id="trake-jump-btn" type="button" 
+                        style="padding: 5px 10px; background: #40E0D0; color: white; border: none; border-radius: 3px; cursor: pointer;">
+                    Jump
+                </button>
+                <button id="trake-mark-manual-btn" type="button" 
+                        style="padding: 5px 10px; background: #FFD700; color: black; border: none; border-radius: 3px; cursor: pointer;">
+                    Mark This Frame
+                </button>
+            </div>
         </div>
 
         <!-- Progress Bar -->
@@ -297,11 +389,14 @@ function openTrakeModal(frameInfo) {
     modal.appendChild(modalContent);
     document.body.appendChild(modal);
     
+    // Focus the modal to capture keyboard events
+    modal.focus();
+    
     // TRAKE state
     const markedFrames = new Set();
     let videoFps = frameInfo.fps;
     
-    // Initialize video player - FIXED: Use same approach as videoView.js
+    // Initialize video player
     const video = document.getElementById('trake-video');
     const spinner = document.getElementById('trake-spinner');
     
@@ -309,7 +404,7 @@ function openTrakeModal(frameInfo) {
     const frameNum = parseInt(frameInfo.frameId);
     const startTime = frameNum / videoFps;
     
-    // Get the correct video path - FIXED: Use same method as working video modal
+    // Get the correct video path
     let videoPath = constructVideoPathFromName(frameInfo.videoName);
     console.log("Video path:", videoPath);
     
@@ -320,11 +415,25 @@ function openTrakeModal(frameInfo) {
     spinner.style.display = 'block';
     video.src = videoSrc;
     
+    // PAUSE VIDEO IMMEDIATELY - remove autoplay
+    video.autoplay = false;
+    
+    // Disable video controls temporarily to prevent default keyboard behavior
+    video.controls = false;
+    
     // Video event listeners
     video.onloadedmetadata = () => {
         spinner.style.display = 'none';
         video.currentTime = startTime;
+        // Ensure video is paused initially
+        video.pause();
         updateProgress();
+        updateCurrentFrameDisplay();
+        
+        // Re-enable controls after a brief delay
+        setTimeout(() => {
+            video.controls = true;
+        }, 1000);
     };
 
     // Close button in top-right
@@ -354,15 +463,20 @@ function openTrakeModal(frameInfo) {
         }
     };
     
+    // Remove autoplay from canplay event
     video.oncanplay = () => {
-        video.play().catch(e => console.log('Autoplay prevented:', e));
+        // Don't autoplay - keep it paused
+        console.log('Video can play, but keeping it paused');
     };
     
     // Add current frame initially
     markFrame(frameInfo.frameId, startTime);
     
     // Video event listeners for progress updates
-    video.addEventListener('timeupdate', updateProgress);
+    video.addEventListener('timeupdate', () => {
+        updateProgress();
+        updateCurrentFrameDisplay();
+    });
     
     // Progress bar interaction
     const progressBar = document.getElementById('trake-progress-bar');
@@ -381,9 +495,14 @@ function openTrakeModal(frameInfo) {
         });
         
         progressBar.addEventListener('click', (e) => {
+            // Pause video when clicking progress bar
+            video.pause();
+            if (playPauseBtn) playPauseBtn.textContent = 'Play';
+            
             const rect = progressBar.getBoundingClientRect();
             const percent = (e.clientX - rect.left) / rect.width;
             video.currentTime = percent * video.duration;
+            updateCurrentFrameDisplay();
         });
     }
     
@@ -397,6 +516,69 @@ function openTrakeModal(frameInfo) {
             } else {
                 video.pause();
                 playPauseBtn.textContent = 'Play';
+            }
+        });
+    }
+    
+    // 1-second navigation buttons
+    const prevSecondBtn = document.getElementById('trake-prev-second');
+    const nextSecondBtn = document.getElementById('trake-next-second');
+    
+    if (prevSecondBtn) {
+        prevSecondBtn.addEventListener('click', () => {
+            video.pause();
+            if (playPauseBtn) playPauseBtn.textContent = 'Play';
+            navigateBySeconds(-1);
+        });
+    }
+    
+    if (nextSecondBtn) {
+        nextSecondBtn.addEventListener('click', () => {
+            video.pause();
+            if (playPauseBtn) playPauseBtn.textContent = 'Play';
+            navigateBySeconds(1);
+        });
+    }
+    
+    // Manual frame/time input
+    const frameInput = document.getElementById('trake-frame-input');
+    const timeInput = document.getElementById('trake-time-input');
+    const jumpBtn = document.getElementById('trake-jump-btn');
+    const markManualBtn = document.getElementById('trake-mark-manual-btn');
+    
+    if (jumpBtn) {
+        jumpBtn.addEventListener('click', () => {
+            video.pause();
+            if (playPauseBtn) playPauseBtn.textContent = 'Play';
+            jumpToInput();
+        });
+    }
+    
+    if (markManualBtn) {
+        markManualBtn.addEventListener('click', () => {
+            video.pause();
+            if (playPauseBtn) playPauseBtn.textContent = 'Play';
+            markFromInput();
+        });
+    }
+    
+    // Allow Enter key in input fields
+    if (frameInput) {
+        frameInput.addEventListener('keypress', (e) => {
+            if (e.key === 'Enter') {
+                video.pause();
+                if (playPauseBtn) playPauseBtn.textContent = 'Play';
+                jumpToInput();
+            }
+        });
+    }
+    
+    if (timeInput) {
+        timeInput.addEventListener('keypress', (e) => {
+            if (e.key === 'Enter') {
+                video.pause();
+                if (playPauseBtn) playPauseBtn.textContent = 'Play';
+                jumpToInput();
             }
         });
     }
@@ -453,26 +635,153 @@ function openTrakeModal(frameInfo) {
         });
     }
     
-    // Keyboard handler
+    // ENHANCED Keyboard handler - attach to modal instead of document
     const keyHandler = (e) => {
-        if (e.key === 'm' || e.key === 'M') {
+        // Prevent all default behavior for these keys
+        if ([' ', 'ArrowLeft', 'ArrowRight', 'm', 'M', 'Escape'].includes(e.key)) {
             e.preventDefault();
+            e.stopPropagation();
+            e.stopImmediatePropagation();
+        }
+        
+        if (e.key === 'm' || e.key === 'M') {
             markCurrentFrame();
+        } else if (e.key === 'ArrowLeft') {
+            video.pause();
+            if (playPauseBtn) playPauseBtn.textContent = 'Play';
+            navigateBySeconds(-1);
+        } else if (e.key === 'ArrowRight') {
+            video.pause();
+            if (playPauseBtn) playPauseBtn.textContent = 'Play';
+            navigateBySeconds(1);
+        } else if (e.key === ' ') {
+            // Space bar for play/pause
+            if (video.paused) {
+                video.play();
+                if (playPauseBtn) playPauseBtn.textContent = 'Pause';
+            } else {
+                video.pause();
+                if (playPauseBtn) playPauseBtn.textContent = 'Play';
+            }
         } else if (e.key === 'Escape') {
             video.pause();
             video.removeAttribute('src');
             video.load();
             document.body.removeChild(modal);
-            document.removeEventListener('keydown', keyHandler);
+            modal.removeEventListener('keydown', keyHandler);
         }
     };
-    document.addEventListener('keydown', keyHandler);
+    
+    // Attach to modal instead of document for better isolation
+    modal.addEventListener('keydown', keyHandler, true); // Use capture phase
+    
+    // NEW: Function to navigate by seconds
+    function navigateBySeconds(seconds) {
+        const newTime = Math.max(0, Math.min(video.duration, video.currentTime + seconds));
+        video.currentTime = newTime;
+        updateCurrentFrameDisplay();
+    }
+    
+    // NEW: Function to update current frame display
+    function updateCurrentFrameDisplay() {
+        const currentFrameElem = document.getElementById('trake-current-frame');
+        if (!currentFrameElem) return;
+        
+        const currentFrame = Math.floor(video.currentTime * videoFps);
+        currentFrameElem.textContent = currentFrame.toString();
+    }
+    
+    // NEW: Function to jump to input frame or time
+    function jumpToInput() {
+        let targetTime = null;
+        
+        // Check frame input first
+        if (frameInput && frameInput.value.trim() !== '') {
+            const frameNumber = parseInt(frameInput.value.trim());
+            if (!isNaN(frameNumber) && frameNumber >= 0) {
+                targetTime = frameNumber / videoFps;
+            } else {
+                alert('Please enter a valid frame number');
+                return;
+            }
+        }
+        // Check time input if frame input is empty
+        else if (timeInput && timeInput.value.trim() !== '') {
+            const timeString = timeInput.value.trim();
+            const timeRegex = /^(\d+):([0-5]?\d)$/; // mm:ss format
+            const match = timeString.match(timeRegex);
+            
+            if (match) {
+                const minutes = parseInt(match[1]);
+                const seconds = parseInt(match[2]);
+                targetTime = minutes * 60 + seconds;
+            } else {
+                alert('Please enter time in mm:ss format (e.g., 1:23)');
+                return;
+            }
+        } else {
+            alert('Please enter either a frame number or time');
+            return;
+        }
+        
+        // Set the video time
+        if (targetTime !== null) {
+            video.currentTime = Math.max(0, Math.min(video.duration, targetTime));
+            updateCurrentFrameDisplay();
+            
+            // Clear inputs
+            if (frameInput) frameInput.value = '';
+            if (timeInput) timeInput.value = '';
+        }
+    }
+    
+    // NEW: Function to mark frame from manual input
+    function markFromInput() {
+        let targetFrame = null;
+        
+        // Check frame input first
+        if (frameInput && frameInput.value.trim() !== '') {
+            const frameNumber = parseInt(frameInput.value.trim());
+            if (!isNaN(frameNumber) && frameNumber >= 0) {
+                targetFrame = frameNumber.toString();
+            } else {
+                alert('Please enter a valid frame number');
+                return;
+            }
+        }
+        // Check time input if frame input is empty
+        else if (timeInput && timeInput.value.trim() !== '') {
+            const timeString = timeInput.value.trim();
+            const timeRegex = /^(\d+):([0-5]?\d)$/; // mm:ss format
+            const match = timeString.match(timeRegex);
+            
+            if (match) {
+                const minutes = parseInt(match[1]);
+                const seconds = parseInt(match[2]);
+                const targetTime = minutes * 60 + seconds;
+                targetFrame = Math.floor(targetTime * videoFps).toString();
+            } else {
+                alert('Please enter time in mm:ss format (e.g., 1:23)');
+                return;
+            }
+        } else {
+            // If no input, use current frame
+            targetFrame = Math.floor(video.currentTime * videoFps).toString();
+        }
+        
+        if (targetFrame) {
+            markFrame(targetFrame, parseInt(targetFrame) / videoFps);
+            
+            // Clear inputs
+            if (frameInput) frameInput.value = '';
+            if (timeInput) timeInput.value = '';
+        }
+    }
     
     function markCurrentFrame() {
         const currentTime = video.currentTime;
         const frameNumber = Math.floor(currentTime * videoFps);
-        // Remove the .jpg extension - just use the numeric frame number
-        const frameId = frameNumber.toString(); //.padStart(5, '0') + '.jpg'; // REMOVE THIS LINE
+        const frameId = frameNumber.toString();
         markFrame(frameId, currentTime);
     }
     
@@ -481,6 +790,7 @@ function openTrakeModal(frameInfo) {
         const cleanFrameId = frameId.replace('.jpg', '').replace('.jpeg', '').replace('.avif', '');
         
         if (markedFrames.has(cleanFrameId)) {
+            alert(`Frame ${cleanFrameId} is already marked!`);
             return;
         }
         markedFrames.add(cleanFrameId);
@@ -492,7 +802,6 @@ function openTrakeModal(frameInfo) {
         const progress = document.getElementById('trake-progress');
         const currentTimeElem = document.getElementById('trake-current-time');
         
-        // FIX: Check if elements exist before updating
         if (!progress || !currentTimeElem) return;
         
         if (video.duration && !isNaN(video.duration)) {
@@ -545,7 +854,7 @@ function openTrakeModal(frameInfo) {
         if (markedFrames.size === 0) {
             list.innerHTML = '<p style="text-align: center; color: #888; margin: 0;">No frames marked yet. Press \'M\' key or click \'Mark Frame\' to add frames.</p>';
         } else {
-            list.innerHTML = Array.from(markedFrames).map(frameId => {
+            list.innerHTML = Array.from(markedFrames).sort((a, b) => parseInt(a) - parseInt(b)).map(frameId => {
                 const frameNumber = parseInt(frameId);
                 const timestamp = frameNumber / videoFps;
                 return `
@@ -577,7 +886,7 @@ function openTrakeModal(frameInfo) {
         return `${mins}:${secs.toString().padStart(2, '0')}`;
     }
     
-    // NEW: Function to construct video path with correct batch detection
+    // Function to construct video path with correct batch detection
     function constructVideoPathFromName(videoName) {
         // Extract video series (K02, L22, etc.)
         const series = videoName.substring(0, 3); // Get first 3 chars like "K02"
@@ -591,14 +900,16 @@ function openTrakeModal(frameInfo) {
     
     // Initial display
     updateTrakeDisplay();
+    updateCurrentFrameDisplay();
 }
 
+// TRAKE Submission
 async function submitToTrake(videoName, frameIds) {
     try {
         showLoadingOverlay();
         
         const formData = new FormData();
-        formData.append('video_id', videoName);
+        formData.append('video_id', videoName.replace(".mp4",""));
         formData.append('frame_ids', frameIds.join(','));
         
         const response = await fetch('hub/submit_TRAKE', {
@@ -608,14 +919,42 @@ async function submitToTrake(videoName, frameIds) {
         
         const result = await response.json();
         
-        if (result.status === 200) {
-            alert(`TRAKE submission successful! Submitted ${frameIds.length} frames.`);
-            // Close modal
-            const modal = document.querySelector('div[style*="z-index: 10000"]');
-            if (modal) document.body.removeChild(modal);
+        // Enhanced response handling for TRAKE
+        let message = `TRAKE submission completed for ${frameIds.length} frames`;
+        
+        if (result.detail) {
+            // Handle Type 1 response
+            try {
+                const detailObj = JSON.parse(result.detail);
+                message = `TRAKE: ${detailObj.description || result.detail}`;
+            } catch (e) {
+                message = `TRAKE: ${result.detail}`;
+            }
+        } else if (result.data) {
+            // Handle Type 2/3 responses with data field
+            message = `TRAKE: ${result.data.description || result.data.message || 'Unknown response'}`;
+            
+            // Add submission result if available
+            if (result.data.submission) {
+                const statusIcon = result.data.submission === 'CORRECT' ? '✅' : '❌';
+                message = `${statusIcon} TRAKE Submission: ${result.data.submission}\n${result.data.description}`;
+            }
+        } else if (result.message) {
+            message = `TRAKE: ${result.message}`;
+        } else if (result.status === 200) {
+            message = `TRAKE submission successful! Submitted ${frameIds.length} frames.`;
         } else {
-            alert('TRAKE submission failed: ' + result.message);
+            message = `TRAKE: ${JSON.stringify(result)}`;
         }
+        
+        alert(message);
+        
+        // // Close modal only on successful submission
+        // if (result.status === 200 || (result.data && result.data.status)) {
+        //     const modal = document.querySelector('div[style*="z-index: 10000"]');
+        //     if (modal) document.body.removeChild(modal);
+        // }
+        
     } catch (error) {
         console.error('TRAKE submission error:', error);
         alert('TRAKE submission error: ' + error.message);
