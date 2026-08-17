@@ -27,12 +27,14 @@ import sys
 
 current_path = Path(__file__).resolve()
 for parent in current_path.parents:
-    if parent.name == "SIU_Pumpking":
-        #print(f"Adding {parent} to sys.path")
+    # Project root is detected by content (it holds configs/ and utils/)
+    # rather than by folder name, so the tree can be checked out under any
+    # directory name - e.g. SIU_Pumpking_local on a client machine.
+    if (parent / "configs").is_dir() and (parent / "utils").is_dir():
         sys.path.append(str(parent))
         break
 else:
-    raise RuntimeError("Could not find 'SIU_Pumpking' in the path hierarchy.")
+    raise RuntimeError("Could not find the SIU_Pumpking project root (a parent directory containing configs/ and utils/).")
 
 from configs.app import AppConfig
 from schema.api import APIResponse
@@ -176,7 +178,9 @@ def setup_app() -> FastAPI:
     # Example HTML route
     @app.get("/", response_class=HTMLResponse)
     async def render_html(request: Request):
-        base_url = os.getenv("BASE_URL", "https://api.siu.edu.vn/siu_pumpking_2/")
+        base_url = os.getenv("RESULT_MANAGER_BASE_URL") or str(request.base_url)
+        if not base_url.endswith("/"):
+            base_url += "/"
         return request.app.state.templates.TemplateResponse(
             "index.html",
             {"request": request, "name": "FastAPI + Jinja2", "base_url": base_url},

@@ -262,8 +262,8 @@ function updateModalContent(frame) {
     
     // Set image source
     const encodedPath = encodeURIComponent(frame.frame_path);
-    image.src = `https://api.siu.edu.vn/siu_pumpking_1/hub/send_img_original/${encodedPath}`; // image.src = `https://api.siu.edu.vn/siu_pumpking_1/hub/send_img_original/${encodedPath}`;
-    
+    // Relative to <base href="{{ base_url }}"> so this works behind any host.
+    image.src = `hub/send_img_original/${encodedPath}`.replace(".jpg",".avif");
     // Parse object data (if available)
     let objects = [];
     if (frame.object) {
@@ -447,7 +447,8 @@ function createNeighborPreview(framePath, isCurrent = false) {
     `;
     
     const img = document.createElement('img');
-    img.src = `https://api.siu.edu.vn/siu_pumpking_1/hub/send_img_original/${encodeURIComponent(framePath)}`; // img.src = `https://api.siu.edu.vn/siu_pumpking_1/hub/send_img_original/${encodeURIComponent(framePath)}`;
+    // Relative to <base href="{{ base_url }}"> so this works behind any host.
+    img.src = `hub/send_img_original/${encodeURIComponent(framePath)}`;
     img.style.cssText = `
         width: 100%;
         height: 100%;
