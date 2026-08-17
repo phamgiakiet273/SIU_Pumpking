@@ -266,10 +266,11 @@
                         <h3>Included Videos</h3>
                         <input type="text" id="video-search" placeholder="Search videos..." style="width: 100%;">
                         <select id="video-names-dropdown" multiple style="width: 100%; height: 150px;"></select>
+                        <!-- Default: batch 0 only. Tick 1/2 to widen the video list. -->
                         <div class="batch-selection" style="margin-top: 10px;">
                             <label><input type="checkbox" name="batch" value="0" checked> Batch 0</label>
-                            <label><input type="checkbox" name="batch" value="1" checked> Batch 1</label>
-                            <label><input type="checkbox" name="batch" value="2" checked> Batch 2</label>
+                            <label><input type="checkbox" name="batch" value="1"> Batch 1</label>
+                            <label><input type="checkbox" name="batch" value="2"> Batch 2</label>
                         </div>
                         <button id="fetch-video-names" style="margin-top: 10px;" type="button">Fetch Videos</button>
                     </div>
