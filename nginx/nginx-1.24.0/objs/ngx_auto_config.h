@@ -1,7 +1,7 @@
-#define NGX_CONFIGURE " --prefix=/workspace/competitions/AIC_2025/SIU_Pumpking/nginx --conf-path=/workspace/competitions/AIC_2025/SIU_Pumpking/nginx/conf/nginx.conf --pid-path=/workspace/competitions/AIC_2025/SIU_Pumpking/nginx/logs/nginx.pid --error-log-path=/workspace/competitions/AIC_2025/SIU_Pumpking/nginx/logs/error.log --http-log-path=/workspace/competitions/AIC_2025/SIU_Pumpking/nginx/logs/access.log --with-http_ssl_module --with-http_mp4_module --without-http_rewrite_module"
+#define NGX_CONFIGURE " --prefix=/mnt/e/SIU_Pumpking/SIU_Pumpking/nginx --with-http_ssl_module --with-http_v2_module --with-http_mp4_module --with-threads"
 
 #ifndef NGX_COMPILER
-#define NGX_COMPILER  "gcc 9.3.0 (Ubuntu 9.3.0-17ubuntu1~20.04) "
+#define NGX_COMPILER  "gcc 13.3.0 (Ubuntu 13.3.0-6ubuntu2~24.04) "
 #endif
 
 
@@ -273,8 +273,8 @@
 #endif
 
 
-#ifndef NGX_SYS_NERR
-#define NGX_SYS_NERR  135
+#ifndef NGX_HAVE_STRERRORDESC_NP
+#define NGX_HAVE_STRERRORDESC_NP  1
 #endif
 
 
@@ -363,6 +363,11 @@
 #endif
 
 
+#ifndef NGX_THREADS
+#define NGX_THREADS  1
+#endif
+
+
 #ifndef NGX_HTTP_CACHE
 #define NGX_HTTP_CACHE  1
 #endif
@@ -375,6 +380,16 @@
 
 #ifndef NGX_HTTP_SSI
 #define NGX_HTTP_SSI  1
+#endif
+
+
+#ifndef NGX_HTTP_V2
+#define NGX_HTTP_V2  1
+#endif
+
+
+#ifndef NGX_HTTP_HEADERS
+#define NGX_HTTP_HEADERS  1
 #endif
 
 
@@ -403,6 +418,16 @@
 #endif
 
 
+#ifndef NGX_PCRE
+#define NGX_PCRE  1
+#endif
+
+
+#ifndef NGX_HAVE_PCRE_JIT
+#define NGX_HAVE_PCRE_JIT  1
+#endif
+
+
 #ifndef NGX_OPENSSL
 #define NGX_OPENSSL  1
 #endif
@@ -419,12 +444,12 @@
 
 
 #ifndef NGX_PREFIX
-#define NGX_PREFIX  "/workspace/competitions/AIC_2025/SIU_Pumpking/nginx/"
+#define NGX_PREFIX  "/mnt/e/SIU_Pumpking/SIU_Pumpking/nginx/"
 #endif
 
 
 #ifndef NGX_CONF_PREFIX
-#define NGX_CONF_PREFIX  "/workspace/competitions/AIC_2025/SIU_Pumpking/nginx/conf/"
+#define NGX_CONF_PREFIX  "conf/"
 #endif
 
 
@@ -434,12 +459,12 @@
 
 
 #ifndef NGX_CONF_PATH
-#define NGX_CONF_PATH  "/workspace/competitions/AIC_2025/SIU_Pumpking/nginx/conf/nginx.conf"
+#define NGX_CONF_PATH  "conf/nginx.conf"
 #endif
 
 
 #ifndef NGX_PID_PATH
-#define NGX_PID_PATH  "/workspace/competitions/AIC_2025/SIU_Pumpking/nginx/logs/nginx.pid"
+#define NGX_PID_PATH  "logs/nginx.pid"
 #endif
 
 
@@ -449,12 +474,12 @@
 
 
 #ifndef NGX_ERROR_LOG_PATH
-#define NGX_ERROR_LOG_PATH  "/workspace/competitions/AIC_2025/SIU_Pumpking/nginx/logs/error.log"
+#define NGX_ERROR_LOG_PATH  "logs/error.log"
 #endif
 
 
 #ifndef NGX_HTTP_LOG_PATH
-#define NGX_HTTP_LOG_PATH  "/workspace/competitions/AIC_2025/SIU_Pumpking/nginx/logs/access.log"
+#define NGX_HTTP_LOG_PATH  "logs/access.log"
 #endif
 
 
@@ -501,3 +526,4 @@
 #ifndef NGX_GROUP
 #define NGX_GROUP  "nogroup"
 #endif
+

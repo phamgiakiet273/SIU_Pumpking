@@ -16,12 +16,12 @@ modules:
 	$(MAKE) -f objs/Makefile modules
 
 upgrade:
-	/workspace/competitions/AIC_2025/SIU_Pumpking/nginx/sbin/nginx -t
+	/mnt/e/SIU_Pumpking/SIU_Pumpking/nginx/sbin/nginx -t
 
-	kill -USR2 `cat /workspace/competitions/AIC_2025/SIU_Pumpking/nginx/logs/nginx.pid`
+	kill -USR2 `cat /mnt/e/SIU_Pumpking/SIU_Pumpking/nginx/logs/nginx.pid`
 	sleep 1
-	test -f /workspace/competitions/AIC_2025/SIU_Pumpking/nginx/logs/nginx.pid.oldbin
+	test -f /mnt/e/SIU_Pumpking/SIU_Pumpking/nginx/logs/nginx.pid.oldbin
 
-	kill -QUIT `cat /workspace/competitions/AIC_2025/SIU_Pumpking/nginx/logs/nginx.pid.oldbin`
+	kill -QUIT `cat /mnt/e/SIU_Pumpking/SIU_Pumpking/nginx/logs/nginx.pid.oldbin`
 
 .PHONY:	build install modules upgrade

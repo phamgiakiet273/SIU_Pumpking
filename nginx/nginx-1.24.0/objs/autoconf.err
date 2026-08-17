@@ -189,8 +189,8 @@ cc -D_GNU_SOURCE -D_FILE_OFFSET_BITS=64 -o objs/autotest objs/autotest.c
 ----------------------------------------
 checking for crypt()
 
-/usr/bin/ld: /tmp/ccxRnw0H.o: in function `main':
-autotest.c:(.text+0x17): undefined reference to `crypt'
+/usr/bin/ld: /tmp/ccKimTRZ.o: in function `main':
+autotest.c:(.text+0x1d): undefined reference to `crypt'
 collect2: error: ld returned 1 exit status
 ----------
 
@@ -302,28 +302,6 @@ checking for statvfs()
 
 ----------------------------------------
 checking for dlopen()
-
-/usr/bin/ld: /tmp/ccRuukPR.o: in function `main':
-autotest.c:(.text+0x13): undefined reference to `dlopen'
-/usr/bin/ld: autotest.c:(.text+0x24): undefined reference to `dlsym'
-collect2: error: ld returned 1 exit status
-----------
-
-#include <sys/types.h>
-#include <unistd.h>
-#include <dlfcn.h>
-
-int main(void) {
-    dlopen(NULL, RTLD_NOW | RTLD_GLOBAL); dlsym(NULL, "");
-    return 0;
-}
-
-----------
-cc -D_GNU_SOURCE -D_FILE_OFFSET_BITS=64 -o objs/autotest objs/autotest.c
-----------
-
-----------------------------------------
-checking for dlopen() in libdl
 
 
 ----------------------------------------
@@ -596,8 +574,8 @@ objs/autotest.c: In function 'main':
 objs/autotest.c:7:5: warning: implicit declaration of function 'setproctitle' [-Wimplicit-function-declaration]
     7 |     setproctitle("test");;
       |     ^~~~~~~~~~~~
-/usr/bin/ld: /tmp/cc4bCNIX.o: in function `main':
-autotest.c:(.text+0x15): undefined reference to `setproctitle'
+/usr/bin/ld: /tmp/ccD5Pr8i.o: in function `main':
+autotest.c:(.text+0x18): undefined reference to `setproctitle'
 collect2: error: ld returned 1 exit status
 ----------
 
@@ -630,37 +608,10 @@ checking for pwritev()
 checking for strerrordesc_np()
 
 objs/autotest.c: In function 'main':
-objs/autotest.c:7:18: warning: implicit declaration of function 'strerrordesc_np' [-Wimplicit-function-declaration]
-    7 |     char *p; p = strerrordesc_np(0);
-      |                  ^~~~~~~~~~~~~~~
-objs/autotest.c:7:16: warning: assignment to 'char *' from 'int' makes pointer from integer without a cast [-Wint-conversion]
+objs/autotest.c:7:16: warning: assignment discards 'const' qualifier from pointer target type [-Wdiscarded-qualifiers]
     7 |     char *p; p = strerrordesc_np(0);
       |                ^
-/usr/bin/ld: /tmp/ccmzAfMg.o: in function `main':
-autotest.c:(.text+0x17): undefined reference to `strerrordesc_np'
-collect2: error: ld returned 1 exit status
-----------
 
-#include <sys/types.h>
-#include <unistd.h>
-#include <string.h>
-
-int main(void) {
-    char *p; p = strerrordesc_np(0);
-                  if (p == NULL) return 1;
-    return 0;
-}
-
-----------
-cc -D_GNU_SOURCE -D_FILE_OFFSET_BITS=64 -o objs/autotest objs/autotest.c
-----------
-
-----------------------------------------
-checking for sys_nerr
-
-/usr/bin/ld: /tmp/ccXhfFXj.o: in function `main':
-autotest.c:(.text+0xa): warning: `sys_nerr' is deprecated; use `strerror' or `strerror_r' instead
-135
 ----------------------------------------
 checking for localtime_r()
 
@@ -691,30 +642,6 @@ checking for System V shared memory
 
 ----------------------------------------
 checking for POSIX semaphores
-
-/usr/bin/ld: /tmp/ccxpKnjX.o: in function `main':
-autotest.c:(.text+0x2d): undefined reference to `sem_init'
-/usr/bin/ld: autotest.c:(.text+0x45): undefined reference to `sem_destroy'
-collect2: error: ld returned 1 exit status
-----------
-
-#include <sys/types.h>
-#include <unistd.h>
-#include <semaphore.h>
-
-int main(void) {
-    sem_t  sem;
-                  if (sem_init(&sem, 1, 0) == -1) return 1;
-                  sem_destroy(&sem);;
-    return 0;
-}
-
-----------
-cc -D_GNU_SOURCE -D_FILE_OFFSET_BITS=64 -o objs/autotest objs/autotest.c
-----------
-
-----------------------------------------
-checking for POSIX semaphores in libpthread
 
 
 ----------------------------------------
@@ -783,8 +710,42 @@ checking for getaddrinfo()
 
 
 ----------------------------------------
+checking for PCRE2 library
+
+objs/autotest.c:5:36: fatal error: pcre2.h: No such file or directory
+    5 |                           #include <pcre2.h>
+      |                                    ^~~~~~~~~
+compilation terminated.
+----------
+
+#include <sys/types.h>
+#include <unistd.h>
+#define PCRE2_CODE_UNIT_WIDTH 8
+                          #include <pcre2.h>
+
+int main(void) {
+    pcre2_code *re;
+                          re = pcre2_compile(NULL, 0, 0, NULL, NULL, NULL);
+                          if (re == NULL) return 1;
+    return 0;
+}
+
+----------
+cc -D_GNU_SOURCE -D_FILE_OFFSET_BITS=64 -o objs/autotest objs/autotest.c -lpcre2-8
+----------
+
+----------------------------------------
+checking for PCRE library
+
+
+----------------------------------------
+checking for PCRE JIT support
+
+
+----------------------------------------
 checking for OpenSSL library
 
 
 ----------------------------------------
 checking for zlib library
+
