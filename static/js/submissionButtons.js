@@ -965,6 +965,10 @@ async function submitToTrake(videoName, frameIds) {
 
 // Add buttons to thumbnails
 export function addSubmissionButtons() {
+    // No submission service deployed -> don't decorate thumbnails with T/Q/R
+    // buttons that would POST to routes the hub does not register.
+    if (window.SUBMISSION_ENABLED === false) return;
+
     document.querySelectorAll('.thumbnail').forEach(thumb => {
         const frameInfo = getFrameInfo(thumb);
         if (!frameInfo) return;

@@ -20,7 +20,7 @@
                 <!-- 1. Tab Navigation is now inside the filters panel -->
                 <nav class="tab-navigation">
                     <button class="tab-button active" data-tab="tab-search-content">SEARCH</button>
-                    <button class="tab-button" data-tab="tab-submission-content">SUBMIT</button>
+                    {% if submission_enabled %}<button class="tab-button" data-tab="tab-submission-content">SUBMIT</button>{% endif %}
                     <!-- <button class="tab-button" data-tab="tab-chatbot-content">CHAT</button> -->
                 </nav>
                 
@@ -109,8 +109,10 @@
 
                             <label><input type="radio" name="model" value="SIGLIP_ALPHA" checked> SIGLIP_ALPHA</label>
                             <label><input type="radio" name="model" value="TEMPORAL_SIGLIP_ALPHA"> TEMPORAL_ALPHA</label> 
+                            {% if siglip_beta_enabled %}
                             <label><input type="radio" name="model" value="SIGLIP_BETA"> SIGLIP_BETA</label>
                             <label><input type="radio" name="model" value="TEMPORAL_SIGLIP_BETA"> TEMPORAL_BETA</label>
+                            {% endif %}
                         </fieldset>
 
                         <!-- Download Section -->
@@ -132,6 +134,7 @@
                     </div>
 
                     <!-- Submission Tab Content -->
+                    {% if submission_enabled %}
                     <div id="tab-submission-content" class="tab-content">
                         <div class="submission-form">
                             <div class="input-container">
@@ -159,7 +162,8 @@
                             <div id="submission-status"></div>
                         </div>
                     </div>
-                    
+                    {% endif %}
+
                     <!-- Chatbot Tab Content -->
                     <!-- <div id="tab-chatbot-content" class="tab-content">
                         <div id="n8n-chat"></div>
@@ -329,6 +333,11 @@
     <script src="static/js/jszip.min.js"></script>
     <script>
         window.BASE_URL = "{{ base_url }}";
+        // Feature flags mirrored from the hub config so the UI never calls a
+        // service that is not deployed.
+        window.SUBMISSION_ENABLED = {{ 'true' if submission_enabled else 'false' }};
+        window.SIGLIP_BETA_ENABLED = {{ 'true' if siglip_beta_enabled else 'false' }};
+        window.RERANK_ENABLED = {{ 'true' if rerank_enabled else 'false' }};
     </script>
     <script type="module" src="static/js/main.js"></script>
 </body>

@@ -5,13 +5,16 @@ import sys
 
 current_path = Path(__file__).resolve()
 for parent in current_path.parents:
-    if parent.name == "SIU_Pumpking":
-        #print(f"Adding {parent} to sys.path")
+    # Project root is detected by content (it holds configs/ and utils/)
+    # rather than by folder name, so the tree can be checked out under any
+    # directory name - e.g. SIU_Pumpking_local on a client machine.
+    if (parent / "configs").is_dir() and (parent / "utils").is_dir():
         sys.path.append(str(parent))
         break
 else:
-    raise RuntimeError("Could not find 'SIU_Pumpking' in the path hierarchy.")
+    raise RuntimeError("Could not find the SIU_Pumpking project root (a parent directory containing configs/ and utils/).")
 
+from configs.hub_config import HubConfig
 from handlers.hub_handler import HubHandler
 from utils.logger import get_logger
 
@@ -21,6 +24,7 @@ logger = get_logger()
 def setup_router(handler: HubHandler) -> APIRouter:
     logger.info("setting up routers...")
 
+    config = HubConfig()
     router = APIRouter()
 
     logger.info("setting up Hub vector retrieval router...")
@@ -71,38 +75,48 @@ def setup_router(handler: HubHandler) -> APIRouter:
     )   
     
     #===============================================
-    hub_router.add_api_route(
-        "/siglip_beta_text_search",
-        endpoint=handler.siglip_v2_beta_text_query_handler,
-        methods=["POST"]
-    )
+    # SIGLIP "beta" is a second, optional index. Only mount it when the
+    # SIGLIP_v2_B_service is actually running (ENABLE_SIGLIP_BETA=true).
+    if config.ENABLE_SIGLIP_BETA:
+        logger.info("SIGLIP beta enabled - mounting /siglip_beta_* routes")
+        hub_router.add_api_route(
+            "/siglip_beta_text_search",
+            endpoint=handler.siglip_v2_beta_text_query_handler,
+            methods=["POST"]
+        )
 
-    hub_router.add_api_route(
-        "/siglip_beta_image_search",
-        endpoint=handler.siglip_v2_beta_image_query_handler,
-        methods=["POST"]
-    )
+        hub_router.add_api_route(
+            "/siglip_beta_image_search",
+            endpoint=handler.siglip_v2_beta_image_query_handler,
+            methods=["POST"]
+        )
 
-    hub_router.add_api_route(
-        "/siglip_beta_temporal_search",
-        endpoint=handler.siglip_v2_beta_temporal_query_handler,
-        methods=["POST"]
-    )
+        hub_router.add_api_route(
+            "/siglip_beta_temporal_search",
+            endpoint=handler.siglip_v2_beta_temporal_query_handler,
+            methods=["POST"]
+        )
 
-    hub_router.add_api_route(
-        "/siglip_beta_scroll",
-        endpoint=handler.siglip_v2_beta_scroll_handler,
-        methods=["POST"]
-    )
-    #=============================================== 
+        hub_router.add_api_route(
+            "/siglip_beta_scroll",
+            endpoint=handler.siglip_v2_beta_scroll_handler,
+            methods=["POST"]
+        )
+    else:
+        logger.info("SIGLIP beta disabled - skipping /siglip_beta_* routes")
+    #===============================================
 
     # Receive metadata video, rerank based on color.
-    hub_router.add_api_route(
-        "/rerank_color",
-        endpoint=handler.rerank_color_handler,
-        methods=["POST"]
-    )
-    
+    if config.ENABLE_RERANK:
+        logger.info("Rerank enabled - mounting /rerank_color route")
+        hub_router.add_api_route(
+            "/rerank_color",
+            endpoint=handler.rerank_color_handler,
+            methods=["POST"]
+        )
+    else:
+        logger.info("Rerank disabled - skipping /rerank_color route")
+
     hub_router.add_api_route(
         "/send_img/{full_path:path}",
         endpoint=handler.send_img_handler,
@@ -134,30 +148,43 @@ def setup_router(handler: HubHandler) -> APIRouter:
         methods=["POST"],
     )
     
-    hub_router.add_api_route(
-        "/submit_KIS",
-        endpoint=handler.submit_KIS_handler,
-        methods=["POST"],
-    )
-    
-    hub_router.add_api_route(
-        "/submit_QA",
-        endpoint=handler.submit_QA_handler,
-        methods=["POST"],
-    )
-    
-    hub_router.add_api_route(
-        "/submit_TRAKE",
-        endpoint=handler.submit_TRAKE_handler,
-        methods=["POST"],
-    )
-    
-    hub_router.add_api_route(
-        "/get_session_and_eval_id",
-        endpoint=handler.get_sessionID_evalID_DRES_handler,
-        methods=["GET"],
-    )
-    
+    # DRES submission. Dead outside of a live competition, so it is opt-in via
+    # ENABLE_SUBMISSION - otherwise the hub would block on a service that is
+    # not running every time the UI asks for a session/eval id.
+    if config.ENABLE_SUBMISSION:
+        logger.info("Submission enabled - mounting DRES submission routes")
+        hub_router.add_api_route(
+            "/submit_KIS",
+            endpoint=handler.submit_KIS_handler,
+            methods=["POST"],
+        )
+
+        hub_router.add_api_route(
+            "/submit_QA",
+            endpoint=handler.submit_QA_handler,
+            methods=["POST"],
+        )
+
+        hub_router.add_api_route(
+            "/submit_TRAKE",
+            endpoint=handler.submit_TRAKE_handler,
+            methods=["POST"],
+        )
+
+        hub_router.add_api_route(
+            "/get_session_and_eval_id",
+            endpoint=handler.get_sessionID_evalID_DRES_handler,
+            methods=["GET"],
+        )
+
+        hub_router.add_api_route(
+            "/update_session_eval_id",
+            endpoint=handler.update_session_eval_id_handler,
+            methods=["GET"],
+        )
+    else:
+        logger.info("Submission disabled - skipping DRES submission routes")
+
     hub_router.add_api_route(
         "/get_neighboring_frames",
         endpoint=handler.get_neighboring_frames_handler,
@@ -175,7 +202,7 @@ def setup_router(handler: HubHandler) -> APIRouter:
         endpoint=handler.get_video_names_of_batch_handler,
         methods=["POST"],
     )
-    
+
     # test request timeout
     # import asyncio
     # @router.get("/sleep")

@@ -46,7 +46,39 @@ class HubHandler:
     def __init__(self) -> None:
         self.session_id = None  # Global variable for session_id
         self.eval_id = None     # Global variable for eval_id
-        create_task(self.update_session_and_eval_ids())  # Start the background task
+        # create_task(self.update_session_and_eval_ids())  # Start the background task
+
+    @staticmethod
+    def _require_submission() -> None:
+        """
+        The DRES submission service is optional (and dead outside of a live
+        competition). Fail fast with a clear message instead of hanging on a
+        connection to a service that is not running.
+        """
+        if not HubConfig().ENABLE_SUBMISSION:
+            raise HTTPException(
+                status_code=HTTPStatus.SERVICE_UNAVAILABLE.value,
+                detail="Submission service is disabled (set ENABLE_SUBMISSION=true "
+                       "and start services/submission_service.py to enable it).",
+            )
+
+    @staticmethod
+    def _require_rerank() -> None:
+        if not HubConfig().ENABLE_RERANK:
+            raise HTTPException(
+                status_code=HTTPStatus.SERVICE_UNAVAILABLE.value,
+                detail="Rerank service is disabled (set ENABLE_RERANK=true "
+                       "and start services/rerank_service.py to enable it).",
+            )
+
+    @staticmethod
+    def _require_siglip_beta() -> None:
+        if not HubConfig().ENABLE_SIGLIP_BETA:
+            raise HTTPException(
+                status_code=HTTPStatus.SERVICE_UNAVAILABLE.value,
+                detail="SIGLIP beta service is disabled (set ENABLE_SIGLIP_BETA=true "
+                       "and start services/SIGLIP_v2_B_service.py to enable it).",
+            )
 
     async def update_session_and_eval_ids(self):
         """Background task to update session_id and eval_id every 300 seconds."""
@@ -58,7 +90,26 @@ class HubHandler:
                 logger.info(f"Updated session_id: {self.session_id}, eval_id: {self.eval_id}")
             except Exception as e:
                 logger.error(f"Failed to update session_id and eval_id: {e}")
-            await sleep(300)  # Wait for 300 seconds before the next update
+            await sleep(60)  # Wait for 60 seconds before the next update
+
+    async def update_session_eval_id_handler(self) -> APIResponse:
+        self._require_submission()
+        session_id, eval_id = await self.get_sessionID_evalID_DRES_handler()
+        self.session_id = session_id
+        self.eval_id = eval_id
+        
+        logger.debug("get_sessionID_evalID_DRES_handler invoked")
+        
+        response = {
+            "session_id": self.session_id,
+            "eval_id": self.eval_id
+        }
+        
+        return APIResponse(
+            status=HTTPStatus.OK.value,
+            message="Sucessfuly udpated",
+            data=response,
+        )
 
     async def ping_handler(self) -> APIResponse:
         logger.debug("ping_handler invoked")
@@ -105,6 +156,7 @@ class HubHandler:
     #     return RedirectResponse(url=target, status_code=307)
     
     async def rerank_color(self, video_metadata_list: List[VideoMetadata]) -> APIResponse:
+        self._require_rerank()
         # Convert Pydantic models to dictionaries
         video_metadata_dicts = [item.model_dump() for item in video_metadata_list]
         
@@ -167,6 +219,7 @@ class HubHandler:
         )
        
     async def get_sessionID_evalID_DRES_handler(self) -> tuple:
+        self._require_submission()
         base_url = f"{HubConfig().SUBMISSION_HOST_PUBLIC}/submission"
         
         # EXPERIMENT: auto relogin in case session expired
@@ -200,7 +253,8 @@ class HubHandler:
                                 start: int = Form(1046169),
                                 end: int = Form(1046169)
                             ) -> APIResponse:
-        
+
+        self._require_submission()
         #url = f"http://{SubmissionConfig().SUBMISSION_HOST}:{SubmissionConfig().SUBMISSION_PORT}/submission/submit"
         session_id, eval_id = self.session_id, self.eval_id
         logger.info(f"\n\nsession_id: {session_id}, eval_id: {eval_id}\n\n")
@@ -246,7 +300,8 @@ class HubHandler:
                                 video_id: str = Form("L11_V018"),
                                 time: str = Form("359960"),
                             ) -> APIResponse:
-        
+
+        self._require_submission()
         #url = f"http://{SubmissionConfig().SUBMISSION_HOST}:{SubmissionConfig().SUBMISSION_PORT}/submission/submit"
         session_id, eval_id = self.session_id, self.eval_id
         logger.info(f"\n\nsession_id: {session_id}, eval_id: {eval_id}\n\n")
@@ -286,7 +341,8 @@ class HubHandler:
                                 video_id: str = Form("L11_V018"),
                                 frame_ids: str = Form("?")
                             ) -> APIResponse:
-        
+
+        self._require_submission()
         #url = f"http://{SubmissionConfig().SUBMISSION_HOST}:{SubmissionConfig().SUBMISSION_PORT}/submission/submit"
         session_id, eval_id = self.session_id, self.eval_id
         logger.info(f"\n\nsession_id: {session_id}, eval_id: {eval_id}\n\n")

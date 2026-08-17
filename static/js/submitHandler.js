@@ -4,7 +4,10 @@ import { createLoadingOverlay, showLoadingOverlay, hideLoadingOverlay } from './
 export function initSubmitHandler() {
     const tabButtons = document.querySelectorAll('.tab-button');
     if (!tabButtons.length) return;
-    
+
+    // Tab switching stays wired up even when submission is off (other tabs use it).
+    const submissionEnabled = window.SUBMISSION_ENABLED !== false;
+
     tabButtons.forEach(button => {
         button.addEventListener('click', function(e) {
             e.preventDefault();
@@ -26,6 +29,13 @@ export function initSubmitHandler() {
             tabContent.classList.add('active');
         });
     });
+
+    // DRES submission service is not deployed -> stop here, no session/eval id
+    // polling and no submit buttons bound to dead endpoints.
+    if (!submissionEnabled) {
+        console.info('Submission disabled: skipping DRES session/eval id lookup.');
+        return;
+    }
 
     // Function to fetch and fill session and eval IDs
     async function fetchAndFillIDs() {
