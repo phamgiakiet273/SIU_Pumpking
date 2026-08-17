@@ -12,12 +12,14 @@ import sys
 
 current_path = Path(__file__).resolve()
 for parent in current_path.parents:
-    if parent.name == "SIU_Pumpking":
-        #print(f"Adding {parent} to sys.path")
+    # Project root is detected by content (it holds configs/ and utils/)
+    # rather than by folder name, so the tree can be checked out under any
+    # directory name - e.g. SIU_Pumpking_local on a client machine.
+    if (parent / "configs").is_dir() and (parent / "utils").is_dir():
         sys.path.append(str(parent))
         break
 else:
-    raise RuntimeError("Could not find 'SIU_Pumpking' in the path hierarchy.")
+    raise RuntimeError("Could not find the SIU_Pumpking project root (a parent directory containing configs/ and utils/).")
 
 from configs.hub_config import HubConfig
 from configs.nginx_config import NGINXConfig
@@ -42,15 +44,33 @@ app.include_router(router)
 if os.getenv("ENABLE_GZIP", "True").lower() == "true":
     app.add_middleware(GZipMiddleware, minimum_size=0)  # compress response > 0 bytes
 
-# serve local images directly when NGINX_IMAGE_HOST points to localhost
+# Serve local images/videos directly when NGINX_IMAGE_HOST points at this box
+# AND the dataset is actually present. On a client machine that only runs the
+# hub (dataset lives on the remote server) the directory does not exist, so we
+# skip the mount instead of crashing at startup - send_img_handler still
+# redirects the browser to the remote NGINX_IMAGE_HOST.
 if os.getenv("NGINX_IMAGE_HOST", "").startswith("http://localhost"):
     local_img_path = os.getenv(
         "IMAGE_LOCAL_PATH",
-        r"D:\AIC_data",
+        "/mnt/e/random42/data/aic_2025",
     )
-    # mount at /img so send_img_handler redirects to e.g. http://localhost:9181/img/<path>
-    print(f"StaticFiles mounted at: {local_img_path}")
-    app.mount("/img", StaticFiles(directory=local_img_path), name="local_img")
+    # mount at /img so send_img_handler redirects to e.g. http://localhost:9021/img/<path>
+    if os.path.isdir(local_img_path):
+        print(f"StaticFiles mounted at: {local_img_path}")
+        app.mount("/img", StaticFiles(directory=local_img_path), name="local_img")
+    else:
+        print(f"Skipping /img mount, directory not found: {local_img_path}")
+
+if os.getenv("NGINX_VIDEO_HOST", "").startswith("http://localhost"):
+    local_video_path = os.getenv(
+        "VIDEO_LOCAL_PATH",
+        "/mnt/e/random42/data/aic_2025",
+    )
+    # mount at /video so send_video_handler redirects to e.g. http://localhost:9021/video/<path>
+    if os.path.isdir(local_video_path):
+        app.mount("/video", StaticFiles(directory=local_video_path), name="local_video")
+    else:
+        print(f"Skipping /video mount, directory not found: {local_video_path}")
 
 if __name__ == "__main__":
     uvicorn.run(
