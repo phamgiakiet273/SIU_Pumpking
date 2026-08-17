@@ -1,0 +1,24 @@
+# Conda env for running ONLY the hub service on a client machine.
+#
+#   conda env create -f create_env_local.yml
+#   conda activate siu_pumpking_local
+#
+# Compare with create_env.yml (the server env): that one pulls the whole CUDA
+# 12.8 toolkit, torch, transformers, open-clip, qdrant-client, ultralytics,
+# detectron/fvcore, opencv, scikit-learn - ~10 GB. None of it is reachable from
+# the hub, which is a thin async proxy: it forwards search to SIGLIP and
+# metadata to util over HTTP, and 307-redirects frames to nginx.
+#
+# Python is pinned to 3.11 on purpose: hub_handler.py imports `imghdr`, which
+# was removed from the stdlib in 3.13.
+
+name: siu_pumpking_local
+
+channels:
+  - conda-forge
+
+dependencies:
+  - python=3.11
+  - pip
+  - pip:
+      - -r requirements-local.txt

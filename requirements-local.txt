@@ -1,0 +1,20 @@
+# Everything the hub service needs - 13 packages.
+# Installed via create_env_local.yml; or standalone: pip install -r requirements-local.txt
+#
+# Deliberately absent (server-only): torch, torchvision, transformers,
+# open-clip-torch, timm, qdrant-client, numpy, scipy, scikit-learn, opencv,
+# ultralytics, tensorboard, and the whole nvidia-* / CUDA stack.
+
+fastapi==0.121.0
+uvicorn==0.38.0
+starlette==0.49.3
+pydantic==2.12.4
+python-multipart==0.0.20   # FastAPI Form(...) parsing
+jinja2==3.1.6              # index.html templating
+httpx==0.28.1              # async calls to the remote SIGLIP/util services
+requests==2.32.5
+ujson==5.11.0
+python-dotenv==1.2.1
+loguru==0.7.3
+pillow==12.2.0
+pillow-avif-plugin==1.5.2  # keyframes are .avif
