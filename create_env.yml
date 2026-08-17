@@ -1,4 +1,4 @@
-name: kltn
+name: siu_pumpking
 channels:
   - conda-forge
   - nvidia
