@@ -7,7 +7,11 @@ import requests
 import numpy as np
 import os
 
-os.environ["TRANSFORMERS_CACHE"] = AppConfig().TRANSFORMERS_CACHE
+# Non-deprecated spelling of TRANSFORMERS_CACHE. Note this assignment lands
+# *after* `transformers` is imported above, so it cannot move the cache on its
+# own - .env (loaded by the service entrypoint before this module) is what
+# actually governs the cache dir. Kept as a fallback for direct imports.
+os.environ.setdefault("HF_HUB_CACHE", AppConfig().TRANSFORMERS_CACHE)
 os.environ["CUDA_DEVICE_ORDER"] = AppConfig().CUDA_DEVICE_ORDER
 os.environ["CUDA_VISIBLE_DEVICES"] = SIGLIPV2Config().SIGLIP_V2_CUDA_VISIBLE_DEVICES
 # os.environ["HF_ENDPOINT"] = "https://hf-mirror.com"
@@ -22,11 +26,22 @@ class SIGLIP2:
         else:
             self.device = "cuda"
 
+        # No device_map here: a processor is CPU-side tokenising/resizing, so it
+        # was never placed on a device, and accelerate (which device_map needs)
+        # is not installed in this env.
         self.processor = AutoProcessor.from_pretrained(
-            "google/siglip2-giant-opt-patch16-384", device_map="auto", use_fast=True
+            "google/siglip2-giant-opt-patch16-384", use_fast=True
         )  # add token
+        # The checkpoint is fp32 on disk (~7.5GB). get_image_features and
+        # get_text_features already run under autocast("cuda"), so the matmuls
+        # were happening in fp16 regardless - holding fp32 weights only cost
+        # VRAM. fp16 halves the resident weights to ~3.7GB on the 16GB RTX 5000.
+        # Turing has no bf16 tensor cores, so float16 is the right half here.
+        dtype = torch.float16 if self.device == "cuda" else torch.float32
         self.model = (
-            AutoModel.from_pretrained("google/siglip2-giant-opt-patch16-384")
+            AutoModel.from_pretrained(
+                "google/siglip2-giant-opt-patch16-384", dtype=dtype
+            )
             .eval()
             .to(self.device)
         )  # add token
