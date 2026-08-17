@@ -12,14 +12,14 @@ import sys
 # add child path manually
 current_path = Path(__file__).resolve()
 for parent in current_path.parents:
-    if parent.name == "SIU_Pumpking":
+    if (parent / "configs").is_dir() and (parent / "utils").is_dir():
         base_path = parent
         new_path = base_path / "engine" / "shot_boundary_detection" / "Shot_Detection"
         sys.path.append(str(new_path))
         #print(f"Added {new_path} to sys.path")
         break
 else:
-    raise RuntimeError("Could not find 'SIU_Pumpking' in the path hierarchy.")
+    raise RuntimeError("Could not find the SIU_Pumpking project root (a parent directory containing configs/ and utils/).")
 
 from AutoShot.utils import get_batches, get_frames
 from AutoShot.model import AutoShot

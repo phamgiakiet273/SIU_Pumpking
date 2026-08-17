@@ -5,12 +5,14 @@ import sys
 
 current_path = Path(__file__).resolve()
 for parent in current_path.parents:
-    if parent.name == "SIU_Pumpking":
-        #print(f"Adding {parent} to sys.path")
+    # Project root is detected by content (it holds configs/ and utils/)
+    # rather than by folder name, so the tree can be checked out under any
+    # directory name - e.g. SIU_Pumpking_local on a client machine.
+    if (parent / "configs").is_dir() and (parent / "utils").is_dir():
         sys.path.append(str(parent))
         break
 else:
-    raise RuntimeError("Could not find 'SIU_Pumpking' in the path hierarchy.")
+    raise RuntimeError("Could not find the SIU_Pumpking project root (a parent directory containing configs/ and utils/).")
 
 from handlers.SIGLIP_v2_handler import SIGLIPV2Handler
 from utils.logger import get_logger

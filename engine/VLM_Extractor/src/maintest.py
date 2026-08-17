@@ -13,13 +13,13 @@ import sys
 
 current_path = Path(__file__).resolve()
 for parent in current_path.parents:
-    if parent.name == "SIU_Pumpking":
+    if (parent / "configs").is_dir() and (parent / "utils").is_dir():
         #print(f"Adding {parent} to sys.path")
         sys.path.append(str(parent))
         base_path = parent
         break
 else:
-    raise RuntimeError("Could not find 'SIU_Pumpking' in the path hierarchy.")
+    raise RuntimeError("Could not find the SIU_Pumpking project root (a parent directory containing configs/ and utils/).")
 
 env_path = base_path / ".env"
 dotenv.load_dotenv(env_path)
