@@ -5,6 +5,8 @@ import os
 import numpy as np
 import ujson
 import glob
+import pickle
+import time
 
 from typing import List, Optional, Any
 from collections import defaultdict
@@ -15,12 +17,14 @@ import sys
 
 current_path = Path(__file__).resolve()
 for parent in current_path.parents:
-    if parent.name == "SIU_Pumpking":
-        #print(f"Adding {parent} to sys.path")
+    # Project root is detected by content (it holds configs/ and utils/)
+    # rather than by folder name, so the tree can be checked out under any
+    # directory name - e.g. SIU_Pumpking_local on a client machine.
+    if (parent / "configs").is_dir() and (parent / "utils").is_dir():
         sys.path.append(str(parent))
         break
 else:
-    raise RuntimeError("Could not find 'SIU_Pumpking' in the path hierarchy.")
+    raise RuntimeError("Could not find the SIU_Pumpking project root (a parent directory containing configs/ and utils/).")
 
 #from utils.metadata_util import get_batch#, get_videos_from_batch
 from utils.vector_database_util import merge_scores, merge_scores_reverse, preprocess_object_dict
@@ -33,9 +37,20 @@ class QDRANT:
     def __init__(self, QDRANT__URL: str = "http://0.0.0.0", 
                  QDRANT_PORT: int = 7333, 
                  QDRANT_GRPC_PORT: int = 7334, 
-                 collection_name: str = None, 
-                 timeout: int = 1800):
+                 collection_name: str = None,
+                 timeout: int = 1800,
+                 search_timeout: int = 60):
+        # Two separate budgets on purpose:
+        #   timeout        - client-wide, covers bulk indexing. addDatabase()
+        #                    upserts hundreds of thousands of points and can
+        #                    legitimately run for many minutes.
+        #   search_timeout - query_points only. A search that has not returned
+        #                    within a minute is a fault, not slow progress.
+        # These were previously the same 1800s value, so when searches were slow
+        # the service sat silent for 30 minutes instead of raising - which is
+        # exactly what made a storage problem look like "qdrant not responding".
         self.timeout = timeout
+        self.search_timeout = search_timeout
         self.collection_name = collection_name
 
         self.client = QdrantClient(
@@ -45,10 +60,72 @@ class QDRANT:
             timeout=self.timeout
         )
 
-        self.frame_names = self._prepare_data()
-        self.img_dups = self._prepare_dup()
-        self.img_uniques = self._prepare_unique()
+        # These three walk the keyframe tree and open ~3000 small JSON files on
+        # /mnt/e - a USB HDD reached over 9p, where every stat/open is a round
+        # trip. Measured cost: ~10 minutes of pure I/O wait on every startup,
+        # with the process sitting in D state on p9_client_rpc. The dataset is
+        # static between runs, so the results are memoised to local disk.
+        self.frame_names = self._cached("frame_names", self._prepare_data)
+        self.img_dups = self._cached("img_dups", self._prepare_dup)
+        self.img_uniques = self._cached("img_uniques", self._prepare_unique)
         logger.info(f"QDRANT Connection Success with QDRANT_PORT: {QDRANT_PORT}")
+
+    def _prep_signature(self):
+        """Cheap fingerprint of the inputs the _prepare_* helpers read.
+
+        Three directory listings, versus the ~3000 file opens the helpers
+        themselves do - cheap enough to run every startup, and it catches the
+        realistic change (videos added or removed).
+        """
+        try:
+            return (
+                len(os.listdir("/mnt/e/random42/data/aic_2025/utils/duplicate1")),
+                len(os.listdir("/mnt/e/random42/data/aic_2025/utils/unique1")),
+                len(glob.glob("/mnt/e/random42/data/aic_2025/*/frames/low_res_autoshot/Keyframes_*")),
+            )
+        except OSError as e:
+            logger.warning(f"prep signature unavailable ({e}); cache disabled this run")
+            return None
+
+    def _cached(self, name, builder):
+        """Memoise a _prepare_* result on fast local storage.
+
+        Invalidates automatically when _prep_signature() changes. To force a
+        rebuild by hand, set QDRANT_PREP_CACHE_REBUILD=1 or delete the cache
+        directory (QDRANT_PREP_CACHE, default /mnt/wsl/wsldata/cache).
+        """
+        base = os.getenv("QDRANT_PREP_CACHE",
+                         os.path.expanduser("~/.cache/siu_pumpking/qdrant_prep"))
+        sig = self._prep_signature()
+        force = os.getenv("QDRANT_PREP_CACHE_REBUILD", "").lower() in ("1", "true", "yes")
+
+        path = os.path.join(base, f"{name}.pkl")
+        if sig is not None and not force and os.path.isfile(path):
+            try:
+                with open(path, "rb") as f:
+                    blob = pickle.load(f)
+                if blob.get("sig") == sig:
+                    logger.info(f"{name}: loaded from cache")
+                    return blob["data"]
+                logger.info(f"{name}: dataset changed, rebuilding cache")
+            except Exception as e:
+                logger.warning(f"{name}: cache unreadable ({e}), rebuilding")
+
+        t0 = time.time()
+        data = builder()
+        logger.info(f"{name}: built in {time.time() - t0:.0f}s")
+
+        if sig is not None:
+            try:
+                os.makedirs(base, exist_ok=True)
+                tmp = path + ".tmp"
+                with open(tmp, "wb") as f:
+                    pickle.dump({"sig": sig, "data": data}, f, protocol=pickle.HIGHEST_PROTOCOL)
+                os.replace(tmp, path)  # atomic, so a crash mid-write cannot leave a torn cache
+                logger.info(f"{name}: cached to {path}")
+            except OSError as e:
+                logger.warning(f"{name}: could not write cache ({e})")
+        return data
 
     def addDatabase(self, collection_name: str, 
                     feature_size: int, 
@@ -80,9 +157,21 @@ class QDRANT:
                         binary=models.BinaryQuantizationConfig(always_ram=True),
                     )
                 ),
-                optimizers_config=models.OptimizersConfigDiff(default_segment_number=16, max_segment_size=20000000, indexing_threshold=1000),
+                # shard_number was 90 and default_segment_number 16, i.e. up to
+                # 1440 segments on a SINGLE node - and the live collection did
+                # sit at 1435. Consequences measured on 2026-08-16:
+                #   * vectors occupied 46.8GB on disk vs ~5.4GB of real data
+                #     (872631 x 1536 x 4B), so the working set could not fit in
+                #     page cache and cold queries cost 13-60s
+                #   * every restart spent ~15 min recovering shards serially
+                #   * each search fanned out across all 90 shards
+                # 90 shards is a multi-node cluster setting; this is one node.
+                # 4 shards x 4 segments = 16 parallel units, matching the 16
+                # cores available, while keeping segments large enough to be
+                # cache-friendly. Raise these only if moving to a real cluster.
+                optimizers_config=models.OptimizersConfigDiff(default_segment_number=4, max_segment_size=20000000, indexing_threshold=1000),
                 on_disk_payload=True,
-                shard_number=90,
+                shard_number=4,
                 hnsw_config=HnswConfigDiff(
                     m=16,                         
                     ef_construct=100,          
@@ -111,7 +200,7 @@ class QDRANT:
         logger.info("STT Dict Loaded")        
         
         dict_unique = {}
-        with open("/workspace/nhihtc/perfect/AIC2025/img_similarity/check_unique.json", encoding='utf-8-sig') as json_file:
+        with open("/mnt/e/random42/data/aic_2025/utils/check_unique.json", encoding='utf-8-sig') as json_file:
             dict_unique = ujson.load(json_file)
         logger.info("UNIQUE Dict Loaded")   
         
@@ -122,23 +211,22 @@ class QDRANT:
             dict_shot = dict_shot | dict_shot_append
         logger.info("SHOT Dict Loaded")
         
-        logger.info("Inserting Data...")
+        logger.info("Building payload...")
         
         struct_id = 0
         
         
         for idx_folder, folder_path in enumerate(FEATURES_PATH):
             insert_points = []
-            
+            batch_size = 100000  # adjust based on available RAM
+
             for feat_npy in tqdm(sorted(os.listdir(folder_path))):
                 video_name = feat_npy.split('.')[0]
                 npy_path = os.path.join(folder_path, feat_npy)
 
-                # lazy‐load the entire feature array, then batch‐cast & reshape
                 feats_arr = np.load(npy_path, mmap_mode='r')
                 vectors = feats_arr.astype('float32').reshape(-1, feats_arr.shape[-1])
 
-                # prepare frame list and pre‐parsed frame numbers
                 frame_path = os.path.join(
                     KEYFRAME_FOLDER_PATH,
                     str(idx_folder),
@@ -149,9 +237,9 @@ class QDRANT:
                     video_name
                 )
                 frame_list = sorted(os.listdir(frame_path))
-                frame_nums = [int(fn.replace(".jpg", "")) for fn in frame_list]
+                frame_list = [f.replace(".avif", ".jpg") for f in frame_list]
+                frame_nums = [int(fn.replace(".jpg", "").replace(".avif", "")) for fn in frame_list]
 
-                # pull these out once per file
                 fps = dict_fps[video_name]
                 s2t_map = dict_s2t[video_name + ".mp4"] if (video_name + ".mp4") in dict_s2t else []
                 unique = dict_unique[video_name]
@@ -159,47 +247,48 @@ class QDRANT:
                 # get_objs = dict_obj.get
                 shot = dict_shot[video_name]
                 base_id = struct_id
-
-                # build all PointStructs in one go
-                points = [
-                    PointStruct(
-                        id=base_id + idx,
-                        vector=vec,
-                        payload={
-                            "idx_folder": idx_folder,
-                            "video_name": video_name + ".mp4",
-                            "frame_name": frm,
-                            "fps": fps,
-                            "s2t": s2t_map[frame_list[idx]] if s2t_map!="" else [],
-                            "is_unique": not unique[str(frm)],
-                            "frame_class": shot[frame_list[idx]][0],
-                            "related_start_frame": shot[frame_list[idx]][1],
-                            "related_end_frame": shot[frame_list[idx]][2],
-                            # frame_class: (int / string)
-                            # 0 là đoạn có MC
-                            # 1 là đoạn tóm tắt
-                            # 2 là đoạn chính
-                            # 3 là đoạn trùng lặp
-                        },
+                for idx, (vec, frm) in enumerate(zip(vectors, frame_nums)):
+                    insert_points.append(
+                        PointStruct(
+                            id=base_id + idx,
+                            vector=vec,
+                            payload={
+                                "idx_folder": idx_folder,
+                                "video_name": video_name + ".mp4",
+                                "frame_name": frm,
+                                "fps": fps,
+                                "s2t": s2t_map[frame_list[idx]],
+                                "is_unique": not unique[str(frm)],
+                                "object": [],
+                                "frame_class": shot[frame_list[idx]][0] if shot != "" else 2,
+                                "related_start_frame": shot[frame_list[idx]][1] if shot != "" else 0,
+                                "related_end_frame": shot[frame_list[idx]][2] if shot != "" else 50000,
+                            },
+                        )
                     )
-                    for idx, (vec, frm) in enumerate(zip(vectors, frame_nums))
-                ]
 
-                insert_points.extend(points)
-                struct_id += len(points)
+                    # ---- NEW: flush every batch_size points ----
+                    if len(insert_points) >= batch_size:
+                        phase = (struct_id // batch_size) + 1
+                        logger.info(f"Upserting data batch {phase} (size={len(insert_points)})")
+                        self.client.upsert(
+                            collection_name=self.collection_name,
+                            wait=False,
+                            points=insert_points,
+                        )
+                        insert_points = []
 
-            operation_info = self.client.upsert(
-                collection_name=self.collection_name,
-                wait=False,
-                points=insert_points[:len(insert_points)//2]
-            )
-            
-            operation_info = self.client.upsert(
-                collection_name=self.collection_name,
-                wait=False,
-                points=insert_points[len(insert_points)//2:]
-            )
-            
+                struct_id += len(vectors)
+
+            # flush any remaining points in this folder
+            if insert_points:
+                logger.info(f"Upserting final batch for folder {idx_folder+1}")
+                self.client.upsert(
+                    collection_name=self.collection_name,
+                    wait=False,
+                    points=insert_points,
+                )
+
             logger.info(f"Dataset Insert Completed {str(int(idx_folder)+1)}/{len(FEATURES_PATH)}")
         
         logger.info("Cleaning up dictionary")
@@ -240,7 +329,7 @@ class QDRANT:
         )
         logger.info("Create payload index complete")
         
-        return operation_info
+        return True
 
     def scroll_video(self, k, 
                      video_filter: str, 
@@ -327,7 +416,7 @@ class QDRANT:
             collection_name=self.collection_name,
             query=query,
             query_filter=FILTER_RESULTS,
-            timeout=self.timeout,
+            timeout=self.search_timeout,
             limit=int(k),
         ).points
         
@@ -438,7 +527,7 @@ class QDRANT:
             collection_name=self.collection_name,
             query=queryList[query_main],
             query_filter=FILTER_RESULTS,
-            timeout=self.timeout,
+            timeout=self.search_timeout,
             limit=int(k) * queryLen,
         ).points
 
@@ -471,7 +560,7 @@ class QDRANT:
                 query=queryList[query_idx],
                 query_filter=FILTER_RESULTS,
                 limit=int(k) * (queryLen - query_main + query_idx),
-                timeout=self.timeout,
+                timeout=self.search_timeout,
             ).points
             
             return_result = self._format_search_results(SEARCH_RESULTS, return_s2t=return_s2t, return_object=return_object)
@@ -504,7 +593,7 @@ class QDRANT:
                 query=query,
                 query_filter=FILTER_RESULTS,
                 limit=int(k) * (len(queryList) + query_main - query_idx),
-                timeout=self.timeout,
+                timeout=self.search_timeout,
             ).points
             
             return_result = self._format_search_results(SEARCH_RESULTS, return_s2t=return_s2t, return_object=return_object)
@@ -601,11 +690,9 @@ class QDRANT:
                     result["object"] = obj
                 return_result.append(result)
                 
-        import json
-        with open("/workspace/nhihtc/perfect/AIC2025/debug/result.json", 'w', encoding='utf-8') as f:
-            json.dump(return_result, f, ensure_ascii=False, indent=4)
         return return_result
-    def _prepare_data(self, folder_path='/dataset/AIC_2025/SIU_Pumpking/*'):
+    
+    def _prepare_data(self, folder_path='/mnt/e/random42/data/aic_2025/*'):
         frame_names = {}
 
         Bpath = folder_path
@@ -615,7 +702,7 @@ class QDRANT:
         for iBpath in lBpath:
             Lpath = os.path.join(
                 iBpath, 
-                "frames/autoshot",
+                "frames/low_res_autoshot",
                 "Keyframes_*"
             )
             lLpath = sorted(glob.glob(Lpath))
@@ -654,7 +741,7 @@ class QDRANT:
         first_idx = frame_video[first_frame]
         last_idx = frame_video[last_frame]
         return list_values[first_idx-idx:last_idx-idx+1]
-    def _prepare_dup(self, folfer_path="/workspace/nhihtc/perfect/AIC2025/img_similarity/duplicate1"):
+    def _prepare_dup(self, folfer_path="/mnt/e/random42/data/aic_2025/utils/duplicate1"):
         img_dup = {}
         json_names = os.listdir(folfer_path)
         for json_name in json_names:
@@ -665,7 +752,7 @@ class QDRANT:
             img_dup[video_name] = img_dup_append
         return img_dup
     
-    def _prepare_unique(self, folfer_path="/workspace/nhihtc/perfect/AIC2025/img_similarity/unique1"):
+    def _prepare_unique(self, folfer_path="/mnt/e/random42/data/aic_2025/utils/unique1"):
         img_unique = {}
         json_names = os.listdir(folfer_path)
         for json_name in json_names:
