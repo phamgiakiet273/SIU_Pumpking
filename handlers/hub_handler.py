@@ -5,7 +5,7 @@ from http import HTTPStatus
 from io import BytesIO
 from typing import List, Optional, Union
 import time
-from flask import json
+import json  # stdlib; was "from flask import json" (unnecessary Flask dep)
 import ujson
 import gzip
 import requests
