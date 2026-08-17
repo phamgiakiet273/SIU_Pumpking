@@ -6,9 +6,14 @@ from typing import List
 class AppConfig:
     def __init__(self) -> None:
         # BASIC STUFFS with defaults
+        # HF_HUB_CACHE is the current name for the hub cache dir, HF_HOME/hub is
+        # the equivalent derived from the parent, and TRANSFORMERS_CACHE is the
+        # deprecated spelling - still read here so any engine/ module that has
+        # not been migrated keeps resolving to the same place.
+        _hf_home = os.getenv("HF_HOME", os.path.expanduser("~/.cache/huggingface"))
         self.TRANSFORMERS_CACHE: str = os.getenv(
-            "TRANSFORMERS_CACHE",
-            "/workspace/competitions/AIC_2025/SIU_Pumpking/data/weights",
+            "HF_HUB_CACHE",
+            os.getenv("TRANSFORMERS_CACHE", os.path.join(_hf_home, "hub")),
         )
         self.CUDA_DEVICE_ORDER: str = os.getenv("CUDA_DEVICE_ORDER", "PCI_BUS_ID")
 
